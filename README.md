@@ -11,6 +11,9 @@
 4. Drum machine
     4.1. play/stop, bpm
     4.2. add/remove circles
+    4.3. Settings matrix
+5. Random button
+6. Export/save/import
 
 
 ## Model
