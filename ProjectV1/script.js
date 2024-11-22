@@ -3,8 +3,7 @@ document.getElementById('continue-btn').addEventListener('click', function () {
     document.getElementById('workstation').style.webkitFilter='none';
 });
 const allowedTypes = ['audio/wav','audio/mpeg','audio/aac'];
-
-const dropZone = document.getElementById('drop-zone');
+const dropZone = document.getElementById('welcome');
 const fileInput = document.getElementById('file-input');
 const fileList = document.getElementById('file-list');
 
@@ -40,16 +39,20 @@ fileInput.addEventListener('change', (event) => {
 // Drag-and-drop eventi
 dropZone.addEventListener('dragover', (event) => {
     event.preventDefault();
+    document.getElementById("title").textContent="DROP!"
     dropZone.classList.add('dragover');
+
 });
 
 dropZone.addEventListener('dragleave', () => {
     dropZone.classList.remove('dragover');
+    document.getElementById("title").textContent="Benvenuto!"
 });
 
 dropZone.addEventListener('drop', (event) => {
     event.preventDefault();
     dropZone.classList.remove('dragover');
     const files = event.dataTransfer.files; // File trascinati
+    document.getElementById("title").textContent="Benvenuto!"
     displayFileNames(files);
 });

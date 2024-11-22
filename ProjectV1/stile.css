@@ -31,8 +31,7 @@ body {
     transform: translate(-50%, -50%); /* Sposta esattamente al centro dello schermo */
     width: 70%; /* Larghezza della modale */
     height: 80vh; /* Altezza della modale */
-    background-color: rgba(132, 90, 90, 0.9); /* Sfondo opaco */
-    border-radius: 8px;
+    background-color: rgba(132, 90, 90, 0.9);   
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     color: white;
     text-align: center;
@@ -76,8 +75,8 @@ button#continue-btn:hover {
     transition: background-color 0.3s;
 }
 
-.drop-zone.dragover {
-    background-color: #e6f7ff;
+.dragover {
+    background-color: #4fa53e;
     border-color: #0056b3;
 }
 
