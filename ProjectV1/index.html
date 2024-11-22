@@ -17,8 +17,19 @@
         <script src = "script.js" charset="UTF-8" defer></script>
     </head>
     <body>
+    
+        <div class="page modal" id="welcome">
+            <p>Benvenuto!</p>
+            <div class="drop-zone" id="drop-zone">
+                <p>Trascina qui il file o clicca per selezionarlo</p>
+                <input type="file" id="file-input" style="display: none;" accept=".mp3,.wav,.aac,audio/wav,audio/mpeg,audio/aac" />
+            </div>
+            <button id="continue-btn" type="submit">Continua</button>
+            <div id="file-list"></div>
+        </div>
+        <div class="page home" id="workstation">
+            
+        </div>
 
-
-        <div>prova</div>
     </body>
 </html>

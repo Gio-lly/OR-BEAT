@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden; /* Per evitare lo scorrimento quando la modale è visibile */
+    height: 100vh; /* Assicura che il body occupi l'intero schermo */
+}
+
+.page {
+    display: none; /* Tutte le pagine sono inizialmente nascoste */
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+#workstation {
+    display: block; /* Nascondi la workstation all'inizio */
+    background-color: #cf8f8f;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    -webkit-filter: blur(100px);
+}
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%; /* Posiziona al centro verticale */
+    left: 50%; /* Posiziona al centro orizzontale */
+    transform: translate(-50%, -50%); /* Sposta esattamente al centro dello schermo */
+    width: 70%; /* Larghezza della modale */
+    height: 80vh; /* Altezza della modale */
+    background-color: rgba(132, 90, 90, 0.9); /* Sfondo opaco */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    color: white;
+    text-align: center;
+    flex-direction: column; /* Disposizione verticale */
+    z-index: 1000; }
+
+.modal p {
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+button#continue-btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button#continue-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Mostra la pagina modale all'avvio */
+#welcome {
+    display: flex;
+}
+/*PER CARICARE IL FILE*/
+.drop-zone {
+    width: 400px;
+    height: 200px;
+    border: 2px dashed #007BFF;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #ffffff;
+    transition: background-color 0.3s;
+}
+
+.drop-zone.dragover {
+    background-color: #e6f7ff;
+    border-color: #0056b3;
+}
+
+.drop-zone p {  
+    font-size: 18px;
+    color: #333333;
+}
+
