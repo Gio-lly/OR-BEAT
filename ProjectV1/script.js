@@ -68,3 +68,32 @@ document.getElementById('continue-btn').addEventListener('click', function (even
         document.getElementById('workstation').style.webkitFilter = 'none';
     }
 });
+
+const presetBtn = document.getElementById('preset-btn');
+const presetList = document.getElementById('preset-list');
+const presets = [
+    { name: "Preset 1", file: "Assets/drum_loop_minimal_tribal.wav" },
+    { name: "Preset 2", file: "assets/audio2.wav" },
+    { name: "Preset 3", file: "assets/audio3.aac" },
+];
+
+// Mostra l'elenco dei preset quando si clicca sul pulsante
+presetBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    presetList.style.display = 'block';
+    presetList.innerHTML = ''; // Pulisci l'elenco precedente
+
+    // Crea i pulsanti per ciascun preset
+    presets.forEach(preset => {
+        const presetItem = document.createElement('button');
+        presetItem.textContent = preset.name;
+        presetItem.addEventListener('click', (event) => {
+            event.stopPropagation();
+            // Mostra il file selezionato nell'elenco file
+            fileList.innerHTML = `<p>Preset selezionato: ${preset.file}</p>`;
+            isValidFileLoaded = true; // Imposta lo stato su vero
+            document.getElementById('continue-btn').disabled = false;
+        });
+        presetList.appendChild(presetItem);
+    });
+});
