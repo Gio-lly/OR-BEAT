@@ -24,4 +24,4 @@ class OnSetDetector extends AudioWorkletProcessor {
     }
   }
   
-  registerProcessor("onSetDetector", MyAudioProcessor);
+  registerProcessor("on-set-detector", OnSetDetector);

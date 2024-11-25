@@ -1,4 +1,4 @@
-let audioContext = null;
+audioContext = null;
 document.getElementById('continue-btn').disabled = true; // Disabilita il pulsante all'inizio
 
 const allowedTypes = ['audio/wav', 'audio/mpeg', 'audio/aac'];
@@ -101,23 +101,31 @@ presetBtn.addEventListener('click', (event) => {
 
 async function createOnsetDetectorNode() {
     if (!audioContext) {
-      try {
-        audioContext = new AudioContext();
-        await audioContext.resume();
-        await audioContext.audioWorklet.addModule("OnSetDetector.js");
-      } catch (e) {
-        return null;
-      }
+        try {
+            audioContext = new AudioContext();
+
+        } catch (e) {
+            return null;
+        }
+
     }
-  
-    return new AudioWorkletNode(audioContext, "onSetDetector");
+    await audioContext.resume();
+    await audioContext.audioWorklet.addModule('Processors/on-set-detector.js');
+
+
+    return new AudioWorkletNode(audioContext, "on-set-detector");
 }
 
-let onsetDetect = createOnsetDetectorNode();
+onsetDetect = null;
 async function handleFileUpload(event) {
     const file = event.target.files[0];
+
     if (!file) return;
     try {
+        if (audioContext == null) {
+            audioContext = new AudioContext();
+        }
+        audioContext.resume();
         // Leggi e decodifica il file
         const arrayBuffer = await file.arrayBuffer();
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
@@ -136,8 +144,9 @@ async function handleFileUpload(event) {
             sampleRate: audioBuffer.sampleRate
         });
 
-       
+
     } catch (error) {
-        console.error("Errore durante l'elaborazione del file:", error);
+        console.log(error)
     }
 }
+document.getElementById("file-input").addEventListener('change', handleFileUpload);
