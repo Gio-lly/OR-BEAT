@@ -1,5 +1,10 @@
 <!-- RICORDA:
-    questo è un file di testing che si può fuckappare
+ STEP 1: PULLA PER SINCRONIZZARE, non si può pullare se non tutto è committato.
+ STEP 2: FAI LE TUE MODIFICHE
+ STEP 3: COMMITTA LE TUE MODIFICHE(quindi fai add sul coso a sinistra e committa)
+ STEP 4: PULLA (di nuovo, se qualcuno ha pushato nel frattempo, dovrai fare il merge tra i codici,
+  e committare il merge)
+ STEP 5: PUSHA
  -->
 
 
@@ -11,6 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"> </script>
     <link href="stile.css" rel="stylesheet" type="text/css">
     <script src="script.js" charset="UTF-8" defer></script>
+    <script src="OnSetDetector.js" charset="UTF-8" defer></script>
 </head>
 
 <body>
@@ -21,12 +27,19 @@
         <p>Trascina qui il file o clicca per selezionarlo</p>
         <input type="file" id="file-input" style="display: none;"
             accept=".mp3,.wav,.aac,audio/wav,audio/mpeg,audio/aac" />
-        
+
+        <p>Oppure scegli un preset:</p>
+        <button id="preset-btn">Scegli un preset</button>
+        <div id="preset-list" style="display: none;">
+            <!-- Qui verranno mostrati i preset -->
+        </div>
+        <br>
+        <br>
         <button id="continue-btn" type="submit">Continua</button>
         <div id="file-list"></div>
     </div>
     <div class="page home" id="workstation">
-        
+
     </div>
 
 </body>

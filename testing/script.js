@@ -113,4 +113,31 @@ async function createOnsetDetectorNode() {
     return new AudioWorkletNode(audioContext, "onSetDetector");
 }
 
-let onsetDetct = await createOnsetDetectorNode();
+let onsetDetect = createOnsetDetectorNode();
+async function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+        // Leggi e decodifica il file
+        const arrayBuffer = await file.arrayBuffer();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+        // Estrai i samples dal primo canale
+        const channelData = audioBuffer.getChannelData(0);
+
+        // Crea il nodo OnsetDetector se non esiste
+        if (!onsetDetect) {
+            onsetDetect = await createOnsetDetectorNode();
+        }
+
+        // Invia i samples al nodo tramite il suo port
+        onsetDetect.port.postMessage({
+            samples: channelData,
+            sampleRate: audioBuffer.sampleRate
+        });
+
+       
+    } catch (error) {
+        console.error("Errore durante l'elaborazione del file:", error);
+    }
+}
