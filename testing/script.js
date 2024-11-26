@@ -134,7 +134,18 @@ onsetDetect = null;
 async function handleFileUpload(event) {
     const file = event.target.files[0]; // Ottiene SOLO il primo file caricato !! (Da cambiare?)
 
-    if (!file) return; // Se non c'è nessun file, esce dalla funzione
+    // Se non c'è il file, esci
+    if (!file) {
+        console.error("Nessun file selezionato.");
+        return; // Esce dalla funzione
+    }
+
+    // Se il file non è valido, esci
+    if (!allowedTypes.includes(file.type)) {
+        console.error(`Errore: Il file "${file.name}" non è consentito. I file consentiti sono .wav, .mp3, .aac.`);
+        return; // Esce dalla funzione se il file non è valido
+    }
+
     // Se audioContext non è stato creato, lo crea
     try {
         if (audioContext == null) {
