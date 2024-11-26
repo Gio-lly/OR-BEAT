@@ -131,8 +131,10 @@ async function createOnsetDetectorNode() {
 // ---------------------------------------------------------------------------------
 // Funzione per gestire il caricamento del file audio
 onsetDetect = null;
+let sampleRate = null;
+
 async function handleFileUpload(event) {
-    const file = event.target.files[0]; // Ottiene SOLO il primo file caricato !! (Da cambiare?)
+    const file = event.target.files[0]; // Ottiene SOLO il primo file caricato !!
 
     // Se non c'è il file, esci
     if (!file) {
@@ -156,6 +158,11 @@ async function handleFileUpload(event) {
         // Legge e decodifica il file audio
         const arrayBuffer = await file.arrayBuffer(); // array di byte (raw data)
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio
+
+        // Imposta il sample rate del file caricato
+        sampleRate = audioBuffer.sampleRate;
+        console.log(sampleRate)
+        
         const source = audioContext.createBufferSource(); // Viene creato un nodo di sorgente audio
         source.buffer= audioBuffer;
         // Estrai i samples dal primo canale
