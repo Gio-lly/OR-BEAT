@@ -110,10 +110,10 @@ async function createOnsetDetectorNode() {
 
     }
     await audioContext.resume();
-    await audioContext.audioWorklet.addModule('Processors/on-set-detector.js');
+    await audioContext.audioWorklet.addModule('Processors/onsetdetector.js');
 
 
-    return new AudioWorkletNode(audioContext, "on-set-detector");
+    return new AudioWorkletNode(audioContext, "onsetdetector");
 }
 
 onsetDetect = null;
@@ -129,20 +129,20 @@ async function handleFileUpload(event) {
         // Leggi e decodifica il file
         const arrayBuffer = await file.arrayBuffer();
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
+        const source = audioContext.createBufferSource();
+        source.buffer= audioBuffer;
         // Estrai i samples dal primo canale
-        const channelData = audioBuffer.getChannelData(0);
+        //const channelData = audioBuffer.getChannelData(0);
 
         // Crea il nodo OnsetDetector se non esiste
         if (!onsetDetect) {
             onsetDetect = await createOnsetDetectorNode();
         }
+        source.connect(onsetDetect);   
+        source.start();
 
         // Invia i samples al nodo tramite il suo port
-        onsetDetect.port.postMessage({
-            samples: channelData,
-            sampleRate: audioBuffer.sampleRate
-        });
+        
 
 
     } catch (error) {
