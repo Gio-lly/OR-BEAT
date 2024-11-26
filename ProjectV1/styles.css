@@ -1,0 +1,25 @@
+/* Stili per la forma d'onda e la visualizzazione degli onset */
+#waveform {
+  width: 100%;
+  height: 200px;
+  background: #f0f0f0;
+  position: relative;
+}
+
+.onset-line {
+  position: absolute;
+  width: 2px;
+  background-color: blue;
+  height: 100%;
+}
+
+#progress-line {
+  position: absolute;
+  width: 2px;
+  background-color: red;
+  height: 100%;
+}
+
+.controls {
+  margin-top: 10px;
+}
