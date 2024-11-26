@@ -1,25 +1,31 @@
-audioContext = null;
-document.getElementById('continue-btn').disabled = true; // Disabilita il pulsante all'inizio
-
+// Variabili globali
+audioContext = null; // Inizializza audioContext a null (serve per gestire l'audio)
+document.getElementById('continue-btn').disabled = true; // Il pulsante CONTINUA è disabilitato all'inizio
+// ---------------------------------------------------------------------------------
+// Tipi di file audio supportati
 const allowedTypes = ['audio/wav', 'audio/mpeg', 'audio/aac'];
-const dropZone = document.getElementById('welcome');
+const dropZone = document.getElementById('welcome'); // Zona di drop per il file
 const fileInput = document.getElementById('file-input');
 const fileList = document.getElementById('file-list');
 let isValidFileLoaded = false; // Stato per il file valido
 
+// Funzione per visualizzare il nome del File/Files caricato e validarlo
 function displayFileNames(files) {
-    fileList.innerHTML = '';
+    fileList.innerHTML = ''; // Pulisce la lista dei file
     isValidFileLoaded = false; // Resetta lo stato del file valido
 
     for (let file of files) {
         if (!allowedTypes.includes(file.type)) {
+            // Se il file non è valido, mostra un messaggio di errore
             const errorItem = document.createElement('p');
-            errorItem.textContent = `Errore: Il file "${file.name}" non è consentito.`;
+            errorItem.textContent = `Errore: Il file "${file.name}" non è consentito. 
+                                             I file consentiti sono .wav/.mp3/.aac`;
             errorItem.style.color = 'red';
             fileList.appendChild(errorItem);
             continue; // Salta questo file
         }
 
+        // Se il file è valido, aggiunge il nome del file alla lista
         const listItem = document.createElement('p');
         listItem.textContent = `File accettato: ${file.name}`;
         fileList.appendChild(listItem);
@@ -29,30 +35,31 @@ function displayFileNames(files) {
     // Aggiorna lo stato del pulsante Continua
     document.getElementById('continue-btn').disabled = !isValidFileLoaded;
 }
-
+// ---------------------------------------------------------------------------------
 // Evento click sulla drop zone
 dropZone.addEventListener('click', () => {
     fileInput.click(); // Simula il clic sull'input file
 });
 
-// Gestione del file selezionato tramite input
+// Gestione del file selezionato tramite input utente
 fileInput.addEventListener('change', (event) => {
-    const files = event.target.files;
+    const files = event.target.files;  // Ottiene il file messo dall'utente
     displayFileNames(files);
 });
 
 // Drag-and-drop eventi
 dropZone.addEventListener('dragover', (event) => {
-    event.preventDefault();
-    document.getElementById("title").textContent = "DROP!";
-    dropZone.classList.add('dragover');
+    event.preventDefault(); // Impedisce il comportamento di default del browser
+    document.getElementById("title").textContent = "DROP!"; // Modifica il testo della zona di drop
+    dropZone.classList.add('dragover'); // Aggiunge stile alla zona di drop
 });
 
 dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('dragover');
+    dropZone.classList.remove('dragover'); // Rimuove lo stile quando il file esce dalla zona di drop
     document.getElementById("title").textContent = "Benvenuto!";
 });
 
+// Questo Listener è necessario per gestire il drop audio
 dropZone.addEventListener('drop', (event) => {
     event.preventDefault();
     dropZone.classList.remove('dragover');
@@ -61,15 +68,17 @@ dropZone.addEventListener('drop', (event) => {
     displayFileNames(files);
 });
 
-
+// Evento click sul pulsante CONTINUA
 document.getElementById('continue-btn').addEventListener('click', function (event) {
     event.stopPropagation(); // Impedisce la propagazione del click
     if (isValidFileLoaded) {
+        // Se un file/files valido è stato caricato, nasconde la zona di benvenuto e mostra la workstation
         document.getElementById('welcome').style.display = 'none';
         document.getElementById('workstation').style.webkitFilter = 'none';
     }
 });
-
+// ---------------------------------------------------------------------------------
+// Gestione dei preset audio
 const presetBtn = document.getElementById('preset-btn');
 const presetList = document.getElementById('preset-list');
 const presets = [
@@ -84,7 +93,7 @@ presetBtn.addEventListener('click', (event) => {
     presetList.style.display = 'block';
     presetList.innerHTML = ''; // Pulisci l'elenco precedente
 
-    // Crea i pulsanti per ciascun preset
+    // Aggiunge un pulsante per ogni preset
     presets.forEach(preset => {
         const presetItem = document.createElement('button');
         presetItem.textContent = preset.name;
@@ -98,38 +107,45 @@ presetBtn.addEventListener('click', (event) => {
         presetList.appendChild(presetItem);
     });
 });
-
+// _________________________________________________________________________________
+// ---------------------------------------------------------------------------------
+// Funzione per creare un nodo in cui facciamo il rilevamento OnSets
 async function createOnsetDetectorNode() {
     if (!audioContext) {
         try {
-            audioContext = new AudioContext();
+            audioContext = new AudioContext(); // Crea un nuovo AudioContext se non è stato già creato
 
         } catch (e) {
-            return null;
+            console.error("Errore nella creazione dell'AudioContext", e);
+            alert("Impossibile creare un contesto audio. Verifica la compatibilità del tuo browser.");
+            return null; // Se non è possibile creare l'AudioContext, restituisce null
         }
 
     }
-    await audioContext.resume();
-    await audioContext.audioWorklet.addModule('Processors/onsetdetector.js');
+    await audioContext.resume();  // Assicura che l'AudioContext sia in esecuzione
+    await audioContext.audioWorklet.addModule('Processors/onsetdetector.js'); // Aggiunge il modulo di rilevamento degli onset
 
-
+    // Crea e restituisce il nodo di rilevamento degli onset
     return new AudioWorkletNode(audioContext, "onsetdetector");
 }
-
+// ---------------------------------------------------------------------------------
+// Funzione per gestire il caricamento del file audio
 onsetDetect = null;
 async function handleFileUpload(event) {
-    const file = event.target.files[0];
+    const file = event.target.files[0]; // Ottiene SOLO il primo file caricato !! (Da cambiare?)
 
-    if (!file) return;
+    if (!file) return; // Se non c'è nessun file, esce dalla funzione
+    // Se audioContext non è stato creato, lo crea
     try {
         if (audioContext == null) {
             audioContext = new AudioContext();
         }
-        audioContext.resume();
-        // Leggi e decodifica il file
-        const arrayBuffer = await file.arrayBuffer();
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        const source = audioContext.createBufferSource();
+        await audioContext.resume();
+       
+        // Legge e decodifica il file audio
+        const arrayBuffer = await file.arrayBuffer(); // array di byte (raw data)
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio
+        const source = audioContext.createBufferSource(); // Viene creato un nodo di sorgente audio
         source.buffer= audioBuffer;
         // Estrai i samples dal primo canale
         //const channelData = audioBuffer.getChannelData(0);
@@ -138,15 +154,18 @@ async function handleFileUpload(event) {
         if (!onsetDetect) {
             onsetDetect = await createOnsetDetectorNode();
         }
-        source.connect(onsetDetect);   
-        source.start();
+        source.connect(onsetDetect); // Connette la sorgente audio al nodo di rilevamento degli onset
+        // Questo significa che l'audio passerà attraverso il nodo di rilevamento degli onset per essere analizzato
+        source.start(); // Facciamo partire l'audio nel contesto di elaborazione
 
         // Invia i samples al nodo tramite il suo port
         
 
 
     } catch (error) {
-        console.log(error)
+        console.error("Errore nel caricamento del file audio:", error);
     }
 }
+
+// Quando l'utente carica, viene chiamata handleFileUpload
 document.getElementById("file-input").addEventListener('change', handleFileUpload);
