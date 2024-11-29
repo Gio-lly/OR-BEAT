@@ -132,7 +132,7 @@ async function createOnsetDetectorNode() {
 // Funzione per gestire il caricamento del file audio
 onsetDetect = null;
 let sampleRate = null;
-
+const onsetTimestamps = [];
 async function handleFileUpload(event) {
     const file = event.target.files[0]; // Ottiene SOLO il primo file caricato !!
 
@@ -177,7 +177,7 @@ async function handleFileUpload(event) {
         source.start(); // Facciamo partire l'audio nel contesto di elaborazione
 
         onsetDetect.port.onmessage = (event) => {
-            const onsetTimestamps = event.data;
+            onsetTimestamps = event.data;
             console.log('Onset Timestamps:', onsetTimestamps);
             // Puoi ora usare la lista di onset per ulteriori elaborazioni
         };

@@ -8,7 +8,8 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         
         this.previousSpectrum = null;
         this.sampleRate = sampleRate;
-        this.windowSize = 1024;  // Aumentato per una maggiore risoluzione spettrale
+        this.buffer =new Float32Array(1024)
+        this.bufferIndex=0; // Aumentato per una maggiore risoluzione spettrale
         this.hopSize = this.windowSize / 4;  // Campioni da saltare
         this.thresholdMultiplier = 1.5;  // Moltiplicatore per la soglia dinamica
         this.smoothingFactor = 0.9;  // Fattore di smoothing per lo spettro
