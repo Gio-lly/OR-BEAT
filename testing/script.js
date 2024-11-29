@@ -200,20 +200,9 @@ let audioBuffer;
 // Lista degli onset inventati (in secondi)
 const onsetTimesStart = [0, 1.5, 3, 4.2, 6.8, 8.5]; // Modifica i valori per test
 
-fileInput.addEventListener('change', async (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      // Legge il file e lo converte in AudioBuffer
-      const arrayBuffer = await file.arrayBuffer();
-      audioBuffer = await Tone.getContext().rawContext.decodeAudioData(arrayBuffer);
-      console.log('Audio caricato con successo!');
-
+function testonsets(audiobuffer) {
 
     // PULSANTI PER TESTARE GLI ONSETS
-      // Resetta i pulsanti
-      buttonsContainer.innerHTML = '';
-
 
       // Genera i pulsanti per ogni onset
       for (let i = 0; i < onsetTimesStart.length; i++) {
@@ -221,7 +210,7 @@ fileInput.addEventListener('change', async (event) => {
         const endTime = onsetTimesStart[i + 1] || audioBuffer.duration; // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
         createPlayButton(startTime, endTime, i);
       }
-});
+}
 
 // PULSANTI PER TESTARE GLI ONSETS
 function createPlayButton(startTime, endTime, index) {
