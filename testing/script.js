@@ -132,7 +132,7 @@ async function createOnsetDetectorNode() {
 // Funzione per gestire il caricamento del file audio
 onsetDetect = null;
 let sampleRate = null;
-const onsetTimestamps = [];
+var onsetTimestamps = [];
 async function handleFileUpload(event) {
     const file = event.target.files[0]; // Ottiene SOLO il primo file caricato !!
 
@@ -154,7 +154,7 @@ async function handleFileUpload(event) {
             audioContext = new AudioContext();
         }
         await audioContext.resume();
-       
+
         // Legge e decodifica il file audio
         const arrayBuffer = await file.arrayBuffer(); // array di byte (raw data)
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio
@@ -162,9 +162,9 @@ async function handleFileUpload(event) {
         // Imposta il sample rate del file caricato
         sampleRate = audioBuffer.sampleRate;
         console.log(sampleRate)
-        
+
         const source = audioContext.createBufferSource(); // Viene creato un nodo di sorgente audio
-        source.buffer= audioBuffer;
+        source.buffer = audioBuffer;
         // Estrai i samples dal primo canale
         //const channelData = audioBuffer.getChannelData(0);
 
@@ -180,9 +180,10 @@ async function handleFileUpload(event) {
             onsetTimestamps = event.data;
             console.log('Onset Timestamps:', onsetTimestamps);
             // Puoi ora usare la lista di onset per ulteriori elaborazioni
+            testonsets(audioBuffer);
         };
         // Invia i samples al nodo tramite il suo port
-        
+
 
 
     } catch (error) {
@@ -195,43 +196,44 @@ document.getElementById("file-input").addEventListener('change', handleFileUploa
 
 //const fileInput = document.getElementById('audioFile');
 const buttonsContainer = document.getElementById('buttonsContainer');
-let audioBuffer;
 
-// Lista degli onset inventati (in secondi)
-const onsetTimesStart = [0, 1.5, 3, 4.2, 6.8, 8.5]; // Modifica i valori per test
 
-function testonsets(audiobuffer) {
+
+function testonsets(audioBuffer) {
 
     // PULSANTI PER TESTARE GLI ONSETS
 
-      // Genera i pulsanti per ogni onset
-      for (let i = 0; i < onsetTimesStart.length; i++) {
-        const startTime = onsetTimesStart[i];
-        const endTime = onsetTimesStart[i + 1] || audioBuffer.duration; // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
+    // Genera i pulsanti per ogni onset
+    for (let i = 0; i < onsetTimestamps.length; i++) {
+        const startTime = onsetTimestamps[i];
+        const endTime = onsetTimestamps[i + 1] || audioBuffer.duration; // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
         createPlayButton(startTime, endTime, i);
-      }
+
+
+        const button = document.createElement('button');
+        button.textContent = `Onset ${i + 1}: ${startTime}s - ${endTime}s`;
+        button.addEventListener('click', () => {
+            if (!audioBuffer) {
+                alert('Per favore, carica un file audio prima.');
+                return;
+            }
+
+            // Crea una sorgente audio
+            const bufferSource = Tone.getContext().rawContext.createBufferSource();
+            bufferSource.buffer = audioBuffer;
+
+            // Imposta i tempi di inizio e fine
+            const duration = endTime - startTime;
+            bufferSource.connect(Tone.getContext().rawContext.destination);
+            bufferSource.start(0, startTime, duration);
+            console.log(`Riproduzione onset ${i + 1}: ${startTime}s - ${endTime}s`);
+        });
+
+        buttonsContainer.appendChild(button);
+    }
 }
 
 // PULSANTI PER TESTARE GLI ONSETS
-function createPlayButton(startTime, endTime, index) {
-      const button = document.createElement('button');
-      button.textContent = `Onset ${index + 1}: ${startTime}s - ${endTime}s`;
-      button.addEventListener('click', () => {
-        if (!audioBuffer) {
-          alert('Per favore, carica un file audio prima.');
-          return;
-        }
+function createPlayButton(startTime, endTime, index, audioBuffer) {
 
-        // Crea una sorgente audio
-        const bufferSource = Tone.getContext().rawContext.createBufferSource();
-        bufferSource.buffer = audioBuffer;
-
-        // Imposta i tempi di inizio e fine
-        const duration = endTime - startTime;
-        bufferSource.connect(Tone.getContext().rawContext.destination);
-        bufferSource.start(0, startTime, duration);
-        console.log(`Riproduzione onset ${index + 1}: ${startTime}s - ${endTime}s`);
-      });
-
-      buttonsContainer.appendChild(button);
 }
