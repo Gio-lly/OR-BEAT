@@ -187,3 +187,57 @@ async function handleFileUpload(event) {
 
 // Quando l'utente carica, viene chiamata handleFileUpload
 document.getElementById("file-input").addEventListener('change', handleFileUpload);
+
+//const fileInput = document.getElementById('audioFile');
+const buttonsContainer = document.getElementById('buttonsContainer');
+let audioBuffer;
+
+// Lista degli onset inventati (in secondi)
+const onsetTimesStart = [0, 1.5, 3, 4.2, 6.8, 8.5]; // Modifica i valori per test
+
+fileInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // Legge il file e lo converte in AudioBuffer
+      const arrayBuffer = await file.arrayBuffer();
+      audioBuffer = await Tone.getContext().rawContext.decodeAudioData(arrayBuffer);
+      console.log('Audio caricato con successo!');
+
+
+    // PULSANTI PER TESTARE GLI ONSETS
+      // Resetta i pulsanti
+      buttonsContainer.innerHTML = '';
+
+
+      // Genera i pulsanti per ogni onset
+      for (let i = 0; i < onsetTimesStart.length; i++) {
+        const startTime = onsetTimesStart[i];
+        const endTime = onsetTimesStart[i + 1] || audioBuffer.duration; // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
+        createPlayButton(startTime, endTime, i);
+      }
+});
+
+// PULSANTI PER TESTARE GLI ONSETS
+function createPlayButton(startTime, endTime, index) {
+      const button = document.createElement('button');
+      button.textContent = `Onset ${index + 1}: ${startTime}s - ${endTime}s`;
+      button.addEventListener('click', () => {
+        if (!audioBuffer) {
+          alert('Per favore, carica un file audio prima.');
+          return;
+        }
+
+        // Crea una sorgente audio
+        const bufferSource = Tone.getContext().rawContext.createBufferSource();
+        bufferSource.buffer = audioBuffer;
+
+        // Imposta i tempi di inizio e fine
+        const duration = endTime - startTime;
+        bufferSource.connect(Tone.getContext().rawContext.destination);
+        bufferSource.start(0, startTime, duration);
+        console.log(`Riproduzione onset ${index + 1}: ${startTime}s - ${endTime}s`);
+      });
+
+      buttonsContainer.appendChild(button);
+}
