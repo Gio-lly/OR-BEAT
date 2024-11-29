@@ -1,6 +1,5 @@
 
 import { FFT } from './fft.js';
-
 // Codice migliorato dell'AudioWorkletProcessor
 registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
     constructor() {
@@ -18,8 +17,9 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         this.MIN_ONSET_INTERVAL = 0.5;  // 0.5 secondi tra gli onset (intervallo minimo)
     }
 
-    process(inputs, outputs) {
-        const inputChannelData = inputs[0];
+    process(inputList, outputList,parameters) {
+        
+        const inputChannelData = inputList[0];
         
         // Verifica che i dati audio siano presenti
         if (!inputChannelData || inputChannelData.length < 2) {
@@ -29,7 +29,6 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
 
         const leftChannel = inputChannelData[0];
         const rightChannel = inputChannelData[1];
-
         // Calcola gli spettri per entrambi i canali
         const spectrumLeft = this.calculateFFT(leftChannel);
         const spectrumRight = this.calculateFFT(rightChannel);
