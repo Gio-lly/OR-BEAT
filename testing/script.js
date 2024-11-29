@@ -207,7 +207,7 @@ function testonsets(audioBuffer) {
     for (let i = 0; i < onsetTimestamps.length; i++) {
         const startTime = onsetTimestamps[i];
         const endTime = onsetTimestamps[i + 1] || audioBuffer.duration; // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
-        createPlayButton(startTime, endTime, i);
+        
 
 
         const button = document.createElement('button');
