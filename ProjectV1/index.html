@@ -1,21 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- RICORDA:
+ STEP 1: PULLA PER SINCRONIZZARE, non si può pullare se non tutto è committato.
+ STEP 2: FAI LE TUE MODIFICHE
+ STEP 3: COMMITTA LE TUE MODIFICHE(quindi fai add sul coso a sinistra e committa)
+ STEP 4: PULLA (di nuovo, se qualcuno ha pushato nel frattempo, dovrai fare il merge tra i codici,
+  e committare il merge)
+ STEP 5: PUSHA
+ -->
+
+
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Slicer with Onset Detection</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Progetto</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.1/p5.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"> </script>
+    <link href="stile.css" rel="stylesheet" type="text/css">
+    <script src="script.js" charset="UTF-8" defer></script>
 </head>
+
 <body>
-    <h1>Audio Slicer with Onset Detection</h1>
-    <input type="file" id="audioInput" accept="audio/*" />
-    <div id="waveform"></div>
-    <div id="playback">
-        <button id="playButton">Play</button>
-        <button id="stopButton">Stop</button>
+
+    <div class="page modal" id="welcome">
+        <p id="title">Benvenuto!</p>
+
+        <p>Trascina qui il file o clicca per selezionarlo</p>
+        <input type="file" id="file-input" style="display: none;"
+            accept=".mp3,.wav,.aac,audio/wav,audio/mpeg,audio/aac" />
+        
+        <button id="continue-btn" type="submit">Continua</button>
+        <div id="file-list"></div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/tone@next"></script>
-    <script src="https://unpkg.com/wavesurfer.js"></script>
-    <script src="script.js"></script>
+    <div class="page home" id="workstation">
+
+    </div>
+
 </body>
+
 </html>
