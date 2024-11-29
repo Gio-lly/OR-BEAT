@@ -176,6 +176,11 @@ async function handleFileUpload(event) {
         // Questo significa che l'audio passerà attraverso il nodo di rilevamento degli onset per essere analizzato
         source.start(); // Facciamo partire l'audio nel contesto di elaborazione
 
+        onsetDetect.port.onmessage = (event) => {
+            const onsetTimestamps = event.data;
+            console.log('Onset Timestamps:', onsetTimestamps);
+            // Puoi ora usare la lista di onset per ulteriori elaborazioni
+        };
         // Invia i samples al nodo tramite il suo port
         
 
