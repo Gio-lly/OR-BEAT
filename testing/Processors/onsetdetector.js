@@ -15,6 +15,7 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         this.currentSampleIndex = 0;
         this.lastOnsetTime = 0;  // Tempo dell'ultimo onset
         this.MIN_ONSET_INTERVAL = 0.5;  // 0.5 secondi tra gli onset (intervallo minimo)
+        this.onsetTimestamps = [];
     }
 
     process(inputList, outputList,parameters) {
@@ -24,7 +25,9 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         // Verifica che i dati audio siano presenti
         if (!inputChannelData || inputChannelData.length < 2) {
             console.warn("Dati audio insufficienti o mancanti.");
-            return true;  // Ritorna true ma senza fare nulla se i dati sono insufficienti
+            this.port.postMessage(this.onsetTimestamps);
+            this.onsetTimestamps= [];
+            return false;  // Ritorna true ma senza fare nulla se i dati sono insufficienti
         }
 
         const leftChannel = inputChannelData[0];
@@ -40,6 +43,8 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
                 // Calcola il tempo dell'onset
                 const currentTime = this.currentSampleIndex / this.sampleRate;
                 console.log(`Onset detected at ${currentTime.toFixed(3)} seconds`);
+
+                this.onsetTimestamps.push(currentTime);
             }
         }
 
