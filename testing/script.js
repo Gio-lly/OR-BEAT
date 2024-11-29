@@ -232,8 +232,3 @@ function testonsets(audioBuffer) {
         buttonsContainer.appendChild(button);
     }
 }
-
-// PULSANTI PER TESTARE GLI ONSETS
-function createPlayButton(startTime, endTime, index, audioBuffer) {
-
-}
