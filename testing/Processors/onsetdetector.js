@@ -8,8 +8,8 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         
         this.previousSpectrum = null;
         this.sampleRate = sampleRate;
-        this.windowSize=1024; // Aumentato per una maggiore risoluzione spettrale
-        this.hopSize = this.windowSize / 4;  // Campioni da saltare
+        //this.windowSize=1024; // Aumentato per una maggiore risoluzione spettrale
+        //this.hopSize = this.windowSize / 4;  // Campioni da saltare
         this.thresholdMultiplier = 1.5;  // Moltiplicatore per la soglia dinamica
         this.smoothingFactor = 0.9;  // Fattore di smoothing per lo spettro
         this.currentSampleIndex = 0;
@@ -35,7 +35,6 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         // Calcola gli spettri per entrambi i canali
         const spectrumLeft = this.calculateFFT(leftChannel);
         const spectrumRight = this.calculateFFT(rightChannel);
-
         // Confronta gli spettri e rileva gli onset
         if (this.previousSpectrum) {
             // Controlla se c'è un onset nel canale sinistro o destro
@@ -49,7 +48,7 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         }
 
         // Incrementa l'indice del campione
-        this.currentSampleIndex += this.hopSize;
+        this.currentSampleIndex += 128;
 
         // Memorizza lo spettro corrente per il prossimo confronto
         this.previousSpectrum = spectrumLeft;
@@ -75,7 +74,7 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         }
 
         // Calcola una soglia dinamica basata sulla deviazione standard
-        const threshold = this.getDynamicThreshold(currentSpectrum);
+        const threshold = this.getDynamicThreshold(currentSpectrum)*120;
 
         // Verifica se la differenza tra gli spettri supera la soglia dinamica
         if (sumDifference < threshold) {

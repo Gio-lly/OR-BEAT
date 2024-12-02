@@ -158,7 +158,6 @@ async function handleFileUpload(event) {
         // Legge e decodifica il file audio
         const arrayBuffer = await file.arrayBuffer(); // array di byte (raw data)
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio
-
         // Imposta il sample rate del file caricato
         sampleRate = audioBuffer.sampleRate;
         console.log(sampleRate)
