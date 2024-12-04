@@ -84,3 +84,26 @@ button#continue-btn:hover {
     font-size: 18px;
     color: #333333;
 }
+
+#waveform-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#waveform {
+    position: relative;
+    width: 70%; /* Larghezza della waveform */
+    height: 150px;  /* Altezza della waveform */
+    background-color: rgb(237, 201, 207);
+    overflow: hidden;
+}
+
+.onset-bar {
+    position: absolute;
+    top: 0;
+    width: 2px; /* Larghezza della barra */
+    background-color: red; /* Colore della barra */
+    z-index: 10; /* Per essere sopra la waveform */
+}
+

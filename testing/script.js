@@ -202,6 +202,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
                 // Puoi ora usare la lista di onset per ulteriori elaborazioni
                 testonsets(audioBuffer);
                 displayWaveform(file); // Carica la forma d'onda
+                
             };
 
             // Invia i samples al nodo tramite il suo port
@@ -268,4 +269,47 @@ function displayWaveform(file) {
 
     // Carica il file audio in WaveSurfer
     ws.load(fileURL);
+
+    // Una volta che la waveform è caricata, posiziona le barre degli onset
+    ws.on('ready', () => {
+        // Aggiungi le barre per gli onsets
+        addOnsetBars();
+    });
 }
+
+function addOnsetBars() {
+    const waveformContainer = document.querySelector('#waveform'); // Container della waveform
+    const waveformWidth = ws.getWidth(); // Ottiene la larghezza totale della waveform
+    const duration = ws.getDuration(); // Durata totale del file audio
+
+    // Ottieni l'altezza del container della waveform
+    const waveformHeight = waveformContainer.clientHeight;
+
+    // Pulisce eventuali barre precedenti
+    const existingBars = document.querySelectorAll('.onset-bar');
+    existingBars.forEach(bar => bar.remove());
+
+    // Aggiungi una barra per ogni timestamp
+    onsetTimestamps.forEach((timestamp) => {
+        // Calcola la posizione orizzontale per questa barra
+        const positionX = (timestamp / duration) * waveformWidth;
+
+        // Crea un elemento div per la barra verticale
+        const onsetBar = document.createElement('div');
+        onsetBar.classList.add('onset-bar');
+        onsetBar.style.position = 'absolute';
+        onsetBar.style.left = `${positionX}px`;
+        onsetBar.style.top = '0';
+        onsetBar.style.width = '2px'; // Larghezza della barra
+        onsetBar.style.height = `${waveformHeight}px`; // Altezza della barra uguale all'altezza della waveform
+        onsetBar.style.backgroundColor = 'red'; // Colore della barra
+
+        // Aggiungi la barra alla waveform
+        waveformContainer.appendChild(onsetBar);
+    });
+}
+
+// Aggiungere un event listener per il ridimensionamento della finestra
+window.addEventListener('resize', () => {
+    addOnsetBars(); // Ricalcola e ridisegna le barre quando la finestra viene ridimensionata
+});
