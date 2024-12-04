@@ -115,6 +115,18 @@ async function createOnsetDetectorNode() {
     await audioContext.resume();  // Assicura che l'AudioContext sia in esecuzione
     await audioContext.audioWorklet.addModule('Processors/onsetdetector.js'); // Aggiunge il modulo di rilevamento degli onset
 
+    // Gestione dei messaggi dalla AudioWorkletProcessor
+    onsetDetectNode.port.onmessage = (event) => {
+        const { type, progress, onsets } = event.data;
+
+        if (type === 'progress') {
+            updateProgressBar(progress); // Aggiorna la barra di caricamento
+        } else if (type === 'onsets') {
+            console.log("Onsets rilevati:", onsets);
+            testonsets(audioBuffer); // Mostra i pulsanti dei campioni
+        }
+    };
+
     // Crea e restituisce il nodo di rilevamento degli onset
     return new AudioWorkletNode(audioContext, "onsetdetector", {
         processorOptions: {
@@ -131,6 +143,7 @@ var onsetTimestamps = [];
 document.getElementById('continue-btn').addEventListener('click', async function (event) {
     event.stopPropagation(); // Impedisce la propagazione del click
     if (isValidFileLoaded) {
+        createLoadingModal();
         // Se un file/files valido è stato caricato, nasconde la zona di benvenuto e mostra la workstation
         document.getElementById('welcome').style.display = 'none';
         document.getElementById('workstation').style.webkitFilter = 'none';
@@ -161,6 +174,10 @@ document.getElementById('continue-btn').addEventListener('click', async function
             sampleRate = audioBuffer.sampleRate;
             console.log(sampleRate)
 
+            // Calcola la durata totale del file in secondi
+            const totalDuration = audioBuffer.duration;
+            console.log("Durata totale del file audio:", totalDuration);
+
             const source = audioContext.createBufferSource(); // Viene creato un nodo di sorgente audio
             source.buffer = audioBuffer;
             // Estrai i samples dal primo canale
@@ -173,8 +190,16 @@ document.getElementById('continue-btn').addEventListener('click', async function
             
             source.connect(onsetDetect); // Connette la sorgente audio al nodo di rilevamento degli onset
             // Questo significa che l'audio passerà attraverso il nodo di rilevamento degli onset per essere analizzato
+
+            // Passa totalDuration come parametro quando crei il nodo AudioWorkletNode
+            onsetDetect.port.postMessage({
+                type: 'setDuration',
+                totalDuration: totalDuration
+            });
+            
             source.start(); // Facciamo partire l'audio nel contesto di elaborazione
-           
+            let currentProgress = 0;
+
             onsetDetect.port.onmessage = (event) => {
                 onsetTimestamps = event.data;
                 console.log('Onset Timestamps:', onsetTimestamps);
