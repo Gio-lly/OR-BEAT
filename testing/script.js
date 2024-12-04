@@ -174,7 +174,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
             source.connect(onsetDetect); // Connette la sorgente audio al nodo di rilevamento degli onset
             // Questo significa che l'audio passerà attraverso il nodo di rilevamento degli onset per essere analizzato
             source.start(); // Facciamo partire l'audio nel contesto di elaborazione
-
+           
             onsetDetect.port.onmessage = (event) => {
                 onsetTimestamps = event.data;
                 console.log('Onset Timestamps:', onsetTimestamps);
@@ -191,7 +191,6 @@ document.getElementById('continue-btn').addEventListener('click', async function
 
 // Quando l'utente carica, viene chiamata handleFileUpload
 //document.getElementById("file-input").addEventListener('change', handleFileUpload);
-// _________________________________________________________________________________
 // ---------------------------------------------------------------------------------
 //const fileInput = document.getElementById('audioFile');
 const buttonsContainer = document.getElementById('buttonsContainer');
@@ -227,3 +226,6 @@ function testonsets(audioBuffer) {
         buttonsContainer.appendChild(button);
     }
 }
+// _________________________________________________________________________________
+// ---------------------------------------------------------------------------------
+// GESTIONE FORMA D'ONDA
