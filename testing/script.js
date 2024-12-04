@@ -189,7 +189,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
             if (!onsetDetect) {
                 onsetDetect = await createOnsetDetectorNode(); 
             }
-            
+
             source.connect(onsetDetect); // Connette la sorgente audio al nodo di rilevamento degli onset
             // Questo significa che l'audio passerà attraverso il nodo di rilevamento degli onset per essere analizzato
 
@@ -215,8 +215,10 @@ document.getElementById('continue-btn').addEventListener('click', async function
                     removeLoadingModal();
                     // Puoi ora usare la lista di onset per ulteriori elaborazioni
                     testonsets(audioBuffer);
+                    displayWaveform(file); // Carica la forma d'onda
                 }
             };
+
             // Invia i samples al nodo tramite il suo port
 
         } catch (error) {
@@ -330,3 +332,19 @@ function removeLoadingModal() {
         modal.remove();
     }
 }
+
+// Create a WaveSurfer instance
+const ws = WaveSurfer.create({
+    container: '#waveform',
+    waveColor: 'rgb(200, 0, 200)',
+    progressColor: 'rgb(100, 0, 100)',
+    //plugins: [regions]
+})
+
+function displayWaveform(file) {
+    const fileURL = URL.createObjectURL(file);  // Crea un URL per il file (un oggetto URL.createObjectURL())
+
+    // Carica il file audio in WaveSurfer
+    ws.load(fileURL);
+}
+
