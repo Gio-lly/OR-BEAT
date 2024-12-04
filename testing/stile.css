@@ -84,3 +84,8 @@ button#continue-btn:hover {
     font-size: 18px;
     color: #333333;
 }
+
+#progress-bar {
+    transition: width 0.2s ease-in-out; /* Aggiungi una transizione per un effetto fluido */
+    background-color: #4caf50;
+}

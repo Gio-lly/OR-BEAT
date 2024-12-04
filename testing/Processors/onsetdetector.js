@@ -37,7 +37,7 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         // Verifica che i dati audio siano presenti
         if (!inputChannelData || inputChannelData.length < 2) {
             console.warn("Dati audio insufficienti o mancanti.");
-            this.port.postMessage(this.onsetTimestamps);
+            this.port.postMessage({ type: 'onsets', onsets: this.onsetTimestamps});
             this.onsetTimestamps= [];
             return false;  // Ritorna true ma senza fare nulla se i dati sono insufficienti
         }

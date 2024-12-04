@@ -104,16 +104,21 @@ async function createOnsetDetectorNode() {
     if (!audioContext) {
         try {
             audioContext = new AudioContext(); // Crea un nuovo AudioContext se non è stato già creato
-
         } catch (e) {
             console.error("Errore nella creazione dell'AudioContext", e);
             alert("Impossibile creare un contesto audio. Verifica la compatibilità del tuo browser.");
             return null; // Se non è possibile creare l'AudioContext, restituisce null
         }
-
     }
     await audioContext.resume();  // Assicura che l'AudioContext sia in esecuzione
     await audioContext.audioWorklet.addModule('Processors/onsetdetector.js'); // Aggiunge il modulo di rilevamento degli onset
+
+    // Crea il nodo di rilevamento degli onset
+    const onsetDetectNode = new AudioWorkletNode(audioContext, "onsetdetector", {
+        processorOptions: {
+            bufferSize: 256
+        }
+    });
 
     // Gestione dei messaggi dalla AudioWorkletProcessor
     onsetDetectNode.port.onmessage = (event) => {
@@ -127,13 +132,10 @@ async function createOnsetDetectorNode() {
         }
     };
 
-    // Crea e restituisce il nodo di rilevamento degli onset
-    return new AudioWorkletNode(audioContext, "onsetdetector", {
-        processorOptions: {
-            bufferSize: 256
-        }
-    });
+    // Restituisce il nodo di rilevamento degli onset
+    return onsetDetectNode;
 }
+
 // ---------------------------------------------------------------------------------
 // Funzione per gestire il caricamento del file audio solo quando si clicca 'CONTINUA'
 onsetDetect = null;
@@ -201,10 +203,19 @@ document.getElementById('continue-btn').addEventListener('click', async function
             let currentProgress = 0;
 
             onsetDetect.port.onmessage = (event) => {
-                onsetTimestamps = event.data;
-                console.log('Onset Timestamps:', onsetTimestamps);
-                // Puoi ora usare la lista di onset per ulteriori elaborazioni
-                testonsets(audioBuffer);
+                const { type, progress, onsets } = event.data;
+
+                if (type === 'progress') {
+                    // Aggiorna la barra di progresso ogni volta che ricevi il tipo 'progress'
+                    updateProgressBar(progress);
+                } else if (type === 'onsets') {
+                    // Quando il tipo è 'onsets', esegui il trattamento degli onset
+                    console.log('Onset Timestamps:', onsets);
+                    onsetTimestamps= onsets;
+                    removeLoadingModal();
+                    // Puoi ora usare la lista di onset per ulteriori elaborazioni
+                    testonsets(audioBuffer);
+                }
             };
             // Invia i samples al nodo tramite il suo port
 
@@ -303,9 +314,12 @@ function createLoadingModal() {
 
 
 function updateProgressBar(progress) {
+    console.log('UPDATE');
     const progressBar = document.getElementById('progress-bar');
     if (progressBar) {
-        progressBar.style.width = `${progress}%`;
+        window.requestAnimationFrame(() => {
+            progressBar.style.width = `${progress}%`;
+        });
     }
 }
 
