@@ -116,7 +116,11 @@ async function createOnsetDetectorNode() {
     await audioContext.audioWorklet.addModule('Processors/onsetdetector.js'); // Aggiunge il modulo di rilevamento degli onset
 
     // Crea e restituisce il nodo di rilevamento degli onset
-    return new AudioWorkletNode(audioContext, "onsetdetector");
+    return new AudioWorkletNode(audioContext, "onsetdetector", {
+        processorOptions: {
+            bufferSize: 256
+        }
+    });
 }
 // ---------------------------------------------------------------------------------
 // Funzione per gestire il caricamento del file audio solo quando si clicca 'CONTINUA'
@@ -166,7 +170,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
             if (!onsetDetect) {
                 onsetDetect = await createOnsetDetectorNode(); 
             }
-
+            
             source.connect(onsetDetect); // Connette la sorgente audio al nodo di rilevamento degli onset
             // Questo significa che l'audio passerà attraverso il nodo di rilevamento degli onset per essere analizzato
             source.start(); // Facciamo partire l'audio nel contesto di elaborazione

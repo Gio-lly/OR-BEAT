@@ -2,10 +2,13 @@
 import { FFT } from './fft.js';
 // Codice migliorato dell'AudioWorkletProcessor
 registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
-    constructor() {
+    constructor(options) {
         super();
 
-        
+        // Fallback su 128 se non è definito il buffer nelle options
+        this.bufferSize = options.processorOptions?.bufferSize || 128;
+        console.log('Buffer size inside processor:', this.bufferSize);
+
         this.previousSpectrum = null;
         this.sampleRate = sampleRate;
         //this.windowSize=1024; // Aumentato per una maggiore risoluzione spettrale
@@ -32,6 +35,7 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
 
         const leftChannel = inputChannelData[0];
         const rightChannel = inputChannelData[1];
+        
         // Calcola gli spettri per entrambi i canali
         const spectrumLeft = this.calculateFFT(leftChannel);
         const spectrumRight = this.calculateFFT(rightChannel);
@@ -48,7 +52,7 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         }
 
         // Incrementa l'indice del campione
-        this.currentSampleIndex += 128;
+        this.currentSampleIndex += 128; // per ora teniamo 128
 
         // Memorizza lo spettro corrente per il prossimo confronto
         this.previousSpectrum = spectrumLeft;
