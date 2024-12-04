@@ -174,11 +174,11 @@ document.getElementById('continue-btn').addEventListener('click', async function
             const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio
             // Imposta il sample rate del file caricato
             sampleRate = audioBuffer.sampleRate;
-            console.log(sampleRate)
+            console.log("Sample Rate: ", sampleRate)
 
             // Calcola la durata totale del file in secondi
             const totalDuration = audioBuffer.duration;
-            console.log("Durata totale del file audio:", totalDuration);
+            console.log("Durata totale del file audio: ", totalDuration);
 
             const source = audioContext.createBufferSource(); // Viene creato un nodo di sorgente audio
             source.buffer = audioBuffer;
@@ -226,9 +226,6 @@ document.getElementById('continue-btn').addEventListener('click', async function
         }
     }
 });
-
-// Quando l'utente carica, viene chiamata handleFileUpload
-//document.getElementById("file-input").addEventListener('change', handleFileUpload);
 // ---------------------------------------------------------------------------------
 //const fileInput = document.getElementById('audioFile');
 const buttonsContainer = document.getElementById('buttonsContainer');
@@ -240,7 +237,8 @@ function testonsets(audioBuffer) {
     // PULSANTI PER TESTARE GLI ONSETS: genera i pulsanti per ogni onset
     for (let i = 0; i < onsetTimestamps.length; i++) {
         const startTime = onsetTimestamps[i];
-        const endTime = onsetTimestamps[i + 1] || audioBuffer.duration; // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
+        // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
+        const endTime = onsetTimestamps[i + 1] || audioBuffer.duration;
         
         const button = document.createElement('button');
         button.textContent = `Onset ${i + 1}: ${startTime}s - ${endTime}s`;
@@ -267,73 +265,6 @@ function testonsets(audioBuffer) {
 // _________________________________________________________________________________
 // ---------------------------------------------------------------------------------
 // GESTIONE FORMA D'ONDA
-
-function createLoadingModal() {
-    const modal = document.createElement('div');
-    modal.id = 'loading-modal';
-    modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
-    modal.style.width = '100%';
-    modal.style.height = '100%';
-    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-    modal.style.display = 'flex';
-    modal.style.justifyContent = 'center';
-    modal.style.alignItems = 'center';
-    modal.style.zIndex = '1000';
-
-    const modalContent = document.createElement('div');
-    modalContent.style.backgroundColor = '#fff';
-    modalContent.style.padding = '20px';
-    modalContent.style.borderRadius = '10px';
-    modalContent.style.textAlign = 'center';
-    modalContent.style.width = '80%';
-    modalContent.style.maxWidth = '400px';
-
-    const loadingText = document.createElement('p');
-    loadingText.textContent = 'Elaborazione in corso...';
-    modalContent.appendChild(loadingText);
-
-    const progressBarContainer = document.createElement('div');
-    progressBarContainer.style.width = '100%';
-    progressBarContainer.style.height = '20px';
-    progressBarContainer.style.backgroundColor = '#ddd';
-    progressBarContainer.style.borderRadius = '10px';
-    progressBarContainer.style.overflow = 'hidden';
-    progressBarContainer.style.marginTop = '10px';
-
-    const progressBar = document.createElement('div');
-    progressBar.id = 'progress-bar';
-    progressBar.style.width = '0';
-    progressBar.style.height = '100%';
-    progressBar.style.backgroundColor = '#4caf50';
-    progressBarContainer.appendChild(progressBar);
-
-    modalContent.appendChild(progressBarContainer);
-    modal.appendChild(modalContent);
-    document.body.appendChild(modal);
-}
-
-
-function updateProgressBar(progress) {
-    console.log('UPDATE');
-    const progressBar = document.getElementById('progress-bar');
-    if (progressBar) {
-        window.requestAnimationFrame(() => {
-            progressBar.style.width = `${progress}%`;
-        });
-    }
-}
-
-
-function removeLoadingModal() {
-    const modal = document.getElementById('loading-modal');
-    if (modal) {
-        modal.remove();
-    }
-}
-
-// Create a WaveSurfer instance
 const ws = WaveSurfer.create({
     container: '#waveform',
     waveColor: 'rgb(200, 0, 200)',
@@ -347,4 +278,3 @@ function displayWaveform(file) {
     // Carica il file audio in WaveSurfer
     ws.load(fileURL);
 }
-

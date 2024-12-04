@@ -25,7 +25,7 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         this.port.onmessage = (event) => {
             if (event.data.type === 'setDuration') {
                 this.totalDuration = event.data.totalDuration;
-                console.log('Total duration received:', this.totalDuration);
+                //console.log('Total duration received:', this.totalDuration);
             }
         };
     }
