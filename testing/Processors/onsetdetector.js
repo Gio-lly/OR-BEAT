@@ -3,8 +3,9 @@ import { FFT } from './fft.js';
 // Codice migliorato dell'AudioWorkletProcessor
 registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
     constructor(options) {
-        super();
+        super(options);
 
+        this.totalDuration = options.processorOptions.totalDuration || 0; // Otteniamo la totalDuration passata dal main thread
         // Fallback su 128 se non è definito il buffer nelle options
         this.bufferSize = options.processorOptions?.bufferSize || 128;
         console.log('Buffer size inside processor:', this.bufferSize);
@@ -19,6 +20,14 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         this.lastOnsetTime = 0;  // Tempo dell'ultimo onset
         this.MIN_ONSET_INTERVAL = 0.5;  // 0.5 secondi tra gli onset (intervallo minimo)
         this.onsetTimestamps = [];
+
+        // Aggiungi un listener per i messaggi in arrivo dal main thread
+        this.port.onmessage = (event) => {
+            if (event.data.type === 'setDuration') {
+                this.totalDuration = event.data.totalDuration;
+                //console.log('Total duration received:', this.totalDuration);
+            }
+        };
     }
 
     process(inputList, outputList,parameters) {
@@ -28,7 +37,7 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         // Verifica che i dati audio siano presenti
         if (!inputChannelData || inputChannelData.length < 2) {
             console.warn("Dati audio insufficienti o mancanti.");
-            this.port.postMessage(this.onsetTimestamps);
+            this.port.postMessage({ type: 'onsets', onsets: this.onsetTimestamps});
             this.onsetTimestamps= [];
             return false;  // Ritorna true ma senza fare nulla se i dati sono insufficienti
         }
@@ -54,8 +63,18 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
         // Incrementa l'indice del campione
         this.currentSampleIndex += 128; // per ora teniamo 128
 
+
         // Memorizza lo spettro corrente per il prossimo confronto
         this.previousSpectrum = spectrumLeft;
+
+        // Calcola il progresso in percentuale
+        const progress = Math.min(
+            (this.currentSampleIndex / this.sampleRate) / this.totalDuration * 100,
+         100
+         );
+
+        // Invia il progresso e gli onset rilevati
+        this.port.postMessage({ type: 'progress', progress });
 
         return true;
     }

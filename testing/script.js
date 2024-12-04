@@ -104,45 +104,38 @@ async function createOnsetDetectorNode() {
     if (!audioContext) {
         try {
             audioContext = new AudioContext(); // Crea un nuovo AudioContext se non è stato già creato
-
         } catch (e) {
             console.error("Errore nella creazione dell'AudioContext", e);
             alert("Impossibile creare un contesto audio. Verifica la compatibilità del tuo browser.");
             return null; // Se non è possibile creare l'AudioContext, restituisce null
         }
-
     }
     await audioContext.resume();  // Assicura che l'AudioContext sia in esecuzione
     await audioContext.audioWorklet.addModule('Processors/onsetdetector.js'); // Aggiunge il modulo di rilevamento degli onset
 
-    // Crea e restituisce il nodo di rilevamento degli onset
-    return new AudioWorkletNode(audioContext, "onsetdetector", {
+    // Crea il nodo di rilevamento degli onset
+    const onsetDetectNode = new AudioWorkletNode(audioContext, "onsetdetector", {
         processorOptions: {
             bufferSize: 256
         }
     });
-}
-// ---------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------
-// Funzione per creare la waveform
-async function createWave() {
-    if (!audioContext) {
-        try {
-            audioContext = new AudioContext(); // Crea un nuovo AudioContext se non è stato già creato
 
-        } catch (e) {
-            console.error("Errore nella creazione dell'AudioContext", e);
-            alert("Impossibile creare un contesto audio. Verifica la compatibilità del tuo browser.");
-            return null; // Se non è possibile creare l'AudioContext, restituisce null
+    // Gestione dei messaggi dalla AudioWorkletProcessor
+    onsetDetectNode.port.onmessage = (event) => {
+        const { type, progress, onsets } = event.data;
+
+        if (type === 'progress') {
+            updateProgressBar(progress); // Aggiorna la barra di caricamento
+        } else if (type === 'onsets') {
+            console.log("Onsets rilevati:", onsets);
+            testonsets(audioBuffer); // Mostra i pulsanti dei campioni
         }
+    };
 
-    }
-    await audioContext.resume();  // Assicura che l'AudioContext sia in esecuzione
-    await audioContext.audioWorklet.addModule('Processors/wave.js'); // Aggiunge il modulo di rilevamento degli onset
-
-    // Crea e restituisce il nodo della waveform
-    return new AudioWorkletNode(audioContext, "waveform");
+    // Restituisce il nodo di rilevamento degli onset
+    return onsetDetectNode;
 }
+
 // ---------------------------------------------------------------------------------
 // Funzione per gestire il caricamento del file audio solo quando si clicca 'CONTINUA'
 onsetDetect = null;
@@ -152,6 +145,7 @@ var onsetTimestamps = [];
 document.getElementById('continue-btn').addEventListener('click', async function (event) {
     event.stopPropagation(); // Impedisce la propagazione del click
     if (isValidFileLoaded) {
+        createLoadingModal();
         // Se un file/files valido è stato caricato, nasconde la zona di benvenuto e mostra la workstation
         document.getElementById('welcome').style.display = 'none';
         document.getElementById('workstation').style.webkitFilter = 'none';
@@ -180,7 +174,11 @@ document.getElementById('continue-btn').addEventListener('click', async function
             const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio
             // Imposta il sample rate del file caricato
             sampleRate = audioBuffer.sampleRate;
-            console.log(sampleRate)
+            console.log("Sample Rate: ", sampleRate)
+
+            // Calcola la durata totale del file in secondi
+            const totalDuration = audioBuffer.duration;
+            console.log("Durata totale del file audio: ", totalDuration);
 
             const source = audioContext.createBufferSource(); // Viene creato un nodo di sorgente audio
             source.buffer = audioBuffer;
@@ -194,15 +192,31 @@ document.getElementById('continue-btn').addEventListener('click', async function
 
             source.connect(onsetDetect); // Connette la sorgente audio al nodo di rilevamento degli onset
             // Questo significa che l'audio passerà attraverso il nodo di rilevamento degli onset per essere analizzato
+
+            // Passa totalDuration come parametro quando crei il nodo AudioWorkletNode
+            onsetDetect.port.postMessage({
+                type: 'setDuration',
+                totalDuration: totalDuration
+            });
+
             source.start(); // Facciamo partire l'audio nel contesto di elaborazione
-          
+            let currentProgress = 0;
+
             onsetDetect.port.onmessage = (event) => {
-                onsetTimestamps = event.data;
-                console.log('Onset Timestamps:', onsetTimestamps);
-                // Puoi ora usare la lista di onset per ulteriori elaborazioni
-                testonsets(audioBuffer);
-                displayWaveform(file); // Carica la forma d'onda
-                
+                const { type, progress, onsets } = event.data;
+
+                if (type === 'progress') {
+                    // Aggiorna la barra di progresso ogni volta che ricevi il tipo 'progress'
+                    updateProgressBar(progress);
+                } else if (type === 'onsets') {
+                    // Quando il tipo è 'onsets', esegui il trattamento degli onset
+                    console.log('Onset Timestamps:', onsets);
+                    onsetTimestamps= onsets;
+                    removeLoadingModal();
+                    // Puoi ora usare la lista di onset per ulteriori elaborazioni
+                    testonsets(audioBuffer);
+                    displayWaveform(file); // Carica la forma d'onda
+                }
             };
 
             // Invia i samples al nodo tramite il suo port
@@ -212,9 +226,6 @@ document.getElementById('continue-btn').addEventListener('click', async function
         }
     }
 });
-
-// Quando l'utente carica, viene chiamata handleFileUpload
-//document.getElementById("file-input").addEventListener('change', handleFileUpload);
 // ---------------------------------------------------------------------------------
 //const fileInput = document.getElementById('audioFile');
 const buttonsContainer = document.getElementById('buttonsContainer');
@@ -226,7 +237,8 @@ function testonsets(audioBuffer) {
     // PULSANTI PER TESTARE GLI ONSETS: genera i pulsanti per ogni onset
     for (let i = 0; i < onsetTimestamps.length; i++) {
         const startTime = onsetTimestamps[i];
-        const endTime = onsetTimestamps[i + 1] || audioBuffer.duration; // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
+        // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
+        const endTime = onsetTimestamps[i + 1] || audioBuffer.duration;
         
         const button = document.createElement('button');
         button.textContent = `Onset ${i + 1}: ${startTime}s - ${endTime}s`;
@@ -252,11 +264,7 @@ function testonsets(audioBuffer) {
 }
 // _________________________________________________________________________________
 // ---------------------------------------------------------------------------------
-
-// Initialize the Regions plugin
-//const regions = RegionsPlugin.create();
-
-// Create a WaveSurfer instance
+// GESTIONE FORMA D'ONDA
 const ws = WaveSurfer.create({
     container: '#waveform',
     waveColor: 'rgb(200, 0, 200)',
@@ -269,7 +277,7 @@ function displayWaveform(file) {
 
     // Carica il file audio in WaveSurfer
     ws.load(fileURL);
-
+    
     // Una volta che la waveform è caricata, posiziona le barre degli onset
     ws.on('ready', () => {
         // Aggiungi le barre per gli onsets
@@ -313,3 +321,5 @@ function addOnsetBars() {
 window.addEventListener('resize', () => {
     addOnsetBars(); // Ricalcola e ridisegna le barre quando la finestra viene ridimensionata
 });
+
+

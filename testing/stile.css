@@ -107,3 +107,8 @@ button#continue-btn:hover {
     z-index: 10; /* Per essere sopra la waveform */
 }
 
+
+#progress-bar {
+    transition: width 0.2s ease-in-out; /* Aggiungi una transizione per un effetto fluido */
+    background-color: #4caf50;
+}
