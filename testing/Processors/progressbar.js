@@ -1,3 +1,4 @@
+// ######################################## GESTIONE DELLA PROGRESS BAR
 function createLoadingModal() {
     const modal = document.createElement('div');
     modal.id = 'loading-modal';

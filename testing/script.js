@@ -135,7 +135,6 @@ async function createOnsetDetectorNode() {
     // Restituisce il nodo di rilevamento degli onset
     return onsetDetectNode;
 }
-
 // ---------------------------------------------------------------------------------
 // Funzione per gestire il caricamento del file audio solo quando si clicca 'CONTINUA'
 onsetDetect = null;
@@ -214,8 +213,8 @@ document.getElementById('continue-btn').addEventListener('click', async function
                     onsetTimestamps= onsets;
                     removeLoadingModal();
                     // Puoi ora usare la lista di onset per ulteriori elaborazioni
-                    testonsets(audioBuffer);
                     displayWaveform(file); // Carica la forma d'onda
+                    onsetsRegions(audioBuffer);
                 }
             };
 
@@ -226,55 +225,3 @@ document.getElementById('continue-btn').addEventListener('click', async function
         }
     }
 });
-// ---------------------------------------------------------------------------------
-//const fileInput = document.getElementById('audioFile');
-const buttonsContainer = document.getElementById('buttonsContainer');
-
-function testonsets(audioBuffer) {
-    if (!onsetTimestamps || onsetTimestamps.length === 0) {
-        console.error("Nessun onset rilevato."); return; }
-
-    // PULSANTI PER TESTARE GLI ONSETS: genera i pulsanti per ogni onset
-    for (let i = 0; i < onsetTimestamps.length; i++) {
-        const startTime = onsetTimestamps[i];
-        // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
-        const endTime = onsetTimestamps[i + 1] || audioBuffer.duration;
-        
-        const button = document.createElement('button');
-        button.textContent = `Onset ${i + 1}: ${startTime}s - ${endTime}s`;
-        button.addEventListener('click', () => {
-            if (!audioBuffer) {
-                alert('Per favore, carica un file audio prima.');
-                return;
-            }
-
-            // Crea una sorgente audio
-            const bufferSource = Tone.getContext().rawContext.createBufferSource();
-            bufferSource.buffer = audioBuffer;
-
-            // Imposta i tempi di inizio e fine
-            const duration = endTime - startTime;
-            bufferSource.connect(Tone.getContext().rawContext.destination);
-            bufferSource.start(0, startTime, duration);
-            console.log(`Riproduzione onset ${i + 1}: ${startTime}s - ${endTime}s`);
-        });
-
-        buttonsContainer.appendChild(button);
-    }
-}
-// _________________________________________________________________________________
-// ---------------------------------------------------------------------------------
-// GESTIONE FORMA D'ONDA
-const ws = WaveSurfer.create({
-    container: '#waveform',
-    waveColor: 'rgb(200, 0, 200)',
-    progressColor: 'rgb(100, 0, 100)',
-    //plugins: [regions]
-})
-
-function displayWaveform(file) {
-    const fileURL = URL.createObjectURL(file);  // Crea un URL per il file (un oggetto URL.createObjectURL())
-
-    // Carica il file audio in WaveSurfer
-    ws.load(fileURL);
-}

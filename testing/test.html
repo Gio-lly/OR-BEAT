@@ -6,8 +6,7 @@
   e committare il merge)
  STEP 5: PUSHA
  -->
-
-
+ 
 <html>
 
 <head>
@@ -15,9 +14,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.1/p5.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"> </script>
     <script src="https://unpkg.com/wavesurfer.js@7"></script>
+    <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script>
     <link href="stile.css" rel="stylesheet" type="text/css">
     <script src="script.js" charset="UTF-8" defer></script>
     <script src="Processors/progressbar.js" charset="UTF-8" defer></script>
+    <script src="Processors/waveform.js" charset="UTF-8" defer></script>
 </head>
 
 <body>
@@ -40,9 +41,19 @@
         <div id="file-list"></div>
     </div>
     <div class="page home" id="workstation">
-       <div id="buttonsContainer"></div>
        
        <div id="waveform"></div>
+       <div id="waveform-controls" style="display: none;">
+        <button id="stop-btn">Stop</button>
+        <label>
+          <input type="checkbox" checked="${loop}" />
+          Loop regions
+        </label>
+  
+        <label style="margin-left: 2em">
+          Zoom: <input type="range" min="10" max="1000" value="10" />
+        </label>
+       </div>
 
     </div>
 
