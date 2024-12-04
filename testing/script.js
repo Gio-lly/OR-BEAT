@@ -67,16 +67,6 @@ dropZone.addEventListener('drop', (event) => {
     document.getElementById("title").textContent = "Benvenuto!";
     displayFileNames(files);
 });
-
-// Evento click sul pulsante CONTINUA
-document.getElementById('continue-btn').addEventListener('click', function (event) {
-    event.stopPropagation(); // Impedisce la propagazione del click
-    if (isValidFileLoaded) {
-        // Se un file/files valido è stato caricato, nasconde la zona di benvenuto e mostra la workstation
-        document.getElementById('welcome').style.display = 'none';
-        document.getElementById('workstation').style.webkitFilter = 'none';
-    }
-});
 // ---------------------------------------------------------------------------------
 // Gestione dei preset audio
 const presetBtn = document.getElementById('preset-btn');
@@ -129,86 +119,88 @@ async function createOnsetDetectorNode() {
     return new AudioWorkletNode(audioContext, "onsetdetector");
 }
 // ---------------------------------------------------------------------------------
-// Funzione per gestire il caricamento del file audio
+// Funzione per gestire il caricamento del file audio solo quando si clicca 'CONTINUA'
 onsetDetect = null;
 let sampleRate = null;
 var onsetTimestamps = [];
-async function handleFileUpload(event) {
-    const file = event.target.files[0]; // Ottiene SOLO il primo file caricato !!
+// Evento click sul pulsante CONTINUA
+document.getElementById('continue-btn').addEventListener('click', async function (event) {
+    event.stopPropagation(); // Impedisce la propagazione del click
+    if (isValidFileLoaded) {
+        // Se un file/files valido è stato caricato, nasconde la zona di benvenuto e mostra la workstation
+        document.getElementById('welcome').style.display = 'none';
+        document.getElementById('workstation').style.webkitFilter = 'none';
+ 
+        const file = fileInput.files[0]; // Ottiene SOLO il primo file caricato !!
 
-    // Se non c'è il file, esci
-    if (!file) {
-        console.error("Nessun file selezionato.");
-        return; // Esce dalla funzione
-    }
+        // Se non c'è il file, esci
+        if (!file) {
+            console.error("Nessun file selezionato."); return; } // Esce dalla funzione
 
-    // Se il file non è valido, esci
-    if (!allowedTypes.includes(file.type)) {
-        console.error(`Errore: Il file "${file.name}" non è consentito. I file consentiti sono .wav, .mp3, .aac.`);
-        return; // Esce dalla funzione se il file non è valido
-    }
-
-    // Se audioContext non è stato creato, lo crea
-    try {
-        if (audioContext == null) {
-            audioContext = new AudioContext();
+        // Se il file non è valido, esci
+        if (!allowedTypes.includes(file.type)) {
+            console.error(`Errore: Il file "${file.name}" non è consentito. I file consentiti sono .wav, .mp3, .aac.`);
+            return; // Esce dalla funzione se il file non è valido
         }
-        await audioContext.resume();
 
-        // Legge e decodifica il file audio
-        const arrayBuffer = await file.arrayBuffer(); // array di byte (raw data)
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio
-        // Imposta il sample rate del file caricato
-        sampleRate = audioBuffer.sampleRate;
-        console.log(sampleRate)
+        // Se audioContext non è stato creato, lo crea
+        try {
+            if (audioContext == null) {
+                audioContext = new AudioContext();
+            }
+            await audioContext.resume();
 
-        const source = audioContext.createBufferSource(); // Viene creato un nodo di sorgente audio
-        source.buffer = audioBuffer;
-        // Estrai i samples dal primo canale
-        //const channelData = audioBuffer.getChannelData(0);
+            // Legge e decodifica il file audio
+            const arrayBuffer = await file.arrayBuffer(); // array di byte (raw data)
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio
+            // Imposta il sample rate del file caricato
+            sampleRate = audioBuffer.sampleRate;
+            console.log(sampleRate)
 
-        // Crea il nodo OnsetDetector se non esiste
-        if (!onsetDetect) {
-            onsetDetect = await createOnsetDetectorNode();
+            const source = audioContext.createBufferSource(); // Viene creato un nodo di sorgente audio
+            source.buffer = audioBuffer;
+            // Estrai i samples dal primo canale
+            //const channelData = audioBuffer.getChannelData(0);
+
+            // Crea il nodo OnsetDetector se non esiste
+            if (!onsetDetect) {
+                onsetDetect = await createOnsetDetectorNode(); 
+            }
+
+            source.connect(onsetDetect); // Connette la sorgente audio al nodo di rilevamento degli onset
+            // Questo significa che l'audio passerà attraverso il nodo di rilevamento degli onset per essere analizzato
+            source.start(); // Facciamo partire l'audio nel contesto di elaborazione
+
+            onsetDetect.port.onmessage = (event) => {
+                onsetTimestamps = event.data;
+                console.log('Onset Timestamps:', onsetTimestamps);
+                // Puoi ora usare la lista di onset per ulteriori elaborazioni
+                testonsets(audioBuffer);
+            };
+            // Invia i samples al nodo tramite il suo port
+
+        } catch (error) {
+            console.error("Errore nel caricamento del file audio:", error);
         }
-        source.connect(onsetDetect); // Connette la sorgente audio al nodo di rilevamento degli onset
-        // Questo significa che l'audio passerà attraverso il nodo di rilevamento degli onset per essere analizzato
-        source.start(); // Facciamo partire l'audio nel contesto di elaborazione
-
-        onsetDetect.port.onmessage = (event) => {
-            onsetTimestamps = event.data;
-            console.log('Onset Timestamps:', onsetTimestamps);
-            // Puoi ora usare la lista di onset per ulteriori elaborazioni
-            testonsets(audioBuffer);
-        };
-        // Invia i samples al nodo tramite il suo port
-
-
-
-    } catch (error) {
-        console.error("Errore nel caricamento del file audio:", error);
     }
-}
+});
 
 // Quando l'utente carica, viene chiamata handleFileUpload
-document.getElementById("file-input").addEventListener('change', handleFileUpload);
-
+//document.getElementById("file-input").addEventListener('change', handleFileUpload);
+// _________________________________________________________________________________
+// ---------------------------------------------------------------------------------
 //const fileInput = document.getElementById('audioFile');
 const buttonsContainer = document.getElementById('buttonsContainer');
 
-
-
 function testonsets(audioBuffer) {
+    if (!onsetTimestamps || onsetTimestamps.length === 0) {
+        console.error("Nessun onset rilevato."); return; }
 
-    // PULSANTI PER TESTARE GLI ONSETS
-
-    // Genera i pulsanti per ogni onset
+    // PULSANTI PER TESTARE GLI ONSETS: genera i pulsanti per ogni onset
     for (let i = 0; i < onsetTimestamps.length; i++) {
         const startTime = onsetTimestamps[i];
         const endTime = onsetTimestamps[i + 1] || audioBuffer.duration; // Fine dell'ultimo onset oppure durata totale nel caso sia l'ultimo onset
         
-
-
         const button = document.createElement('button');
         button.textContent = `Onset ${i + 1}: ${startTime}s - ${endTime}s`;
         button.addEventListener('click', () => {
