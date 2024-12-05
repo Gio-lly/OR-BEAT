@@ -43,7 +43,7 @@ dropZone.addEventListener('click', () => {
 // Gestione del file selezionato tramite input utente
 fileInput.addEventListener('change', (event) => {
     const fileUtente = event.target.files[0]; // Ottiene il file caricato
-    selectedFiles.push(fileUtente);
+    selectedFiles.unshift(fileUtente);
     displayFileNames(fileUtente);
 });
 
@@ -64,7 +64,7 @@ dropZone.addEventListener('drop', (event) => {
     event.preventDefault();
     dropZone.classList.remove('dragover');
     const files = event.dataTransfer.files; // File trascinati
-    selectedFiles.push(files[0]);
+    selectedFiles.unshift(files[0]);
     document.getElementById("title").textContent = "Benvenuto!";
     displayFileNames(files[0]);
 });
@@ -91,7 +91,7 @@ presetBtn.addEventListener('click', (event) => {
         presetItem.addEventListener('click', (event) => {
             event.stopPropagation();
 
-            selectedFiles.push({file: preset.file, type: preset.type });
+            selectedFiles.unshift({file: preset.file, type: preset.type });
             // Mostra il file selezionato nell'elenco file
             fileList.innerHTML = `<p>Preset selezionato: ${preset.file}</p>`;
             isValidFileLoaded = true; // Imposta lo stato su vero
