@@ -1,5 +1,7 @@
 let angle = 0; // Angolo iniziale
 let ringSegments = []; // Array per memorizzare le suddivisioni
+let rotationSpeed = 2; // Velocità di rotazione iniziale
+let isRunning = false; // Stato della rotazione della barra
 
 function setup() {
   createCanvas(400, 400);
@@ -7,9 +9,11 @@ function setup() {
 
   // Configura gli anelli
   ringSegments = [
-    { diameter: 300, totalSegments: 3, gap: 10, rotationOffset: -90 },
-    { diameter: 200, totalSegments: 5, gap: 10, rotationOffset: -90 }
+    { diameter: 300, totalSegments: 3, gap: 10, rotationOffset: 0 },
+    { diameter: 200, totalSegments: 5, gap: 10, rotationOffset: 0 }
   ];
+
+  
 }
 
 function draw() {
@@ -29,10 +33,12 @@ function draw() {
   line(0, 0, 150, 0); // Disegna la barra
   pop();
 
-  // Aggiorna l'angolo per creare il movimento
-  angle += 2; // Velocità della rotazione
-  if (angle >= 360) {
-    angle = 0; // Resetta l'angolo dopo un giro completo
+  // Aggiorna l'angolo per creare il movimento se la rotazione è attiva
+  if (isRunning) {
+    angle += rotationSpeed; // Velocità della rotazione
+    if (angle >= 360) {
+      angle = 0; // Resetta l'angolo dopo un giro completo
+    }
   }
 }
 
@@ -53,6 +59,7 @@ function drawRing(diameter, totalSegments, gap, rotationOffset) {
     // Imposta il colore del segmento
     if (highlight) {
       stroke(255, 255, 100); // Colore evidenziato
+      //console.log(`Suono su parte ${i + 1}`); // Log del segmento attivo
     } else {
       stroke(100 + i * 50, 150, 255); // Colore normale
     }
@@ -60,4 +67,20 @@ function drawRing(diameter, totalSegments, gap, rotationOffset) {
     // Disegna la sezione dell'anello
     arc(0, 0, diameter, diameter, start, end);
   }
+}
+
+// Funzione per avviare la rotazione
+function startRotation() {
+  isRunning = true;
+}
+
+// Funzione per mettere in pausa la rotazione
+function pauseRotation() {
+  isRunning = false;
+}
+
+// Funzione per fermare e resettare la rotazione
+function stopRotation() {
+  isRunning = false;
+  angle = 0; // Resetta l'angolo
 }

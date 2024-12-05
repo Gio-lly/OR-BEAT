@@ -24,6 +24,31 @@ function displayWaveform(file) {
          // Creiamo il canvas p5 all'interno del div #waveform-container
          let p5Canvas = createCanvas(400, 400);
          p5Canvas.parent('canvas-container'); // Collegalo al contenitore della forma d'onda
+         // Crea i pulsanti per il controllo della rotazione
+        let startButton = createButton('Avvia');
+        startButton.position(10, height + 10);
+        startButton.size(50, 50);
+        startButton.style('border-radius', '50%');
+        startButton.mousePressed(startRotation);
+
+        let pauseButton = createButton('Pausa');
+        pauseButton.position(70, height + 10);
+        pauseButton.size(50, 50);
+        pauseButton.style('border-radius', '50%');
+        pauseButton.mousePressed(pauseRotation);
+
+        let stopButton = createButton('Ferma');
+        stopButton.position(130, height + 10);
+        stopButton.size(50, 50);
+        stopButton.style('border-radius', '50%');
+        stopButton.mousePressed(stopRotation);
+
+        // Crea la barra di controllo della velocità
+        let speedSlider = createSlider(0, 10, 2, 0.1);
+        speedSlider.position(40, height + 60);
+        speedSlider.input(() => {
+          rotationSpeed = speedSlider.value();
+  });
     });
 }
 
