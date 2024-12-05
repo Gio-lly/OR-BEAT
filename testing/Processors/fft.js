@@ -1,3 +1,4 @@
+// ######################################## GESTIONE DELLA FFT
 export function FFT(signal) {
     const n = signal.length;
     if (n === 0) {

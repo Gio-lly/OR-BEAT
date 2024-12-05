@@ -21,10 +21,11 @@ function displayWaveform(file) {
     ws.on('ready', function() {
         document.getElementById('waveform-controls').style.display = 'block';
 
-         // Creiamo il canvas p5 all'interno del div #waveform-container
-         let p5Canvas = createCanvas(400, 400);
-         p5Canvas.parent('canvas-container'); // Collegalo al contenitore della forma d'onda
-         // Crea i pulsanti per il controllo della rotazione
+        // Creiamo il canvas p5 all'interno del div #waveform-container
+        let p5Canvas = createCanvas(400, 400);
+        p5Canvas.parent('canvas-container'); // Collegalo al contenitore della forma d'onda
+        
+        // Crea i pulsanti per il controllo della rotazione
         let startButton = createButton('Avvia');
         startButton.position(10, height + 10);
         startButton.size(50, 50);
@@ -46,9 +47,7 @@ function displayWaveform(file) {
         // Crea la barra di controllo della velocità
         let speedSlider = createSlider(0, 10, 2, 0.1);
         speedSlider.position(40, height + 60);
-        speedSlider.input(() => {
-          rotationSpeed = speedSlider.value();
-  });
+        speedSlider.input(() => {rotationSpeed = speedSlider.value();});
     });
 }
 
@@ -104,7 +103,7 @@ ws.once('decode', () => {
 let loop = true;
 let activeRegion = null;
 // Toggle looping with a checkbox
-document.querySelector('input[type="checkbox"]').onclick = (event) => {
+document.getElementById("check").onclick = (event) => {
   loop = event.target.checked;
 };
 
@@ -116,15 +115,14 @@ regions.on('region-clicked', (region, event) => {
 });
 
 regions.on('region-in', (region) => {
-  if(!loop){
-    // Se il loop non è attivo, aggiorniamo la regione attiva
+  // Se il loop non è attivo, aggiorniamo la regione attiva
+  if (!loop && activeRegion !== region) {
     activeRegion = region;
   }
 });
 
 regions.on('region-out', (region) => {
-  //console.log('region-out', region);
-  if (loop && activeRegion === region) {
+  if (loop && activeRegion===region) {
     region.play();  // Riproduce la regione se il loop è abilitato
   } else {
       activeRegion = null;  // Se il loop non è abilitato, resetta l'activeRegion

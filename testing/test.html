@@ -14,8 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.2/p5.js"> </script>
     <!--script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/addons/p5.sound.min.js"></script-->
     <script src="http://unpkg.com/tone@latest"></script>
-    <script src="https://unpkg.com/wavesurfer.js@7"></script>
-    <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script>
+    <script src="https://unpkg.com/wavesurfer.js@latest"></script>
+    <script src="https://unpkg.com/wavesurfer.js@latest/dist/plugins/regions.min.js"></script>
     <link href="stile.css" rel="stylesheet" type="text/css">
     <script src="script.js" charset="UTF-8" defer></script>
     <script src="Processors/progressbar.js" charset="UTF-8" defer></script>
@@ -48,7 +48,7 @@
        <div id="waveform-controls" style="display: none;">
         <button id="stop-btn">Stop</button>
         <label>
-          <input type="checkbox" checked="${loop}" />
+          <input id="check" type="checkbox" checked="${loop}" />
           Loop regions
         </label>
   

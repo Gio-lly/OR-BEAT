@@ -223,15 +223,13 @@ document.getElementById('continue-btn').addEventListener('click', async function
                 } else if (type === 'onsets') {
                     // Quando il tipo è 'onsets', esegui il trattamento degli onset
                     console.log('Onset Timestamps:', onsets);
-                    onsetTimestamps= onsets;
+                    onsetTimestamps = onsets;
                     removeLoadingModal();
                     // Puoi ora usare la lista di onset per ulteriori elaborazioni
                     displayWaveform(file); // Carica la forma d'onda
                     onsetsRegions(audioBuffer);
                 }
             };
-
-            // Invia i samples al nodo tramite il suo port
 
         } catch (error) {
             console.error("Errore nel caricamento del file audio:", error);

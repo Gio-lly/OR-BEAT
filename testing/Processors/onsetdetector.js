@@ -1,4 +1,4 @@
-
+// ######################################## GESTIONE DELL' ONSETDETECTOR
 import { FFT } from './fft.js';
 // Codice migliorato dell'AudioWorkletProcessor
 registerProcessor('onsetdetector', class extends AudioWorkletProcessor {

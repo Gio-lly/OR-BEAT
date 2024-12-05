@@ -1,3 +1,4 @@
+// ######################################## GESTIONE DELLA DRUM MACHINE IN p5
 let angle = 0; // Angolo iniziale
 let ringSegments = []; // Array per memorizzare le suddivisioni
 let rotationSpeed = 2; // Velocità di rotazione iniziale
@@ -12,8 +13,6 @@ function setup() {
     { diameter: 300, totalSegments: 3, gap: 10, rotationOffset: 0 },
     { diameter: 200, totalSegments: 5, gap: 10, rotationOffset: 0 }
   ];
-
-  
 }
 
 function draw() {
