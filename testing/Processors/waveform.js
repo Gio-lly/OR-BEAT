@@ -27,6 +27,9 @@ function onsetsRegions(audioBuffer) {
     if (!onsetTimestamps || onsetTimestamps.length === 0) {
         console.error("Nessun onset rilevato."); return; }
     
+    regions.clearRegions();
+    regions.regionsContainer.innerHTML = "";
+
     // Crea la prima regione dal punto 0 al primo onset, sulla forma d'onda
     ws.on('decode', () => { regions.addRegion({
             start: 0,      // Tempo di inizio
@@ -84,19 +87,19 @@ regions.on('region-clicked', (region, event) => {
 });
 
 regions.on('region-in', (region) => {
-  //console.log('region-in', region);
-  activeRegion = region;
+  if(!loop){
+    // Se il loop non è attivo, aggiorniamo la regione attiva
+    activeRegion = region;
+  }
 });
 
 regions.on('region-out', (region) => {
   //console.log('region-out', region);
-  if (activeRegion === region) {
-    if (loop) {
-      region.play();  // Riproduce la regione se il loop è abilitato
-    } else {
+  if (loop && activeRegion === region) {
+    region.play();  // Riproduce la regione se il loop è abilitato
+  } else {
       activeRegion = null;  // Se il loop non è abilitato, resetta l'activeRegion
     }
-  }
 });
 
 // Reset the active region when the user clicks anywhere in the waveform
