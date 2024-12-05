@@ -64,9 +64,9 @@ dropZone.addEventListener('drop', (event) => {
     event.preventDefault();
     dropZone.classList.remove('dragover');
     const files = event.dataTransfer.files; // File trascinati
-    const fileU = files[0]; // Prendo il primo
+    selectedFiles.push(files[0]);
     document.getElementById("title").textContent = "Benvenuto!";
-    displayFileNames(fileU);
+    displayFileNames(files[0]);
 });
 // ---------------------------------------------------------------------------------
 // Gestione dei preset audio
@@ -91,15 +91,11 @@ presetBtn.addEventListener('click', (event) => {
         presetItem.addEventListener('click', (event) => {
             event.stopPropagation();
 
-            if (selectedFiles.length <= 2) {
-                selectedFiles.push({file: preset.file, type: preset.type });
-                // Mostra il file selezionato nell'elenco file
-                fileList.innerHTML = `<p>Preset selezionato: ${preset.file}</p>`;
-                isValidFileLoaded = true; // Imposta lo stato su vero
-                document.getElementById('continue-btn').disabled = false;
-            } else {
-                alert("Puoi selezionare al massimo due elementi.");
-            }
+            selectedFiles.push({file: preset.file, type: preset.type });
+            // Mostra il file selezionato nell'elenco file
+            fileList.innerHTML = `<p>Preset selezionato: ${preset.file}</p>`;
+            isValidFileLoaded = true; // Imposta lo stato su vero
+            document.getElementById('continue-btn').disabled = false;
         });
         presetList.appendChild(presetItem);
     });
