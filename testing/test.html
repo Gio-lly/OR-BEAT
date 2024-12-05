@@ -11,14 +11,16 @@
 
 <head>
     <title>Progetto</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.1/p5.js"> </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.2/p5.js"> </script>
+    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/addons/p5.sound.min.js"></script-->
+    <script src="http://unpkg.com/tone@latest"></script>
     <script src="https://unpkg.com/wavesurfer.js@7"></script>
     <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script>
     <link href="stile.css" rel="stylesheet" type="text/css">
     <script src="script.js" charset="UTF-8" defer></script>
     <script src="Processors/progressbar.js" charset="UTF-8" defer></script>
     <script src="Processors/waveform.js" charset="UTF-8" defer></script>
+    <script src="Processors/drumP5.js" charset="UTF-8" defer></script>
 </head>
 
 <body>
@@ -54,6 +56,9 @@
           Zoom: <input type="range" min="10" max="1000" value="10" />
         </label>
        </div>
+       <br>
+       <br>
+       <div id="canvas-container"></div>
 
     </div>
 

@@ -20,6 +20,10 @@ function displayWaveform(file) {
     // Mostra la sezione contenente la checkbox e lo zoom
     ws.on('ready', function() {
         document.getElementById('waveform-controls').style.display = 'block';
+
+         // Creiamo il canvas p5 all'interno del div #waveform-container
+         let p5Canvas = createCanvas(400, 400);
+         p5Canvas.parent('canvas-container'); // Collegalo al contenitore della forma d'onda
     });
 }
 
