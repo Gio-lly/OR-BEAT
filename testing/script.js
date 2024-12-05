@@ -1,6 +1,11 @@
 // Variabili globali
 audioContext = null; // Inizializza audioContext a null (serve per gestire l'audio)
 document.getElementById('continue-btn').disabled = true; // Il pulsante CONTINUA è disabilitato all'inizio
+// Controlla se il browser supporta AudioContext
+if (!window.AudioContext) {
+    alert("Il tuo browser non supporta le funzionalità audio necessarie.");
+    document.body.innerHTML = '';
+}
 // ---------------------------------------------------------------------------------
 // Tipi di file audio supportati
 const allowedTypes = ['audio/wav', 'audio/mpeg', 'audio/aac'];
@@ -12,27 +17,22 @@ let selectedFiles = [];
 
 // Funzione per visualizzare il nome del File/Files caricato e validarlo
 function displayFileNames(fileUtente) {
-    fileList.innerHTML = ''; // Pulisce la lista dei file
     isValidFileLoaded = false; // Resetta lo stato del file valido
+    let content = '';
 
     if (!allowedTypes.includes(fileUtente.type)) {
         // Se il file non è valido, mostra un messaggio di errore
-        const errorItem = document.createElement('p');
-        errorItem.textContent = `Errore: Il file "${fileUtente.name}" non è consentito. 
-                                         I file consentiti sono .wav/.mp3/.aac`;
-        errorItem.style.color = 'red';
-        fileList.appendChild(errorItem);
-        return; // Esci
+        content = `<p style="color: red;">Errore: Il file "${fileUtente.name}" non è consentito. 
+                   I file consentiti sono .wav/.mp3/.aac</p>`;
+    } else {
+        // Se il file è valido, aggiunge il nome del file alla lista
+        content = `<p>File accettato: ${fileUtente.name}</p>`;
+        isValidFileLoaded = true; // Imposta lo stato su vero
+        // Aggiorna lo stato del pulsante Continua
+        document.getElementById('continue-btn').disabled = !isValidFileLoaded;
     }
-
-    // Se il file è valido, aggiunge il nome del file alla lista
-    const listItem = document.createElement('p');
-    listItem.textContent = `File accettato: ${fileUtente.name}`;
-    fileList.appendChild(listItem);
-    isValidFileLoaded = true; // Imposta lo stato su vero
-
-    // Aggiorna lo stato del pulsante Continua
-    document.getElementById('continue-btn').disabled = !isValidFileLoaded;
+    // Una sola operazione DOM
+    fileList.innerHTML = content;
 }
 // ---------------------------------------------------------------------------------
 // Evento click sulla drop zone
@@ -93,7 +93,7 @@ presetBtn.addEventListener('click', (event) => {
 
             selectedFiles.unshift({file: preset.file, type: preset.type });
             // Mostra il file selezionato nell'elenco file
-            fileList.innerHTML = `<p>Preset selezionato: ${preset.file}</p>`;
+            fileList.innerHTML = `<p>Preset selezionato: ${preset.file.replace('Assets/', '')}</p>`;
             isValidFileLoaded = true; // Imposta lo stato su vero
             document.getElementById('continue-btn').disabled = false;
         });
@@ -167,10 +167,17 @@ document.getElementById('continue-btn').addEventListener('click', async function
         }
 
         if (typeof fileOrPreset.file === 'string') { // File proveniente dal percorso del preset
-            // Crea un oggetto File
-            file = await fetch(fileOrPreset.file) 
-                .then(response => response.blob())
-                .then(blob => new File([blob], fileOrPreset.file.split('/').pop(), { type: fileOrPreset.type }));
+            try {
+                const response = await fetch(fileOrPreset.file);
+                if (!response.ok) {
+                    throw new Error(`Errore nel caricamento del preset: ${response.statusText}`);
+                }
+                const blob = await response.blob();
+                file = new File([blob], fileOrPreset.file.split('/').pop(), { type: fileOrPreset.type });
+            } catch (error) {
+                console.error(error.message);
+                alert('Errore nel caricamento del preset audio.');
+            }
         } else if (fileOrPreset instanceof File) {
             // Se è un file caricato dall'utente, lo usiamo
             file = fileOrPreset;
