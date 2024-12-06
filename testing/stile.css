@@ -14,7 +14,7 @@ body {
 
 #workstation {
     display: block; /* Nascondi la workstation all'inizio */
-    background-color: #cf8f8f;
+    background-color: #1e1e1e;
     color: white;
     text-align: center;
     font-size: 20px;
