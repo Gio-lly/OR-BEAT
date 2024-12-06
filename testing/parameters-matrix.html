@@ -1,0 +1,208 @@
+<!--CODICE DA INTEGRARE NEL CODICE PRINCIPALE-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrice con Dropdown</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #1f1f1f;
+        }
+
+        .remove-btn {
+            color: red;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .add-row-btn {
+            width: 100%;
+            background-color: #33FF57; /* Darker green */
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .color-box {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+        }
+
+        select {
+            border: 1px solid #555;
+            padding: 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-shadow: 0px 0px 1px #000;
+            border-radius: 3px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <table id="matrixTable">
+        <thead>
+            <tr>
+                <th>Circle</th>
+                <th>Sample</th>
+                <th>Steps</th>
+                <th>Density</th>
+                <th>Phase</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+            <tr id="addRowButtonRow">
+                <td colspan="6"><button class="add-row-btn">+</button></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <script>
+        const colors = ["#FF5733", "#005f30", "#3357FF", "#F1C40F", "#8E44AD", "#1ABC9C", "#E74C3C", "#2C3E50"];
+        let usedColors = new Set();
+
+        // Function to get the next available color
+        function getNextColor() {
+            for (const color of colors) {
+                if (!usedColors.has(color)) {
+                    usedColors.add(color);
+                    return color;
+                }
+            }
+            return null; // In case all colors are used
+        }
+
+        // Function to release a color when a row is removed
+        function releaseColor(color) {
+            usedColors.delete(color);
+        }
+
+        // Function to populate dropdown options based on selected steps
+        function populateDropdowns(row, steps) {
+            const densityDropdown = row.querySelector('.density-dropdown');
+            const phaseDropdown = row.querySelector('.phase-dropdown');
+
+            // Clear previous options
+            densityDropdown.innerHTML = '';
+            phaseDropdown.innerHTML = '';
+
+            // Populate Density dropdown
+            for (let i = 0; i <= 1; i += 1 / steps) {
+                const option = document.createElement('option');
+                option.value = (i * 100).toFixed(0); // Convert to percentage
+                option.textContent = `${(i * 100).toFixed(0)}%`;
+                densityDropdown.appendChild(option);
+            }
+
+            // Populate Phase dropdown
+            for (let i = 0; i < steps; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                phaseDropdown.appendChild(option);
+            }
+        }
+
+        // Function to handle steps change
+        function handleStepsChange(event) {
+            const row = event.target.closest('tr');
+            const steps = parseInt(event.target.value, 10);
+            if (!isNaN(steps)) {
+                populateDropdowns(row, steps);
+            }
+        }
+
+        // Add a new row
+        function addRow() {
+            const tableBody = document.querySelector('#matrixTable tbody');
+            const newRow = document.createElement('tr');
+
+            const color = getNextColor();
+            if (!color) {
+                alert('No available colors for new rows.');
+                return;
+            }
+
+            newRow.innerHTML = `
+                <td><div class="color-box" style="background-color: ${color};"></div></td>
+                <td>Drop the sample here!</td>
+                <td>
+                    <select class="steps-dropdown" style="background-color: ${color};">
+                        ${Array.from({ length: 15 }, (_, i) => `<option value="${i + 2}">${i + 2}</option>`).join('')}
+                    </select>
+                </td>
+                <td>
+                    <select class="density-dropdown" style="background-color: ${color};"></select>
+                </td>
+                <td>
+                    <select class="phase-dropdown" style="background-color: ${color};"></select>
+                </td>
+                <td><button class="remove-btn">x</button></td>
+            `;
+
+            // Populate the dropdowns initially with default steps value
+            const stepsDropdown = newRow.querySelector('.steps-dropdown');
+            const defaultSteps = parseInt(stepsDropdown.value, 10);
+            populateDropdowns(newRow, defaultSteps);
+
+            // Add event listener for steps change
+            stepsDropdown.addEventListener('change', handleStepsChange);
+
+            // Add remove button functionality
+            newRow.querySelector('.remove-btn').addEventListener('click', () => {
+                releaseColor(color);
+                newRow.remove();
+                toggleAddButtonVisibility();
+            });
+
+            tableBody.appendChild(newRow);
+            toggleAddButtonVisibility();
+        }
+
+        // Function to toggle visibility of the add row button
+        function toggleAddButtonVisibility() {
+            const tableBody = document.querySelector('#matrixTable tbody');
+            const addRowButtonRow = document.querySelector('#addRowButtonRow');
+            if (tableBody.children.length >= 6) {
+                addRowButtonRow.classList.add('hidden');
+            } else {
+                addRowButtonRow.classList.remove('hidden');
+            }
+        }
+
+        // Initialize table with one row on load
+        document.querySelector('.add-row-btn').addEventListener('click', addRow);
+        addRow(); // Add initial row
+    </script>
+</body>
+</html>
