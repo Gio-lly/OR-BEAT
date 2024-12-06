@@ -19,8 +19,7 @@
     <link href="stile.css" rel="stylesheet" type="text/css">
     <script src="script.js" charset="UTF-8" defer></script>
     <script src="Processors/progressbar.js" charset="UTF-8" defer></script>
-    <script src="Processors/waveform.js" charset="UTF-8" defer></script>
-    <script src="Processors/drumP5.js" charset="UTF-8" defer></script>
+    <script src="Processors/display.js" charset="UTF-8" defer></script>
 </head>
 
 <body>
@@ -47,15 +46,13 @@
        <div id="waveform"></div>
        <div id="waveform-controls" style="display: none;">
         <button id="stop-btn">Stop</button>
-        <label>
-          <input id="check" type="checkbox" checked="${loop}" />
-          Loop regions
-        </label>
   
         <label style="margin-left: 2em">
           Zoom: <input type="range" min="10" max="1000" value="10" />
         </label>
        </div>
+
+
        <br>
        <br>
        <div id="canvas-container"></div>
