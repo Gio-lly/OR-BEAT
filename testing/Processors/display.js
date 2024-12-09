@@ -1,14 +1,17 @@
 // ######################################## GESTIONE DELLA FORMA D'ONDA
 const regions = WaveSurfer.Regions.create()
 const regionStartTimes = {};
+const regionEndTimes = {};
 // Give regions a random color when they are created
 const random = (min, max) => Math.random() * (max - min) + min
 const randomColor = () => `rgba(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)}, 0.5)`
 
 const ws = WaveSurfer.create({
     container: '#waveform',
-    waveColor: 'rgb(200, 0, 200)',
-    progressColor: 'rgb(100, 0, 100)',
+    waveColor: '#dd5e98',
+    progressColor: '#ff4e00',
+    cursorColor: '#ddd5e9',
+    cursorWidth: 2,
     plugins: [regions]
 })
 
@@ -46,6 +49,7 @@ function onsetsRegions(audioBuffer,onsetTimestamps) {
             maxLength: onsetTimestamps[0]
         });
         regionStartTimes[firstRegion.id] = 0;
+        regionEndTimes[firstRegion.id] = onsetTimestamps[0];
     });
 
     // Crea una regione per ogni onset rilevato
@@ -64,24 +68,33 @@ function onsetsRegions(audioBuffer,onsetTimestamps) {
                 maxLength: endTime-startTime
             });
             regionStartTimes[newRegion.id] = startTime;
+            regionEndTimes[newRegion.id] = endTime;
         });
     }
-    console.log(regions.getRegions(), regionStartTimes)
+    console.log(regions.getRegions(), regionStartTimes, regionEndTimes)
 }
 
 // NO OVERLAPPING REGIONS
 regions.on('region-updated', (region) => {
   const originalStartTime = regionStartTimes[region.id];
+  const originalEndTime = regionEndTimes[region.id];
   const newStartTime = region.start;
+  const newEndTime = region.end;
 
   if (newStartTime < originalStartTime) {
       console.warn("Non è possibile ridimensionare la regione a un tempo di inizio più piccolo di quello originale.");
-      
+      // Show a UI warning or message
+      alert("La regione non può essere ridimensionata a un tempo di inizio precedente!");
       // Revert the start time back to the original one
       region.setOptions({ start: originalStartTime });
+  }
 
-      // Optionally, show a UI warning or message
-      alert("La regione non può essere ridimensionata a un tempo di inizio precedente.");
+  if (newEndTime > originalEndTime) {
+    console.warn("Non è possibile ridimensionare la regione a un tempo di fine più grande di quello originale.");
+    // Show a UI warning or message
+    alert("La regione non può essere ridimensionata a un tempo di fine successivo!");
+    // Revert the start time back to the original one
+    region.setOptions({ end: originalEndTime });
   }
 });
 
@@ -100,7 +113,7 @@ ws.once('decode', () => {
 
 regions.on('region-clicked', (region, event) => {
     event.stopPropagation(); // Impedisce il click sulla forma d'onda
-    region.play()  // Avvia la riproduzione della regione
+    region.play(region.start, region.end)  // Avvia la riproduzione della regione
     region.setOptions({ color: randomColor() });  // Cambia il colore della regione
 });
 

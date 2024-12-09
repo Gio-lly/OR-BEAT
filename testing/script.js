@@ -191,7 +191,8 @@ document.getElementById('continue-btn').addEventListener('click', async function
             }
             await audioContext.resume();
 
-            // La funzione decodeAudio si occupa di decodificare un buffer di dati audio (ad esempio, un file audio caricato) in un formato che può essere utilizzato dall'API Audio di JavaScript per l'elaborazione e la riproduzione
+            // decodeAudio si occupa di decodificare un buffer di dati audio (ad esempio, un file audio caricato) 
+            // in un formato che può essere utilizzato dall'API Audio di JavaScript per l'elaborazione e la riproduzione
             const arrayBuffer = await file.arrayBuffer();
             const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio;                                                                       
             const sampleRate = audioBuffer.sampleRate;
@@ -200,7 +201,10 @@ document.getElementById('continue-btn').addEventListener('click', async function
             const channelData = audioBuffer.getChannelData(0); // Use first channel (Left Channel)
 
             // Analyze audio and detect onsets
-            const onsetTimestamps = detectOnsets(channelData, sampleRate,512,256,150); // FrameSize (valore ideale per transients di batteria): 512, Hopsize: framesize/2 oppure framesize/4, Sensitivity: 150 (abbassare se vuoi aumentare la densità)
+            // ## FrameSize (valore ideale per transients di batteria): 512, 
+            // ## Hopsize: framesize/2 oppure framesize/4, 
+            // ## Sensitivity: 150 (abbassare se vuoi aumentare la densità)
+            const onsetTimestamps = detectOnsets(channelData, sampleRate, 512, 256, 150);
             console.log("Detected onsets (seconds):", onsetTimestamps);
             removeLoadingModal();
             displayWaveform(file);
@@ -208,17 +212,13 @@ document.getElementById('continue-btn').addEventListener('click', async function
         } catch (error) {
             console.error("Error processing the file:", error);
         }
-
-    
-}
+    }
 });
 
 function detectOnsets(channelData, sampleRate, frameSize, hopSize, sensitivity) { 
-  
     const onsetTimestamps = [];
     let previousSpectrum = null;
     
-  
     for (let i = 0; i < channelData.length - frameSize; i += hopSize) {
       const frame = channelData.slice(i, i + frameSize);
   
