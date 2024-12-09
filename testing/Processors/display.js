@@ -28,7 +28,7 @@ function displayWaveform(file) {
     });
 }
 
-function onsetsRegions(audioBuffer) {
+function onsetsRegions(audioBuffer,onsetTimestamps) {
     if (!onsetTimestamps || onsetTimestamps.length === 0) {
         console.error("Nessun onset rilevato."); return; }
     

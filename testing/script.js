@@ -91,7 +91,7 @@ presetBtn.addEventListener('click', (event) => {
         presetItem.addEventListener('click', (event) => {
             event.stopPropagation();
 
-            selectedFiles.unshift({file: preset.file, type: preset.type });
+            selectedFiles.unshift({ file: preset.file, type: preset.type });
             // Mostra il file selezionato nell'elenco file
             fileList.innerHTML = `<p>Preset selezionato: ${preset.file.replace('Assets/', '')}</p>`;
             isValidFileLoaded = true; // Imposta lo stato su vero
@@ -153,12 +153,13 @@ document.getElementById('continue-btn').addEventListener('click', async function
         // Se un file/files valido è stato caricato, nasconde la zona di benvenuto e mostra la workstation
         document.getElementById('welcome').style.display = 'none';
         document.getElementById('workstation').style.filter = 'none';
-    
+
         const fileOrPreset = selectedFiles[0];
 
         // Se non c'è il file, esci
         if (!fileOrPreset) {
-            console.error("Nessun file selezionato."); return; } // Esce dalla funzione
+            console.error("Nessun file selezionato."); return;
+        } // Esce dalla funzione
 
         // Se il file non è valido, esci
         if (!allowedTypes.includes(fileOrPreset.type)) {
@@ -190,56 +191,56 @@ document.getElementById('continue-btn').addEventListener('click', async function
             }
             await audioContext.resume();
 
-            // Legge e decodifica il file audio
-            const arrayBuffer = await file.arrayBuffer(); // array di byte (raw data)
-            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio
-            // Imposta il sample rate del file caricato
-            sampleRate = audioBuffer.sampleRate;
-            console.log("Sample Rate: ", sampleRate)
+            // La funzione decodeAudio si occupa di decodificare un buffer di dati audio (ad esempio, un file audio caricato) in un formato che può essere utilizzato dall'API Audio di JavaScript per l'elaborazione e la riproduzione
+            const arrayBuffer = await file.arrayBuffer();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio;                                                                       
+            const sampleRate = audioBuffer.sampleRate;
 
-            // Calcola la durata totale del file in secondi
-            const totalDuration = audioBuffer.duration;
-            console.log("Durata totale del file audio: ", totalDuration);
+            // Extract Left audio data
+            const channelData = audioBuffer.getChannelData(0); // Use first channel (Left Channel)
 
-            const source = audioContext.createBufferSource(); // Viene creato un nodo di sorgente audio
-            source.buffer = audioBuffer;
-                
-            // Crea il nodo OnsetDetector se non esiste
-            if (!onsetDetect) {
-                onsetDetect = await createOnsetDetectorNode(); 
-            }
-
-            source.connect(onsetDetect); // Connette la sorgente audio al nodo di rilevamento degli onset
-            // Questo significa che l'audio passerà attraverso il nodo di rilevamento degli onset per essere analizzato
-
-            // Passa totalDuration come parametro quando crei il nodo AudioWorkletNode
-            onsetDetect.port.postMessage({
-                type: 'setDuration',
-                totalDuration: totalDuration
-            });
-
-            source.start(); // Facciamo partire l'audio nel contesto di elaborazione
-            let currentProgress = 0;
-
-            onsetDetect.port.onmessage = (event) => {
-                const { type, progress, onsets } = event.data;
-
-                if (type === 'progress') {
-                    // Aggiorna la barra di progresso ogni volta che ricevi il tipo 'progress'
-                    updateProgressBar(progress);
-                } else if (type === 'onsets') {
-                    // Quando il tipo è 'onsets', esegui il trattamento degli onset
-                    console.log('Onset Timestamps:', onsets);
-                    onsetTimestamps = onsets;
-                    removeLoadingModal();
-                    // Puoi ora usare la lista di onset per ulteriori elaborazioni
-                    displayWaveform(file); // Carica la forma d'onda
-                    onsetsRegions(audioBuffer);
-                }
-            };
-
+            // Analyze audio and detect onsets
+            const onsetTimestamps = detectOnsets(channelData, sampleRate,512,256,150); // FrameSize (valore ideale per transients di batteria): 512, Hopsize: framesize/2 oppure framesize/4, Sensitivity: 150 (abbassare se vuoi aumentare la densità)
+            console.log("Detected onsets (seconds):", onsetTimestamps);
+            removeLoadingModal();
+            displayWaveform(file);
+            onsetsRegions(audioBuffer,onsetTimestamps);
         } catch (error) {
-            console.error("Errore nel caricamento del file audio:", error);
+            console.error("Error processing the file:", error);
         }
-    }
+
+    
+}
 });
+
+function detectOnsets(channelData, sampleRate, frameSize, hopSize, sensitivity) { 
+  
+    const onsetTimestamps = [];
+    let previousSpectrum = null;
+    
+  
+    for (let i = 0; i < channelData.length - frameSize; i += hopSize) {
+      const frame = channelData.slice(i, i + frameSize);
+  
+      // Calculate spectrum using Meyda.js
+      const currentSpectrum = Meyda.extract("amplitudeSpectrum", frame);
+  
+      if (previousSpectrum) {
+        // Calculate spectral flux
+        let flux = 0;
+        for (let j = 0; j < currentSpectrum.length; j++) {
+          const diff = currentSpectrum[j] - (previousSpectrum[j] || 0);
+          flux += Math.max(0, diff); // Only consider increases
+        }
+  
+        if (flux > sensitivity) {
+          const time = i / sampleRate;
+          onsetTimestamps.push(time);
+        }
+      }
+  
+      previousSpectrum = currentSpectrum;
+    }
+  
+    return onsetTimestamps;
+}

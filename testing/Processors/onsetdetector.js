@@ -12,9 +12,11 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
 
         this.previousSpectrum = null;
         this.sampleRate = sampleRate;
+        this.windowSize=512
+        this.hopSize = this.windowSize / 4;
         //this.windowSize=1024; // Aumentato per una maggiore risoluzione spettrale
         //this.hopSize = this.windowSize / 4;  // Campioni da saltare
-        this.thresholdMultiplier = 1.5;  // Moltiplicatore per la soglia dinamica
+        this.thresholdMultiplier = 1.1;  // Moltiplicatore per la soglia dinamica
         this.smoothingFactor = 0.9;  // Fattore di smoothing per lo spettro
         this.currentSampleIndex = 0;
         this.lastOnsetTime = 0;  // Tempo dell'ultimo onset
@@ -44,6 +46,7 @@ registerProcessor('onsetdetector', class extends AudioWorkletProcessor {
 
         const leftChannel = inputChannelData[0];
         const rightChannel = inputChannelData[1];
+        console.log(rightChannel.length)
         
         // Calcola gli spettri per entrambi i canali
         const spectrumLeft = this.calculateFFT(leftChannel);
