@@ -21,10 +21,10 @@ function displayWaveform(file) {
     ws.on('ready', function() {
         document.getElementById('waveform-controls').style.display = 'block';
 
-        // Creiamo il canvas p5 all'interno del div #waveform-container
-        let p5Canvas = createCanvas(400, 400);
+        p5Canvas.show(); // Mostra il canvas p5
         p5Canvas.parent('canvas-container'); // Collegalo al contenitore della forma d'onda
         createControls();
+      
     });
 }
 
@@ -94,6 +94,8 @@ let isRunning = false; // Stato della rotazione della barra
 function setup() {
   createCanvas(400, 400);
   angleMode(DEGREES); // Imposta l'angolo in gradi
+  p5Canvas = createCanvas(400, 400);
+  p5Canvas.hide();
 }
 
 function draw() {
@@ -155,27 +157,27 @@ function drawRing(diameter, totalSegments, gap, rotationOffset) {
 function createControls() {
   // Crea i pulsanti per il controllo della rotazione
   let startButton = createButton('Avvia');
-  startButton.position(10, height + 10);
+  startButton.position(windowWidth*0.9 - 150, height + 10); // Posizionato a destra
   startButton.size(50, 50);
   startButton.style('border-radius', '50%');
   startButton.mousePressed(startRotation);
 
   let pauseButton = createButton('Pausa');
-  pauseButton.position(70, height + 10);
+  pauseButton.position(windowWidth*0.9 - 90, height + 10); // Posizionato accanto al pulsante di avvio
   pauseButton.size(50, 50);
   pauseButton.style('border-radius', '50%');
   pauseButton.mousePressed(pauseRotation);
 
   let stopButton = createButton('Ferma');
-  stopButton.position(130, height + 10);
+  stopButton.position(windowWidth*0.9 - 30, height + 10); // Posizionato accanto al pulsante di pausa
   stopButton.size(50, 50);
   stopButton.style('border-radius', '50%');
   stopButton.mousePressed(stopRotation);
 
   // Crea la barra di controllo della velocità
   let speedSlider = createSlider(0, 10, 2, 0.1);
-  speedSlider.position(40, height + 60);
-  speedSlider.input(() => {rotationSpeed = speedSlider.value();});
+  speedSlider.position(windowWidth*0.9 - 120, height + 80); // Posizionato sotto i pulsanti
+  speedSlider.input(() => { rotationSpeed = speedSlider.value(); });
 }
 
 // Funzione per avviare la rotazione
