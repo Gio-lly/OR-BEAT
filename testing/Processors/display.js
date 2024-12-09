@@ -33,14 +33,14 @@ function onsetsRegions(audioBuffer) {
         console.error("Nessun onset rilevato."); return; }
     
     regions.clearRegions();
-    regions.regionsContainer.innerHTML = "";
 
     // Crea la prima regione dal punto 0 al primo onset, sulla forma d'onda
     ws.on('decode', () => { regions.addRegion({
+            id: 0,
             start: 0,      // Tempo di inizio
             end: onsetTimestamps[0],          // Tempo di fine
             color: randomColor(),  // Colore della regione
-            drag: true,            // Permette di spostare la regione
+            drag: false,            // Permette di spostare la regione
             resize: true,          // Permette di ridimensionare la regione
         });
     });
@@ -52,14 +52,16 @@ function onsetsRegions(audioBuffer) {
 
         // Crea una regione sulla forma d'onda
         ws.on('decode', () => { regions.addRegion({
+                id: i + 1,
                 start: startTime,      // Tempo di inizio
                 end: endTime,          // Tempo di fine
                 color: randomColor(),  // Colore della regione
-                drag: true,            // Permette di spostare la regione
+                drag: false,            // Permette di spostare la regione
                 resize: true,          // Permette di ridimensionare la regione
             });
         });
     }
+    console.log(regions.getRegions())
 }
 
 // Pulsante per fermare la musica
@@ -77,7 +79,7 @@ ws.once('decode', () => {
 
 regions.on('region-clicked', (region, event) => {
     event.stopPropagation(); // Impedisce il click sulla forma d'onda
-    region.play();  // Avvia la riproduzione della regione
+    region.play()  // Avvia la riproduzione della regione
     region.setOptions({ color: randomColor() });  // Cambia il colore della regione
 });
 
