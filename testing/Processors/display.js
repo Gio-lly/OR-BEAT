@@ -1,5 +1,6 @@
 // ######################################## GESTIONE DELLA FORMA D'ONDA
 const regions = WaveSurfer.Regions.create()
+const regionStartTimes = {};
 // Give regions a random color when they are created
 const random = (min, max) => Math.random() * (max - min) + min
 const randomColor = () => `rgba(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)}, 0.5)`
@@ -35,14 +36,16 @@ function onsetsRegions(audioBuffer,onsetTimestamps) {
     regions.clearRegions();
 
     // Crea la prima regione dal punto 0 al primo onset, sulla forma d'onda
-    ws.on('decode', () => { regions.addRegion({
+    ws.on('decode', () => { const firstRegion = regions.addRegion({
             id: 0,
             start: 0,      // Tempo di inizio
             end: onsetTimestamps[0],          // Tempo di fine
             color: randomColor(),  // Colore della regione
             drag: false,            // Permette di spostare la regione
             resize: true,          // Permette di ridimensionare la regione
+            maxLength: onsetTimestamps[0]
         });
+        regionStartTimes[firstRegion.id] = 0;
     });
 
     // Crea una regione per ogni onset rilevato
@@ -51,18 +54,36 @@ function onsetsRegions(audioBuffer,onsetTimestamps) {
         const endTime = onsetTimestamps[i + 1] || audioBuffer.duration;
 
         // Crea una regione sulla forma d'onda
-        ws.on('decode', () => { regions.addRegion({
+        ws.on('decode', () => { const newRegion = regions.addRegion({
                 id: i + 1,
                 start: startTime,      // Tempo di inizio
                 end: endTime,          // Tempo di fine
                 color: randomColor(),  // Colore della regione
                 drag: false,            // Permette di spostare la regione
                 resize: true,          // Permette di ridimensionare la regione
+                maxLength: endTime-startTime
             });
+            regionStartTimes[newRegion.id] = startTime;
         });
     }
-    console.log(regions.getRegions())
+    console.log(regions.getRegions(), regionStartTimes)
 }
+
+// NO OVERLAPPING REGIONS
+regions.on('region-updated', (region) => {
+  const originalStartTime = regionStartTimes[region.id];
+  const newStartTime = region.start;
+
+  if (newStartTime < originalStartTime) {
+      console.warn("Non è possibile ridimensionare la regione a un tempo di inizio più piccolo di quello originale.");
+      
+      // Revert the start time back to the original one
+      region.setOptions({ start: originalStartTime });
+
+      // Optionally, show a UI warning or message
+      alert("La regione non può essere ridimensionata a un tempo di inizio precedente.");
+  }
+});
 
 // Pulsante per fermare la musica
 document.getElementById('stop-btn').addEventListener('click', function() {
