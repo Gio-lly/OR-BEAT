@@ -74,12 +74,46 @@ function onsetsRegions(audioBuffer,onsetTimestamps) {
     console.log(regions.getRegions(), regionStartTimes, regionEndTimes)
 }
 
+// STOP WHEN REGION IS ENDED
+let activeRegion = null
+ws.on('timeupdate', (currentTime) => {
+  // When the end of the region is reached
+  if (activeRegion && currentTime >= activeRegion.end) {
+    // Stop playing
+    ws.pause()
+    activeRegion = null
+  }
+})
+
 // NO OVERLAPPING REGIONS
 regions.on('region-updated', (region) => {
   const originalStartTime = regionStartTimes[region.id];
   const originalEndTime = regionEndTimes[region.id];
   const newStartTime = region.start;
   const newEndTime = region.end;
+
+  // Sincronizza la regione successiva (se esiste)
+  const regionsArray = regions.getRegions();
+  const nextRegion = regionsArray[region.id + 1];
+
+  // Se c'è una regione successiva, aggiorna il suo inizio per allinearlo alla fine della regione corrente
+  if (nextRegion) {
+      // Se la fine della regione corrente cambia, aggiorna l'inizio della successiva
+      if (newEndTime !== originalEndTime) {
+          nextRegion.setOptions({ start: newEndTime });
+      }
+  }
+
+  // Sincronizza la regione precedente (se esiste)
+  const previousRegion = regionsArray[region.id - 1];
+
+  // Se c'è una regione precedente, aggiorna la sua fine per allinearla all'inizio della regione corrente
+  if (previousRegion) {
+      // Se l'inizio della regione corrente cambia, aggiorna la fine della precedente
+      if (newStartTime !== originalStartTime) {
+          previousRegion.setOptions({ end: newStartTime });
+      }
+  }
 
   if (newStartTime < originalStartTime) {
       console.warn("Non è possibile ridimensionare la regione a un tempo di inizio più piccolo di quello originale.");
@@ -96,6 +130,9 @@ regions.on('region-updated', (region) => {
     // Revert the start time back to the original one
     region.setOptions({ end: originalEndTime });
   }
+
+  regionStartTimes[region.id] = newStartTime;
+  regionEndTimes[region.id] = newEndTime;
 });
 
 // Pulsante per fermare la musica
@@ -103,7 +140,7 @@ document.getElementById('stop-btn').addEventListener('click', function() {
     ws.pause();  // Metti in pausa la riproduzione dell'audio
 });
 
-// Zoom Level
+// ZOOM LEVEL
 ws.once('decode', () => {
     document.querySelector('input[type="range"]').oninput = (e) => {
       const minPxPerSec = Number(e.target.value)
@@ -111,10 +148,17 @@ ws.once('decode', () => {
     }
 })
 
+// CLICK SU REGIONE -> PLAY
 regions.on('region-clicked', (region, event) => {
     event.stopPropagation(); // Impedisce il click sulla forma d'onda
     region.play(region.start, region.end)  // Avvia la riproduzione della regione
     region.setOptions({ color: randomColor() });  // Cambia il colore della regione
+    activeRegion = region
+});
+
+regions.on('region-double-clicked', (region, event) => {
+  event.stopPropagation(); // Impedisce il click sulla forma d'onda
+  console.log("cliccato: ", region.id);
 });
 
 // _________________________________________________________________________________
