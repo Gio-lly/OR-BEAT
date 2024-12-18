@@ -158,6 +158,14 @@ button.remove-btn {
     border-radius: 5px;
 }
 
+#waveform ::part(marker) {
+    border: 1px solid #fff;
+    padding: 1px;
+    text-indent: 10px;
+    font-family: fantasy;
+    text-decoration: underline;
+  }
+
 #canvas-container {
     position: absolute;
     top: 50%;

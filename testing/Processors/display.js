@@ -1,7 +1,8 @@
 // ######################################## GESTIONE DELLA FORMA D'ONDA
+const MIN_THRESHOLD = 0.1;
+
 const regions = WaveSurfer.Regions.create()
 const regionStartTimes = {};
-const regionEndTimes = {};
 // Give regions a random color when they are created
 const random = (min, max) => Math.random() * (max - min) + min
 const randomColor = () => `rgba(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)}, 0.5)`
@@ -20,7 +21,7 @@ function displayWaveform(file) {
 
     // Carica il file audio in WaveSurfer
     ws.load(fileURL);
-
+   
     // Mostra la sezione contenente la checkbox e lo zoom
     ws.on('ready', function() {
         document.getElementById('waveform-controls').style.display = 'block';
@@ -32,7 +33,7 @@ function displayWaveform(file) {
     });
 }
 
-function onsetsRegions(audioBuffer,onsetTimestamps) {
+function onsetsRegions(onsetTimestamps, duration) {
     if (!onsetTimestamps || onsetTimestamps.length === 0) {
         console.error("Nessun onset rilevato."); return; }
     
@@ -40,38 +41,44 @@ function onsetsRegions(audioBuffer,onsetTimestamps) {
 
     // Crea la prima regione dal punto 0 al primo onset, sulla forma d'onda
     ws.on('decode', () => { const firstRegion = regions.addRegion({
-            id: 0,
-            start: 0,      // Tempo di inizio
-            end: onsetTimestamps[0],          // Tempo di fine
-            color: randomColor(),  // Colore della regione
-            drag: false,            // Permette di spostare la regione
-            resize: true,          // Permette di ridimensionare la regione
-            maxLength: onsetTimestamps[0]
-        });
-        regionStartTimes[firstRegion.id] = 0;
-        regionEndTimes[firstRegion.id] = onsetTimestamps[0];
+      id: '0',
+      content: '',
+      start: 0,                       // Tempo di inizio
+      //end: onsetTimestamps[0],     // Tempo di fine
+      //color: randomColor(),  // Colore della regione
+      drag: false            // Permette di spostare la regione
+      //resize: true,       // Permette di ridimensionare la regione
+      //maxLength: onsetTimestamps[0]
+      });
+      regionStartTimes[firstRegion.id] = 0;
     });
 
     // Crea una regione per ogni onset rilevato
     for (let i = 0; i < onsetTimestamps.length; i++) {
         const startTime = onsetTimestamps[i];
-        const endTime = onsetTimestamps[i + 1] || audioBuffer.duration;
 
-        // Crea una regione sulla forma d'onda
-        ws.on('decode', () => { const newRegion = regions.addRegion({
-                id: i + 1,
-                start: startTime,      // Tempo di inizio
-                end: endTime,          // Tempo di fine
-                color: randomColor(),  // Colore della regione
-                drag: false,            // Permette di spostare la regione
-                resize: true,          // Permette di ridimensionare la regione
-                maxLength: endTime-startTime
+        if((i+1) < onsetTimestamps.length && (onsetTimestamps[i+1]-startTime) >= MIN_THRESHOLD){
+          // Crea una regione sulla forma d'onda
+          ws.on('decode', () => { const newRegion = regions.addRegion({
+            id: i+1,
+            content: '',
+            start: startTime,         // Tempo di inizio
+            drag: true            // Permette di spostare la regione
             });
             regionStartTimes[newRegion.id] = startTime;
-            regionEndTimes[newRegion.id] = endTime;
+          });
+      } else if ((i+1) === onsetTimestamps.length && (duration-startTime) >= MIN_THRESHOLD){
+        // Gestiamo bene la fine/l'ultimo marker
+        ws.on('decode', () => { const newRegion = regions.addRegion({
+          id: i + 1,
+          content: '',
+          start: startTime,         // Tempo di inizio
+          drag: true            // Permette di spostare la regione
+          });
+          regionStartTimes[newRegion.id] = startTime;
         });
+      }
     }
-    console.log(regions.getRegions(), regionStartTimes, regionEndTimes)
 }
 
 // STOP WHEN REGION IS ENDED
@@ -85,60 +92,78 @@ ws.on('timeupdate', (currentTime) => {
   }
 })
 
+ws.on('click', () => {
+  
+  const clickTime = ws.getCurrentTime(); // Ottieni il tempo in cui è stato cliccato
+  const regionsArray = regions.getRegions();
+
+  // Trova la regione più vicina al click
+  let clickedRegion = null;
+  for (let i = 0; i < regionsArray.length; i++) {
+    if((i+1) < regionsArray.length){
+      const startTime = regionsArray[i].start;
+      const nextStartTime = regionsArray[i+1].start;
+
+      // Se il tempo di clic è tra startTime e endTime della regione
+      if (clickTime >= startTime && clickTime <= nextStartTime) {
+        clickedRegion = { id: regionsArray[i].id, start: startTime, end: nextStartTime};
+        activeRegion = clickedRegion
+        console.log(clickedRegion.id)
+        break;
+      }
+    } else {
+      // fine
+      ws.play(ws.getCurrentTime(), ws.getDuration())
+    }
+  }
+
+  if(activeRegion !== null){
+    ws.play();
+  }
+});
+
+function checkStartTimesOrder() {
+  // Ottieni tutte le regioni
+  const regionsArray = regions.getRegions();
+  
+  // Estrai i startTimes delle regioni
+  const startTimes = regionsArray.map(region => region.start);
+
+  // Verifica che gli startTimes siano in ordine crescente
+  for (let i = 1; i < startTimes.length; i++) {
+    if (startTimes[i] < startTimes[i - 1]) {
+      console.warn("Gli startTimes non sono in ordine crescente! Reset ...");
+      return false; // Restituisce false se gli startTimes non sono in ordine crescente
+    }
+  }
+  
+  // Se il ciclo finisce senza trovare errori, gli startTimes sono in ordine crescente
+  //console.log("Gli startTimes sono in ordine crescente.");
+  return true; // Restituisce true se gli startTimes sono corretti
+}
+
 // NO OVERLAPPING REGIONS
 regions.on('region-updated', (region) => {
+  let draggedRegion = null;
   const originalStartTime = regionStartTimes[region.id];
-  const originalEndTime = regionEndTimes[region.id];
   const newStartTime = region.start;
-  const newEndTime = region.end;
 
-  // Sincronizza la regione successiva (se esiste)
+  // Ottieni tutte le regioni esistenti
   const regionsArray = regions.getRegions();
-  const nextRegion = regionsArray[region.id + 1];
-
-  // Se c'è una regione successiva, aggiorna il suo inizio per allinearlo alla fine della regione corrente
-  if (nextRegion) {
-      // Se la fine della regione corrente cambia, aggiorna l'inizio della successiva
-      if (newEndTime !== originalEndTime) {
-          nextRegion.setOptions({ start: newEndTime });
-      }
+ 
+  // Controlla se c'è una sovrapposizione tra la regione corrente e un'altra
+  if (!checkStartTimesOrder()) {
+    alert("Non puoi spostare la regione su un altro marker!");
+      
+    // Ripristina la posizione originale
+    region.setOptions({ start: originalStartTime});
+    return;
   }
 
-  // Sincronizza la regione precedente (se esiste)
-  const previousRegion = regionsArray[region.id - 1];
-
-  // Se c'è una regione precedente, aggiorna la sua fine per allinearla all'inizio della regione corrente
-  if (previousRegion) {
-      // Se l'inizio della regione corrente cambia, aggiorna la fine della precedente
-      if (newStartTime !== originalStartTime) {
-          previousRegion.setOptions({ end: newStartTime });
-      }
-  }
-
-  if (newStartTime < originalStartTime) {
-      console.warn("Non è possibile ridimensionare la regione a un tempo di inizio più piccolo di quello originale.");
-      // Show a UI warning or message
-      alert("La regione non può essere ridimensionata a un tempo di inizio precedente!");
-      // Revert the start time back to the original one
-      region.setOptions({ start: originalStartTime });
-  }
-
-  if (newEndTime > originalEndTime) {
-    console.warn("Non è possibile ridimensionare la regione a un tempo di fine più grande di quello originale.");
-    // Show a UI warning or message
-    alert("La regione non può essere ridimensionata a un tempo di fine successivo!");
-    // Revert the start time back to the original one
-    region.setOptions({ end: originalEndTime });
-  }
-
+  // Aggiorna i tempi solo se non ci sono sovrapposizioni
+  draggedRegion = { id: region.id, start: newStartTime};
   regionStartTimes[region.id] = newStartTime;
-  regionEndTimes[region.id] = newEndTime;
-});
-
-// Pulsante per fermare la musica
-document.getElementById('stop-btn').addEventListener('click', function() {
-    ws.pause();  // Metti in pausa la riproduzione dell'audio
-});
+})
 
 // ZOOM LEVEL
 ws.once('decode', () => {
@@ -147,19 +172,6 @@ ws.once('decode', () => {
       ws.zoom(minPxPerSec)
     }
 })
-
-// CLICK SU REGIONE -> PLAY
-regions.on('region-clicked', (region, event) => {
-    event.stopPropagation(); // Impedisce il click sulla forma d'onda
-    region.play(region.start, region.end)  // Avvia la riproduzione della regione
-    region.setOptions({ color: randomColor() });  // Cambia il colore della regione
-    activeRegion = region
-});
-
-regions.on('region-double-clicked', (region, event) => {
-  event.stopPropagation(); // Impedisce il click sulla forma d'onda
-  console.log("cliccato: ", region.id);
-});
 
 // _________________________________________________________________________________
 // ######################################## GESTIONE DELLA DRUM MACHINE IN p5

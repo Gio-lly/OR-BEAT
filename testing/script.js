@@ -210,7 +210,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
             console.log("Detected onsets (seconds):", onsetTimestamps);
             removeLoadingModal();
             displayWaveform(file);
-            onsetsRegions(audioBuffer,onsetTimestamps);
+            onsetsRegions(onsetTimestamps, audioBuffer.duration);
         } catch (error) {
             console.error("Error processing the file:", error);
         }
