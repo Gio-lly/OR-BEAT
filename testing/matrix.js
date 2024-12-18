@@ -118,4 +118,3 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.add-row-btn').addEventListener('click', addRow);
     addRow();
 });
-//commento
