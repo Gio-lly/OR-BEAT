@@ -100,11 +100,14 @@ button#continue-btn:hover {
 
 #matrix-container {
     float: left;
-    margin-right: 20px;
+
     background-color: #1f1f1f;
     padding: 10px;
     border-radius: 8px;
     color: #ffffff;
+    display: flex;
+    margin-left: 20%;
+    
 }
 
 table#matrixTable {

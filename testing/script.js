@@ -1,6 +1,8 @@
 // Variabili globali
 audioContext = null; // Inizializza audioContext a null (serve per gestire l'audio)
 document.getElementById('continue-btn').disabled = true; // Il pulsante CONTINUA è disabilitato all'inizio
+
+
 // Controlla se il browser supporta AudioContext
 if (!window.AudioContext) {
     alert("Il tuo browser non supporta le funzionalità audio necessarie.");

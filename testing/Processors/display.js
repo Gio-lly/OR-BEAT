@@ -25,9 +25,9 @@ function displayWaveform(file) {
     ws.on('ready', function() {
         document.getElementById('waveform-controls').style.display = 'block';
 
-        p5Canvas.show(); // Mostra il canvas p5
-        p5Canvas.parent('canvas-container'); // Collegalo al contenitore della forma d'onda
-        createControls();
+        p5on = true 
+        setup(p5on) // avvia setup (poi draw()) e quindi rendi visibile tutto il codice p5
+        
       
     });
 }
@@ -163,100 +163,212 @@ regions.on('region-double-clicked', (region, event) => {
 
 // _________________________________________________________________________________
 // ######################################## GESTIONE DELLA DRUM MACHINE IN p5
-let angle = 0; // Angolo iniziale
-let ringSegments = [{ diameter: 300, totalSegments: 3, gap: 10, rotationOffset: 0 },
-                    { diameter: 200, totalSegments: 5, gap: 10, rotationOffset: 0 }];
-let regionSlotMapping = {};  // Mappa per associare le regioni agli slot
-let slotWidth = 360 / ringSegments[0].totalSegments;  // Larghezza di ogni slot in gradi
+p5on = false // se imposta su false setup non runna, quindi tutto il codice p5 non sarà runnato.
+
+// Variabili per gli anelli
+let anelli = []; // Array per memorizzare gli anelli creati
+let maxAnelli = 5; // Numero massimo di anelli consentiti
+let diametroBase = 150; // Diametro base del primo anello
+let spessoreAnello = 10; // Spessore degli anelli
+let bottoneCreaAnello;
+let bottoneRimuoviAnello;
+let gap = 15 // spazio tra le sezioni dell'anello
+let rotationOffset = -90 // perché l'angolo definito da p5 inizia "alle ore 3"
+
+// Variabili per la barra che ruota
+let angle = rotationOffset; // Angolo iniziale
 let rotationSpeed = 2; // Velocità di rotazione iniziale
 let isRunning = false; // Stato della rotazione della barra
+let bpm;
 
-function setup() {
-  createCanvas(400, 400);
-  angleMode(DEGREES); // Imposta l'angolo in gradi
-  p5Canvas = createCanvas(400, 400);
-  p5Canvas.hide();
+
+
+
+function setup(p5on) {
+  createCanvas(0, 0); // scrivo questo altrimenti di default si vede il canvas di p5 nella pagina iniziale
+  
+  if (!p5on) {return}
+  
+  const canvas = createCanvas(400, 400);
+  canvas.parent('matrix-container'); // Collegalo al contenitore della forma d'onda
+
+
+  angleMode(DEGREES);
+
+  // Bottone per creare un nuovo anello
+  bottoneCreaAnello = createButton('Crea un nuovo anello');
+  bottoneCreaAnello.position(10, 400);
+  bottoneCreaAnello.mousePressed(creaAnello);
+  
+  // Bottone per creare un nuovo anello
+  bottoneRimuoviAnello = createButton('Togli ultimo anello');
+  bottoneRimuoviAnello.position(200, 400);
+  bottoneRimuoviAnello.mousePressed(rimuoviUltimoAnello);
+  
+  // Creo i buttoni per controllare la barra
+  createControls()
+  
+  
+  frameRate(60)
+  
 }
 
 function draw() {
-  background(30); // Colore di sfondo
-  translate(width / 2, height / 2); // Sposta l'origine al centro del canvas
+  background(30);
+  
+  // Calcola i BPM
+  bpm = (60 * rotationSpeed * 60) / 360; // la formula è sbagliata
 
-  // Disegna e gestisci gli anelli
-  for (let ring of ringSegments) {
-      drawRing(ring.diameter, ring.totalSegments, ring.gap, ring.rotationOffset);
+  // Mostra il risultato
+  fill(255); // Colore del testo
+  textSize(16);
+  text(`BPM: ${bpm.toFixed(0)}`, -100,height -33);
+  
+  translate(width / 2, height / 2);
+
+  // Disegna tutti gli anelli
+  for (let anello of anelli) {
+    anello.disegna();
+  }
+  
+  // Disegna la barra quando disegno il primo anello
+  if (anelli.length > 0) {
+    push();
+    rotate(angle); // Ruota secondo l'angolo
+    stroke(255); // Colore della barra
+    strokeWeight(5); // Spessore della barra
+    let lunghezzabarra= anelli[anelli.length-1].diametro/2 + 10 // è in funzione di quanti anelli ci sono
+    line(0, 0, lunghezzabarra, 0); // Disegna la barra
+    pop();
+
+    // Aggiorna l'angolo per creare il movimento se la rotazione è attiva
+    if (isRunning) {
+        angle += rotationSpeed; // Velocità della rotazione
+        if (angle >= 270) {
+            angle = rotationOffset; // Resetta l'angolo dopo un giro completo 360 - 90
+        }
+  }
+  
+  
+  
+}
+  
+  
+  
+  
+}
+
+
+function rimuoviUltimoAnello(){
+  anelli.pop();
+}
+
+
+
+function creaAnello() {
+  if (anelli.length >= maxAnelli) {
+    console.log("Limite anelli raggiunto");
+    return;
   }
 
-  // Disegna la barra
-  push();
-  rotate(angle); // Ruota secondo l'angolo
-  stroke(255); // Colore della barra
-  strokeWeight(4); // Spessore della barra
-  line(0, 0, 150, 0); // Disegna la barra
-  pop();
+  let steps = int(prompt("Inserisci il numero di steps per il nuovo anello:"));
+  let colorInput = prompt("Inserisci il colore dell'anello (es: #FF0000 per rosso):");
 
-  // Controlla se la lancetta passa sopra uno slot e riproduce la regione
-  playSoundIfInSlot();
+  let nuovoAnello = new Anello(steps, colorInput, diametroBase + anelli.length * spessoreAnello* 5);
+  anelli.push(nuovoAnello);
+}
 
-  // Aggiorna l'angolo per creare il movimento se la rotazione è attiva
-  if (isRunning) {
-      angle += rotationSpeed; // Velocità della rotazione
-      if (angle >= 360) {
-          angle = 0; // Resetta l'angolo dopo un giro completo
-      }
+
+
+
+class Anello {
+  constructor(steps, color, diametro) {
+    this.steps = steps;
+    this.color = color;
+    this.diametro = diametro;
+    this.bool_list = Array(steps).fill(false); // Inizialmente tutte le sezioni sono disattivate
+  }
+
+  disegna() {
+    strokeWeight(spessoreAnello);
+    noFill()
+    let angoloStep = 360 / this.steps - gap;
+
+    for (let i = 0; i < this.steps; i++) {
+      let startAngolo = i * (angoloStep + gap) + rotationOffset;
+      let endAngolo = startAngolo + angoloStep; 
+      
+      // Controlla se la barra si trova sopra questo segmento
+
+      let highlight = angle >= startAngolo && angle < endAngolo;
+      
+
+    // Imposta il colore del segmento
+    if (highlight & isRunning) {
+      stroke(this.bool_list[i] ? this.color : 100); // Colore evidenziato
+      strokeWeight(spessoreAnello+5)
+
+    } else {
+      stroke(this.bool_list[i] ? this.color : 100); // colore che ho scelto per l'anello
+      strokeWeight(spessoreAnello)
+
+    }
+      
+      // Disegna la parte dell'anello
+      arc(0, 0, this.diametro, this.diametro, startAngolo, endAngolo);
+    }
+  }
+
+  toggleStep(indice) {
+    if (indice >= 0 && indice < this.steps) {
+      this.bool_list[indice] = !this.bool_list[indice];
+    }
   }
 }
 
-// Funzione per disegnare un anello diviso in segmenti con spazi vuoti
-function drawRing(diameter, totalSegments, gap, rotationOffset) {
-  strokeWeight(4); // Spessore del bordo
-  noFill(); // Nessun riempimento
-  let segmentAngle = 360 / totalSegments - gap; // Angolo di ogni segmento
+function mousePressed() {
+  let x = mouseX - width / 2;
+  let y = mouseY - height / 2;
+  let distanza = dist(0, 0, x, y);
 
-  for (let i = 0; i < totalSegments; i++) {
-    let start = i * (segmentAngle + gap) + rotationOffset; // Inizio della sezione
-    let end = start + segmentAngle; // Fine della sezione
+  for (let anello of anelli) {
+    let raggioInterno = anello.diametro / 2- 10;
+    let raggioEsterno = anello.diametro / 2 + spessoreAnello;
 
-    // Controlla se la barra si trova sopra questo segmento
-    let normalizedAngle = (angle + 360) % 360; // Normalizza l'angolo della barra tra 0 e 360
-    let highlight = normalizedAngle >= start && normalizedAngle < end;
+    if (distanza > raggioInterno && distanza < raggioEsterno) {
+      let angolo = atan2(y, x) - rotationOffset;
+      if (angolo < 0) angolo += 360;
 
-    // Imposta il colore del segmento
-    if (highlight) {
-      stroke(255, 255, 100); // Colore evidenziato
-      //console.log(`Suono su parte ${i + 1}`); // Log del segmento attivo
-    } else {
-      stroke(100 + i * 50, 150, 255); // Colore normale
+      let indice = floor(angolo / (360 / anello.steps));
+      anello.toggleStep(indice);
+      break;
     }
-
-    // Disegna la sezione dell'anello
-    arc(0, 0, diameter, diameter, start, end);
   }
 }
 
 function createControls() {
   // Crea i pulsanti per il controllo della rotazione
   let startButton = createButton('Avvia');
-  startButton.position(windowWidth*0.9 - 150, height + 10); // Posizionato a destra
+  startButton.position(1200, height-100); // Posizionato a destra
   startButton.size(50, 50);
   startButton.style('border-radius', '50%');
   startButton.mousePressed(startRotation);
 
   let pauseButton = createButton('Pausa');
-  pauseButton.position(windowWidth*0.9 - 90, height + 10); // Posizionato accanto al pulsante di avvio
+  pauseButton.position(1300, height-100); // Posizionato accanto al pulsante di avvio
   pauseButton.size(50, 50);
   pauseButton.style('border-radius', '50%');
   pauseButton.mousePressed(pauseRotation);
 
   let stopButton = createButton('Ferma');
-  stopButton.position(windowWidth*0.9 - 30, height + 10); // Posizionato accanto al pulsante di pausa
+  stopButton.position(1400, height-100); // Posizionato accanto al pulsante di pausa
   stopButton.size(50, 50);
   stopButton.style('border-radius', '50%');
   stopButton.mousePressed(stopRotation);
 
   // Crea la barra di controllo della velocità
-  let speedSlider = createSlider(0, 10, 2, 0.1);
-  speedSlider.position(windowWidth*0.9 - 120, height + 80); // Posizionato sotto i pulsanti
+  let speedSlider = createSlider(1, 10, 2, 0.1);
+  speedSlider.position(1200, height-50); // Posizionato sotto i pulsanti
   speedSlider.input(() => { rotationSpeed = speedSlider.value(); });
 }
 
@@ -273,29 +385,6 @@ function pauseRotation() {
 // Funzione per fermare e resettare la rotazione
 function stopRotation() {
   isRunning = false;
-  angle = 0; // Resetta l'angolo
+  angle = rotationOffset; // Resetta l'angolo
 }
 
-
-
-
-function playSoundIfInSlot() {
-  let normalizedAngle = (angle + 360) % 360;  // Normalizza l'angolo della lancetta tra 0 e 360
-  let slotIndex = Math.floor(normalizedAngle / slotWidth);  // Trova l'indice dello slot corrente
-
-  // Verifica se c'è una regione associata a questo slot
-  if (regionSlotMapping[slotIndex]) {
-      let region = regionSlotMapping[slotIndex];
-      region.play();  // Riproduci la regione associata a questo slot
-  }
-}
-
-function onRegionRelease(event) {
-  // Calcolare l'angolo della regione in base al tempo di inizio
-  let regionAngle = event.region.start * 360 / ws.getDuration();  // Angolo corrispondente alla regione
-  let slotIndex = Math.floor(regionAngle / slotWidth);  // Trova lo slot della ruota
-
-  // Associare la regione allo slot della ruota
-  regionSlotMapping[slotIndex] = event.region;
-  console.log(`Region assigned to slot ${slotIndex}`);
-}
