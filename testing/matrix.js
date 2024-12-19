@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const colors = ["#FF5733", "#2E8B57", "#3357FF", "#F1C40F", "#8E44AD", "#1ABC9C", "#E74C3C", "#2C3E50"];
     let usedColors = new Set();
 
+
     const matrixContainer = document.getElementById('matrix-container');
     matrixContainer.innerHTML = `
         <table id="matrixTable">
