@@ -1,41 +1,42 @@
+// ######################################## GESTIONE DELLA REGISTRAZIONE AUDIO
 let wsurf, wave
+// Utilizziamo il Plugin Record di Wavesurfer
 let record = WaveSurfer.Record.create({
-  renderRecordedAudio: true, // Impostalo su true per visualizzare l'onda durante la registrazione
+  renderRecordedAudio: true, // visualizza l'onda durante la registrazione
   continuousWaveform: true,  // Abilita la visualizzazione continua
   continuousWaveformDuration: 30, // Durata opzionale della visualizzazione continua
   bufferSize: 2048, // Dimensione del buffer (implica la qualità del waveform)
 });
-let scrollingWaveform = false
-let continuousWaveform = true
 
+// Quando il record-button viene cliccato, si visualizza la finestra di registrazione
 document.getElementById("record-btn").addEventListener("click", function (event) {
-  event.stopPropagation();
+  event.stopPropagation(); //opzionale qui
   document.getElementById("recording-section").style.display = "block"; // Mostra la sezione di registrazione
   document.getElementById("record-btn").style.display = "none"; // Nasconde il bottone "Registra"
-  createWaveSurfer();
+  createWaveSurfer(); // Creaimo la session
 });
 
 const createWaveSurfer = () => {
-
-  // Create a new Wavesurfer instance
+  // Creiamo una nuova istanza di wavesurfer
   wsurf = WaveSurfer.create({
-    container: '#mic',
+    container: '#mic', // link all' html
     waveColor: '#dd5e98',
     progressColor: '#ff4e00',
     plugins: [record]
   })
 
+  // GESTIONE INIZIO REC: sovrascriviamo la rec precedente se c'era...
   record.on('record-start', () => {
     if (wave) {
       wave.destroy()
     }
 
+    // Rimozione del pulsante di play e il link di download dalla sezione precedente
     const container = document.querySelector('#recordings');
-    // Rimuovi il pulsante di play e il link di download dalla sezione precedente
     container.innerHTML = '';
   })  
 
-  // Render recorded audio
+  // GESTIONE REC FINITA: salvataggio della registrazione
   record.on('record-end', (blob) => {
     const container = document.querySelector('#recordings')
     const recordedUrl = URL.createObjectURL(blob)
@@ -55,10 +56,10 @@ const createWaveSurfer = () => {
       textContent: 'Download recording',
     })
 
-    // Aggiungi il file WAV alla lista di selectedFiles in script.js
+    // Aggiungi il file Webm alla lista di selectedFiles in script.js
     const blobFile = new File([blob], 'recorded_audio.webm', { type: 'audio/webm' });
 
-    // Emissione dell'evento personalizzato per passare il file WAV
+    // Emissione dell'evento personalizzato per passare il file Webm
     const event = new CustomEvent('recording-completed', { detail: { file: blobFile } });
     window.dispatchEvent(event);
   });
@@ -71,6 +72,7 @@ const createWaveSurfer = () => {
   })
 }
 
+// GESTIONE PROGRESSO IN SECONDI
 const progress = document.querySelector('#progress')
 const updateProgress = (time) => {
   // time will be in milliseconds, convert it to mm:ss format
@@ -83,6 +85,7 @@ const updateProgress = (time) => {
   progress.textContent = formattedTime
 }
 
+// GESTIONE BOTTONE 'PAUSE'
 const pauseButton = document.querySelector('#pause')
 pauseButton.onclick = (event) => {
   event.stopPropagation();

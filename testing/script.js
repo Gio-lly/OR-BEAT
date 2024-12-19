@@ -148,7 +148,7 @@ async function createOnsetDetectorNode() {
         if (type === 'progress') {
             updateProgressBar(progress); // Aggiorna la barra di caricamento
         } else if (type === 'onsets') {
-            console.log("Onsets rilevati:", onsets);
+            //console.log("Onsets rilevati:", onsets);
             testonsets(audioBuffer); // Mostra i pulsanti dei campioni
         }
     };
@@ -226,7 +226,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
 
             modello.setonsets(onsetTimestamps);
             
-            console.log("Detected onsets (seconds):", onsetTimestamps);
+            //console.log("Detected onsets (seconds):", onsetTimestamps);
             removeLoadingModal();
             displayWaveform(file);
             onsetsRegions(onsetTimestamps, audioBuffer.duration);

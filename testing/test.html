@@ -33,6 +33,7 @@
     <div class="page modal" id="welcomePage">
         <p id="title">Benvenuto!</p>
         <div id="dropZone">
+            <!-- Qui verrà caricato il file dall'utente -->
             <p>Trascina qui il file o clicca per selezionarlo</p>
             <input type="file" id="file-input" style="display: none;"
                 accept=".mp3,.wav,.aac,audio/wav,audio/mpeg,audio/aac" />
@@ -65,10 +66,13 @@
         </div>
         <br>
         
+        <!-- Qui abbiamo il bottone 'CONTINUA' e la visualizzazione del file che verrà processato -->
         <br>
         <button id="continue-btn" type="submit">Continua</button>
         <div id="file-list"></div>
     </div>
+
+    <!-- Qui abbiamo la nostra workstation, abilitata una volta caricato il file -->
     <div class="page home" id="workstation">
        
        <div id="waveform"></div>

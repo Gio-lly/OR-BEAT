@@ -112,7 +112,7 @@ ws.on('click', () => {
       if (clickTime >= startTime && clickTime <= nextStartTime) {
         clickedRegion = { id: regionsArray[i].id, start: startTime, end: nextStartTime };
         activeRegion = clickedRegion
-        console.log(clickedRegion.id)
+        //console.log(clickedRegion.id)
         break;
       }
     } else {
