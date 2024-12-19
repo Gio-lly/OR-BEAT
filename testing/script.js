@@ -1,7 +1,7 @@
 // Variabili globali
 audioContext = null; // Inizializza audioContext a null (serve per gestire l'audio)
 document.getElementById('continue-btn').disabled = true; // Il pulsante CONTINUA è disabilitato all'inizio
-
+modello = new Model();
 
 // Controlla se il browser supporta AudioContext
 if (!window.AudioContext) {
@@ -207,6 +207,9 @@ document.getElementById('continue-btn').addEventListener('click', async function
             // ## Hopsize: framesize/2 oppure framesize/4, 
             // ## Sensitivity: 150 (abbassare se vuoi aumentare la densità)
             const onsetTimestamps = detectOnsets(channelData, sampleRate, 512, 256, 150);
+
+            modello.setonsets(onsetTimestamps);
+            
             console.log("Detected onsets (seconds):", onsetTimestamps);
             removeLoadingModal();
             displayWaveform(file);
