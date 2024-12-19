@@ -60,7 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
             phaseDropdown.appendChild(option);
         }
     }
-    
+    //crea una riga e aggiunge gli event Listeners ai vari campi, modificando al
+    //il modello quando vengono cambiati
     function addRow() {
         const tableBody = document.querySelector('#matrixTable tbody');
         const newRow = document.createElement('tr');
@@ -123,7 +124,11 @@ document.addEventListener('DOMContentLoaded', () => {
             modello.modifyRingDensity(parseInt(densityDropdown.parentNode.parentNode.id)-1,density);
             anelli[parseInt(densityDropdown.parentNode.parentNode.id)-1].density=density;
         });
-        
+        //QUI CI STA UN BUG:
+        //se rimuovo una riga, poi chiamo rimuoviAnello(newRow.id-1)
+        //se dopo rimuovo un'altra riga, è possibile che passdogli l'id la funzione rimuoviAnello
+        //che sta nel file display.js, non trovi un elemento Anello nell'array anelli[] con quell'indice
+        //POSSIBILE SOLUZIONE: non passargli l'id della riga ma qualcos'altro
         newRow.querySelector('.remove-btn').addEventListener('click', () => {
             if(newRow.id-1==0){
                 alert("Non puoi rimuovere il primo anello!");
@@ -131,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             releaseColor(color);
             newRow.remove();
-            rimuoviAnello(newRow.id-1);
+            rimuoviAnello(newRow.id-1);//qua viene chiamata la funzione incriminata
             toggleAddButtonVisibility();
         });
 
