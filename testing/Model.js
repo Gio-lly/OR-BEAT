@@ -1,0 +1,49 @@
+class Model {
+  constructor() {
+    this.duration;
+    this.onsets=[]; //l'array dei timestaps, quindi della posizione nel tempo di tutti i marker
+    this.representation_matrix = []
+  }
+  setonsets(onsets) {
+    this.onsets = onsets;
+  }
+  addTimeStamp(timestamp) {
+    this.onsets.push(timestamp);
+  }
+  getonsets(i) {
+    return this.onsets[i];
+  }
+  addRing(startEnd,steps=2,density,phase,color){
+    this.representation_matrix.push([
+      startEnd, // l'inizio e la fine della regione da suonare in secondi
+      this.representation_matrix.length+1, //lo metti sempre alla fine
+      color, //che colore
+      steps, //quanti segmenti ha il cerchio
+      density, //quanti sono accesi
+      phase, //con che fase
+      new Array(steps).fill(false)
+    ]);
+  }
+  modifyRingBooleanList(i_ring,bool_list){
+    this.representation_matrix[i_ring][6]=bool_list;
+  }
+  modifyRingSteps(i_ring,steps){
+    this.representation_matrix[i_ring][3]=steps;
+  }
+  modifyRingPhase(i_ring,phase){
+    this.representation_matrix[i_ring][5]=phase;
+  }
+  modifyRingDensity(i_ring,density){
+    this.representation_matrix[i_ring][4]=density;
+  }
+  getRing(i){
+    return this.representation_matrix[i];
+  }
+  removeRing(i){
+    this.representation_matrix.splice(i,1);
+  }
+  
+  //[ [[0,1],iring,steps,density,phase],  ]
+
+
+}

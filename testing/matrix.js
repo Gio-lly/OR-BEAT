@@ -60,11 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
             phaseDropdown.appendChild(option);
         }
     }
-
+    //crea una riga e aggiunge gli event Listeners ai vari campi, modificando al
+    //il modello quando vengono cambiati
     function addRow() {
         const tableBody = document.querySelector('#matrixTable tbody');
         const newRow = document.createElement('tr');
-
+        newRow.id = tableBody.children.length + 1;
         const color = getNextColor();
         if (!color) {
             alert('No available colors for new rows.');
@@ -87,26 +88,60 @@ document.addEventListener('DOMContentLoaded', () => {
             </td>
             <td><button class="remove-btn">x</button></td>
         `;
-
+        //modello.addRing([],2,0,0,color);
+        
         const stepsDropdown = newRow.querySelector('.steps-dropdown');
+        const densityDropdown = newRow.querySelector('.density-dropdown');
+        const phaseDropdown = newRow.querySelector('.phase-dropdown');
         const defaultSteps = parseInt(stepsDropdown.value, 10);
         populateDropdowns(newRow, defaultSteps);
-
+        var steps=2;
+        var phase = 0;
+        var density = 0;
+        creaAnello(steps,color);
         stepsDropdown.addEventListener('change', event => {
-            const steps = parseInt(event.target.value, 10);
+            steps = parseInt(event.target.value, 10);
             if (!isNaN(steps)) {
                 populateDropdowns(newRow, steps);
             }
+            modello.modifyRingSteps(parseInt(stepsDropdown.parentNode.parentNode.id)-1,steps);
+            anelli[parseInt(stepsDropdown.parentNode.parentNode.id)-1].steps=steps;
         });
 
+        phaseDropdown.addEventListener('change', event => {
+            phase = parseInt(event.target.value, 10);
+            if (!isNaN(phase)) {
+                populateDropdowns(newRow, phase);
+            }
+            modello.modifyRingPhase(parseInt(phaseDropdown.parentNode.parentNode.id)-1,phase);
+            anelli[parseInt(phaseDropdown.parentNode.parentNode.id)-1].phase=phase;
+        });
+        densityDropdown.addEventListener('change', event => {
+            density = parseInt(event.target.value, 10);
+            if (!isNaN(density)) {
+                populateDropdowns(newRow, density);
+            }
+            modello.modifyRingDensity(parseInt(densityDropdown.parentNode.parentNode.id)-1,density);
+            anelli[parseInt(densityDropdown.parentNode.parentNode.id)-1].density=density;
+        });
+        //QUI CI STA UN BUG:
+        //se rimuovo una riga, poi chiamo rimuoviAnello(newRow.id-1)
+        //se dopo rimuovo un'altra riga, è possibile che passdogli l'id la funzione rimuoviAnello
+        //che sta nel file display.js, non trovi un elemento Anello nell'array anelli[] con quell'indice
+        //POSSIBILE SOLUZIONE: non passargli l'id della riga ma qualcos'altro
         newRow.querySelector('.remove-btn').addEventListener('click', () => {
+            if(newRow.id-1==0){
+                alert("Non puoi rimuovere il primo anello!");
+                return;
+            }
             releaseColor(color);
             newRow.remove();
+            rimuoviAnello(newRow.id-1);//qua viene chiamata la funzione incriminata
             toggleAddButtonVisibility();
         });
 
         tableBody.appendChild(newRow);
-        toggleAddButtonVisibility();
+        toggleAddButtonVisibility(); 
     }
 
     function toggleAddButtonVisibility() {
@@ -116,5 +151,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.querySelector('.add-row-btn').addEventListener('click', addRow);
-    addRow();
+    addRow();//di default crea una riga al caricamento della pagina!
 });
