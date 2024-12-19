@@ -275,10 +275,10 @@ function rimuoviUltimoAnello() {
   anelli.pop();
   modello.removeRing(anelli.length-1);
 }
-function rivuoviAnello(i) {
+function rimuoviAnello(i) {
   anelli.splice(i, 1);
   modello.removeRing(i);
-}
+} 
 
 
 function creaAnello(steps, colorInput) {
