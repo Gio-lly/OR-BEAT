@@ -2,7 +2,6 @@
 audioContext = null; // Inizializza audioContext a null (serve per gestire l'audio)
 document.getElementById('continue-btn').disabled = true; // Il pulsante CONTINUA è disabilitato all'inizio
 
-
 // Controlla se il browser supporta AudioContext
 if (!window.AudioContext) {
     alert("Il tuo browser non supporta le funzionalità audio necessarie.");
@@ -10,8 +9,8 @@ if (!window.AudioContext) {
 }
 // ---------------------------------------------------------------------------------
 // Tipi di file audio supportati
-const allowedTypes = ['audio/wav', 'audio/mpeg', 'audio/aac'];
-const dropZone = document.getElementById('welcome'); // Zona di drop per il file
+const allowedTypes = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/aac'];
+const dropZone = document.getElementById('dropZone'); // Zona di drop per il file
 const fileInput = document.getElementById('file-input');
 const fileList = document.getElementById('file-list');
 let isValidFileLoaded = false; // Stato per il file valido
@@ -102,6 +101,22 @@ presetBtn.addEventListener('click', (event) => {
         presetList.appendChild(presetItem);
     });
 });
+// ---------------------------------------------------------------------------------
+// Gestione della rec
+// Ascolta l'evento personalizzato 'recording-completed' quando la registrazione è finita
+window.addEventListener('recording-completed', (event) => {
+    const file = event.detail.file; // Ottieni il file dalla proprietà detail
+    
+    // Aggiungi il file alla lista selectedFiles
+    selectedFiles.unshift(file);
+
+    // Aggiorna il contenuto dell'interfaccia utente con il nome del file registrato
+    displayFileNames(file); // Mostra il nome del file registrato
+
+    // Abilita il pulsante "Continua" ora che un file valido è stato caricato
+    isValidFileLoaded = true;
+    document.getElementById('continue-btn').disabled = false;
+});
 // _________________________________________________________________________________
 // ---------------------------------------------------------------------------------
 // Funzione per creare un nodo in cui facciamo il rilevamento OnSets
@@ -153,7 +168,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
 
         createLoadingModal();
         // Se un file/files valido è stato caricato, nasconde la zona di benvenuto e mostra la workstation
-        document.getElementById('welcome').style.display = 'none';
+        document.getElementById('welcomePage').style.display = 'none';
         document.getElementById('workstation').style.filter = 'none';
 
         const fileOrPreset = selectedFiles[0];
@@ -201,7 +216,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
 
             // Extract Left audio data
             const channelData = audioBuffer.getChannelData(0); // Use first channel (Left Channel)
-
+            
             // Analyze audio and detect onsets
             // ## FrameSize (valore ideale per transients di batteria): 512, 
             // ## Hopsize: framesize/2 oppure framesize/4, 

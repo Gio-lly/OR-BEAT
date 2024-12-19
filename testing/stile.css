@@ -65,7 +65,7 @@ button#continue-btn:hover {
 }
 
 /* Mostra la pagina modale all'avvio */
-#welcome {
+#welcomePage {
     display: flex;
 }
 
