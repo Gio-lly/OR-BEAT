@@ -1,22 +1,29 @@
 // ######################################## GESTIONE DELLA FORMA D'ONDA
-const MIN_THRESHOLD = 0.1;
+const MIN_THRESHOLD = 0.1; // Threshold minima per gli onset (diff. tra gli starting points): 
+                              // se ho due onset molto vicini il secondo lo ignoro!
+const DOUBLE_CLICK_THRESHOLD = 250; // Tempo necessario per distinguere se l'utente fa 'click' o 'doppio-click'
+let clickTimer = null;
 
-const regions = WaveSurfer.Regions.create()
-const regionStartTimes = {};
+const regions = WaveSurfer.Regions.create() // Creiamo una prima istanza del Plugin Region -> Questi sono i marker
+const coloredRegions = WaveSurfer.Regions.create() // Creiamo una seconda istanza del Plugin Region -> Queste sono le regioni colorate
+const regionStartTimes = {}; // Qui mi salverò tutti i starting points
+
 // Give regions a random color when they are created
 const random = (min, max) => Math.random() * (max - min) + min
 const randomColor = () => `rgba(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)}, 0.5)`
 
+//-------------------------------------------------------------------------------- GESTIONE FORMA D'ONDA CON WAVESURFER
+// Creiamo la waveform
 const ws = WaveSurfer.create({
   container: '#waveform',
   waveColor: '#dd5e98',
   progressColor: '#ff4e00',
   cursorColor: '#ddd5e9',
   cursorWidth: 2,
-  plugins: [regions]
+  plugins: [regions, coloredRegions]
 })
 
-function displayWaveform(file) {
+function displayWaveform(file) { // Viene chiamata dallo script.js  e disegna la waveform del file
   const fileURL = URL.createObjectURL(file);  // Crea un URL per il file (un oggetto URL.createObjectURL())
 
   // Carica il file audio in WaveSurfer
@@ -29,33 +36,32 @@ function displayWaveform(file) {
     p5on = true
     setup(p5on) // avvia setup (poi draw()) e quindi rendi visibile tutto il codice p5
 
-
   });
 }
 
-function onsetsRegions(onsetTimestamps, duration) {
+//-------------------------------------------------------------------------------- GESTIONE LETTURA ONSETS
+function onsetsRegions(onsetTimestamps, duration) { // Viene chiamata dallo script.js
+  // duration: durata totale del brano
+
   if (!onsetTimestamps || onsetTimestamps.length === 0) {
     console.error("Nessun onset rilevato."); return;
   }
 
+  // Puliamo e resettiamo...
   regions.clearRegions();
 
-  // Crea la prima regione dal punto 0 al primo onset, sulla forma d'onda
+  // Crea la prima regione 'marker' dal punto 0 al primo onset, sulla forma d'onda
   ws.on('decode', () => {
     const firstRegion = regions.addRegion({
       id: '0',
       content: '',
       start: 0,                       // Tempo di inizio
-      //end: onsetTimestamps[0],     // Tempo di fine
-      //color: randomColor(),  // Colore della regione
       drag: false            // Permette di spostare la regione
-      //resize: true,       // Permette di ridimensionare la regione
-      //maxLength: onsetTimestamps[0]
     });
     regionStartTimes[firstRegion.id] = 0;
   });
 
-  // Crea una regione per ogni onset rilevato
+  // Crea una regione 'marker' per ogni onset rilevato
   for (let i = 0; i < onsetTimestamps.length; i++) {
     const startTime = onsetTimestamps[i];
 
@@ -71,7 +77,7 @@ function onsetsRegions(onsetTimestamps, duration) {
         regionStartTimes[newRegion.id] = startTime;
       });
     } else if ((i + 1) === onsetTimestamps.length && (duration - startTime) >= MIN_THRESHOLD) {
-      // Gestiamo bene la fine/l'ultimo marker
+      // Gestiamo bene la fine/(l'ultimo marker avrà come punto di fine la durata totale del brano)
       ws.on('decode', () => {
         const newRegion = regions.addRegion({
           id: i + 1,
@@ -85,7 +91,7 @@ function onsetsRegions(onsetTimestamps, duration) {
   }
 }
 
-// STOP WHEN REGION IS ENDED
+//-------------------------------------------------------------------------------- GESTIONE PAUSA AUDIO QUANDO ARRIVIAMO AL PROSSIMO MARKER
 let activeRegion = null
 ws.on('timeupdate', (currentTime) => {
   // When the end of the region is reached
@@ -96,36 +102,57 @@ ws.on('timeupdate', (currentTime) => {
   }
 })
 
+//-------------------------------------------------------------------------------- GESTIONE EVENTO CLICK -> riproduco audio
 ws.on('click', () => {
-
   const clickTime = ws.getCurrentTime(); // Ottieni il tempo in cui è stato cliccato
   const regionsArray = regions.getRegions();
-
-  // Trova la regione più vicina al click
   let clickedRegion = null;
-  for (let i = 0; i < regionsArray.length; i++) {
-    if ((i + 1) < regionsArray.length) {
-      const startTime = regionsArray[i].start;
-      const nextStartTime = regionsArray[i + 1].start;
 
-      // Se il tempo di clic è tra startTime e endTime della regione
-      if (clickTime >= startTime && clickTime <= nextStartTime) {
-        clickedRegion = { id: regionsArray[i].id, start: startTime, end: nextStartTime };
-        activeRegion = clickedRegion
-        //console.log(clickedRegion.id)
-        break;
+  // RILEVAZIONE DOPPIO-CLICK
+  if (clickTimer !== null) {
+    clearTimeout(clickTimer);  // Ferma il timer del clic singolo, questo significa che è un doppio clic
+    clickTimer = null;  // Reset del timer
+    //console.log("Doppio clic rilevato");
+    // puliamo...
+    coloredRegions.clearRegions();
+    doubleclick();
+
+
+    // RILEVAZIONE 'CLICK' SINGOLO
+  } else {
+    // Avviamo un timer per il clic singolo
+    clickTimer = setTimeout(() => {
+      //console.log("Clic singolo rilevato");
+      // puliamo...
+      coloredRegions.clearRegions();
+      // Cerca la regione più vicina al clic
+      for (let i = 0; i < regionsArray.length; i++) {
+        if ((i + 1) < regionsArray.length) {
+          const startTime = regionsArray[i].start;
+          const nextStartTime = regionsArray[i + 1].start;
+
+          // Se il tempo di clic è tra startTime e nextStartTime della regione
+          if (clickTime >= startTime && clickTime <= nextStartTime) {
+            clickedRegion = { id: regionsArray[i].id, start: startTime, end: nextStartTime };
+            activeRegion = clickedRegion;
+            break;
+          }
+        } else {
+          // l'ultima regione dovrà suonare fino alla fine del brano
+          ws.play(ws.getCurrentTime(), ws.getDuration());
+        }
       }
-    } else {
-      // fine
-      ws.play(ws.getCurrentTime(), ws.getDuration())
-    }
-  }
 
-  if (activeRegion !== null) {
-    ws.play();
+      if (clickedRegion !== null) {
+        ws.play();
+      }
+      clickTimer = null;  // Reset del timer dopo aver gestito il clic singolo
+    }, DOUBLE_CLICK_THRESHOLD);
   }
 });
 
+//-------------------------------------------------------------------------------- GESTIONE OVERLAPPING MARKER
+// Funzione per capire se tutti i marker sono in ordine oppure no, se restituisce False ho sovrapposizione di due marker
 function checkStartTimesOrder() {
   // Ottieni tutte le regioni
   const regionsArray = regions.getRegions();
@@ -152,6 +179,8 @@ regions.on('region-updated', (region) => {
   const originalStartTime = regionStartTimes[region.id];
   const newStartTime = region.start;
 
+  // puliamo...
+  coloredRegions.clearRegions();
   // Ottieni tutte le regioni esistenti
   const regionsArray = regions.getRegions();
 
@@ -177,6 +206,54 @@ ws.once('decode', () => {
   }
 })
 
+//-------------------------------------------------------------------------------- GESTIONE EVENTO DOPPIO-CLICK
+function doubleclick() {
+  const clickTime = ws.getCurrentTime(); // Ottieni il tempo in cui è stato cliccato
+  const regionsArray = regions.getRegions();
+  let newRegion = null;
+  let startTime = null;
+  let nextStartTime = null;
+
+  // Cerca la regione più vicina al clic
+  for (let i = 0; i < regionsArray.length; i++) {
+    startTime = regionsArray[i].start;
+    
+    if ((i + 1) < regionsArray.length) {
+
+      nextStartTime = regionsArray[i + 1].start;
+      // Se il tempo di clic è tra startTime e nextStartTime della regione
+      if (clickTime >= startTime && clickTime <= nextStartTime) {
+        newRegion = coloredRegions.addRegion({
+          start: startTime,                       // Tempo di inizio
+          end: nextStartTime,     // Tempo di fine
+          color: randomColor(),  // Colore della regione
+          drag: false,            // Permette di spostare la regione
+          resize: false,       // Permette di ridimensionare la regione
+        });
+
+        break;
+      }
+    } else {
+      // fine della lista delle regioni
+      nextStartTime = ws.getDuration();
+
+      newRegion = coloredRegions.addRegion({
+        start: startTime,                       // Tempo di inizio
+        end: ws.getDuration(),     // Tempo di fine
+        color: randomColor(),  // Colore della regione
+        drag: false,            // Permette di spostare la regione
+        resize: false,       // Permette di ridimensionare la regione
+      });
+
+      break;
+    }
+  }
+
+
+  // LOGICA DI ESPORTAZIONE
+
+
+}
 // _________________________________________________________________________________
 // ######################################## GESTIONE DELLA DRUM MACHINE IN p5
 p5on = false // se imposta su false setup non runna, quindi tutto il codice p5 non sarà runnato.

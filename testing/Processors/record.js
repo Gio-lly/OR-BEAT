@@ -1,10 +1,10 @@
-// ######################################## GESTIONE DELLA REGISTRAZIONE AUDIO
+// ######################################## GESTIONE DELLA REGISTRAZIONE AUDIO (MAX. 1 MINUTE)
 let wsurf, wave
 // Utilizziamo il Plugin Record di Wavesurfer
 let record = WaveSurfer.Record.create({
   renderRecordedAudio: true, // visualizza l'onda durante la registrazione
   continuousWaveform: true,  // Abilita la visualizzazione continua
-  continuousWaveformDuration: 30, // Durata opzionale della visualizzazione continua
+  continuousWaveformDuration: 60, // Durata opzionale della visualizzazione continua
   bufferSize: 2048, // Dimensione del buffer (implica la qualità del waveform)
 });
 
@@ -22,33 +22,35 @@ const createWaveSurfer = () => {
     container: '#mic', // link all' html
     waveColor: '#dd5e98',
     progressColor: '#ff4e00',
-    plugins: [record]
+    plugins: [record] // aggiungiamo il plugin Record
   })
 
-  // GESTIONE INIZIO REC: sovrascriviamo la rec precedente se c'era...
+  //-------------------------------------------------------------------------------- GESTIONE INIZIO REC: 
   record.on('record-start', () => {
+    // sovrascriviamo la rec precedente se c'era...
     if (wave) {
       wave.destroy()
     }
 
-    // Rimozione del pulsante di play e il link di download dalla sezione precedente
+    // Rimozione del pulsante di play e del link di download dalla sezione precedente
     const container = document.querySelector('#recordings');
     container.innerHTML = '';
   })  
 
-  // GESTIONE REC FINITA: salvataggio della registrazione
+  //-------------------------------------------------------------------------------- GESTIONE FINE REC: 
+  // salvataggio della registrazione
   record.on('record-end', (blob) => {
     const container = document.querySelector('#recordings')
     const recordedUrl = URL.createObjectURL(blob)
 
-    // Play button
+    // Comportamento del Play/Pause button(s)
     const button = container.appendChild(document.createElement('button'))
     button.textContent = 'Play'
     button.onclick = () => wsurf.playPause()
     wsurf.on('pause', () => (button.textContent = 'Play'))
     wsurf.on('play', () => (button.textContent = 'Pause'))
 
-    // Download link
+    // rendiamo disponibile un Download link
     const link = container.appendChild(document.createElement('a'))
     Object.assign(link, {
       href: recordedUrl,
@@ -59,7 +61,7 @@ const createWaveSurfer = () => {
     // Aggiungi il file Webm alla lista di selectedFiles in script.js
     const blobFile = new File([blob], 'recorded_audio.webm', { type: 'audio/webm' });
 
-    // Emissione dell'evento personalizzato per passare il file Webm
+    // Emissione dell'evento personalizzato per passare il file Webm, così che possiamo processarlo
     const event = new CustomEvent('recording-completed', { detail: { file: blobFile } });
     window.dispatchEvent(event);
   });
@@ -68,11 +70,12 @@ const createWaveSurfer = () => {
   recButton.textContent = 'Record'
 
   record.on('record-progress', (time) => {
+    // TIMER OROLOGIO DURANTE REGISTRAZIONE
     updateProgress(time)
   })
 }
 
-// GESTIONE PROGRESSO IN SECONDI
+//-------------------------------------------------------------------------------- GESTIONE TIMER OROLOGIO (IN SECONDI)
 const progress = document.querySelector('#progress')
 const updateProgress = (time) => {
   // time will be in milliseconds, convert it to mm:ss format
@@ -83,9 +86,16 @@ const updateProgress = (time) => {
     .map((v) => (v < 10 ? '0' + v : v))
     .join(':')
   progress.textContent = formattedTime
+
+  // !!SE LA REGISTRAZIONE SUPERA 60sec LA FERMO E SONO PRONTO A PROCESSARE IL FILE!!
+  if (time >= 60000) {
+    record.stopRecording(); // Ferma la registrazione
+    recButton.textContent = 'Record'; // Ripristina il bottone di registrazione
+    pauseButton.style.display = 'none'; // Nasconde il bottone di pausa
+  }
 }
 
-// GESTIONE BOTTONE 'PAUSE'
+//-------------------------------------------------------------------------------- GESTIONE BOTTONE PAUSE
 const pauseButton = document.querySelector('#pause')
 pauseButton.onclick = (event) => {
   event.stopPropagation();
@@ -99,6 +109,7 @@ pauseButton.onclick = (event) => {
   pauseButton.textContent = 'Resume'
 }
 
+//-------------------------------------------------------------------------------- GESTIONE MIC SELECTION
 const micSelect = document.querySelector('#mic-select')
 
 micSelect.addEventListener('click', function(event) {
@@ -115,7 +126,7 @@ WaveSurfer.Record.getAvailableAudioDevices().then((devices) => {
   })
 })
 
-// Record button
+//-------------------------------------------------------------------------------- GESTIONE RECORD BUTTON
 const recButton = document.querySelector('#record')
 
 recButton.onclick = (event) => {
