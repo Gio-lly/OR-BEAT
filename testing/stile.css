@@ -158,14 +158,6 @@ button.remove-btn {
     border-radius: 5px;
 }
 
-#waveform ::part(marker) {
-    border: 1px solid #fff;
-    padding: 1px;
-    text-indent: 10px;
-    font-family: fantasy;
-    text-decoration: underline;
-  }
-
 #canvas-container {
     position: absolute;
     top: 50%;
@@ -175,4 +167,75 @@ button.remove-btn {
     height: 400px;
     background-color: #1e1e1e;
     border-radius: 10px;
+}
+
+/*#####################################################################################################*/
+/*#################################### SEZIONE WAVEFORM ###############################################*/
+
+#waveform {
+    background: rgba(6, 6, 6, 0.845); /* Trasparente, effetto vetro */
+    /* Sfuoca lo sfondo dietro la sezione */
+    border: 4px solid #e2e1ea; /* Bordi spessi con colore del legno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombra leggera per profondità *//* Centra il contenuto all'interno */
+    box-sizing: border-box; /* Include il bordo nelle dimensioni */
+}
+
+#waveform ::part(marker) {
+    border: 1px solid #d12d2d;
+    padding: 1px;
+}
+
+#waveform-controls {
+    color: #000000; /* Colore del testo */
+}
+
+/*#####################################################################################################*/
+/*#################################### SEZIONE SLOT AUDIO #############################################*/
+.savings {
+    display: flex;
+    gap: 10px; /* Aumentato il gap per distanziare meglio gli slot */
+    width: 100%; /* Aumentata la larghezza del container */
+    justify-content: center; /* Gli slot saranno centrati all'interno del container */
+    background-color: #e2e1ea; /* Colore di sfondo invariato */
+    padding: 15px; /* Aggiunto padding per creare spazio tra gli slot e i bordi del container */
+    box-sizing: border-box; /* Assicura che il padding non influisca sulle dimensioni complessive */
+}
+
+.slot {
+    width: 130px;
+    height: 80px;
+    background: linear-gradient(180deg, #8A898F, #6C6C6F); /* Gradiente per simulare profondità */
+    border: none; /* Rimuove il bordo visibile */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px; /* Arrotonda i bordi */
+    box-shadow: 
+        inset 4px 4px 8px rgba(0, 0, 0, 0.4),  /* Ombra scura interna (sotto e sinistra) */
+        inset -4px -4px 8px rgba(255, 255, 255, 0.2), /* Ombra chiara interna (sopra e destra) */
+        0 1px 2px rgba(0, 0, 0, 0.2); /* Leggera ombra esterna */
+    box-sizing: border-box; /* Include padding e border nel calcolo delle dimensioni */
+    transition: box-shadow 0.2s, transform 0.2s; /* Transizioni per interattività */
+
+    font-size: 17px; /* Dimensione del testo */
+    font-family: 'Archivo'; /* Font del testo */
+    color: #000000; /* Colore del testo */
+    text-align: center; /* Allinea il testo */
+}
+
+/* Effetto al passaggio del mouse */
+.slot:hover {
+    box-shadow: 
+        inset 3px 3px 6px rgba(0, 0, 0, 0.5), 
+        inset -3px -3px 6px rgba(255, 255, 255, 0.2), 
+        0 2px 4px rgba(0, 0, 0, 0.3); /* Ombra più pronunciata */
+}
+
+/* Effetto clic (pressione) */
+.slot:active {
+    box-shadow: 
+        inset 2px 2px 4px rgba(0, 0, 0, 0.6), 
+        inset -2px -2px 4px rgba(255, 255, 255, 0.3), 
+        0 1px 2px rgba(0, 0, 0, 0.2); /* Ombra ridotta */
+    transform: translateY(1px); /* Simula un leggero spostamento */
 }

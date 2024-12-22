@@ -42,7 +42,7 @@ const createWaveSurfer = () => {
   record.on('record-end', (blob) => {
     const container = document.querySelector('#recordings')
     const recordedUrl = URL.createObjectURL(blob)
-
+    
     // Comportamento del Play/Pause button(s)
     const button = container.appendChild(document.createElement('button'))
     button.textContent = 'Play'

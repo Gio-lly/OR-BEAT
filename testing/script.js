@@ -21,20 +21,35 @@ let selectedFiles = [];
 function displayFileNames(fileUtente) {
     isValidFileLoaded = false; // Resetta lo stato del file valido
     let content = '';
+    let duration = null; 
 
-    if (!allowedTypes.includes(fileUtente.type)) {
-        // Se il file non è valido, mostra un messaggio di errore
-        content = `<p style="color: red;">Errore: Il file "${fileUtente.name}" non è consentito. 
-                   I file consentiti sono .wav/.mp3/.aac</p>`;
-    } else {
-        // Se il file è valido, aggiunge il nome del file alla lista
-        content = `<p>File accettato: ${fileUtente.name}</p>`;
-        isValidFileLoaded = true; // Imposta lo stato su vero
-        // Aggiorna lo stato del pulsante Continua
-        document.getElementById('continue-btn').disabled = !isValidFileLoaded;
-    }
-    // Una sola operazione DOM
-    fileList.innerHTML = content;
+    // Controlliamo la durata del file -> se supera 2 minuti lancia eccezione
+    const player = new Tone.Player({
+        url: URL.createObjectURL(fileUtente), 
+        onload: () => {
+            duration = player.buffer.duration; // Ottieni la durata dopo il caricamento
+
+            if (!allowedTypes.includes(fileUtente.type)) {
+                // Se il file non è valido, mostra un messaggio di errore
+                content = `<p style="color: red;">Errore: Il file "${fileUtente.name}" non è consentito. 
+                           I file consentiti sono .wav/.mp3/.aac</p>`;
+            } else if (duration > 120) { 
+                // Se il file dura più di 2 minuti
+                content = `<p style="color: red;">Errore: Il file "${fileUtente.name}" non è consentito 
+                           perchè dura più di 2 minuti</p>`;
+            } else {
+                // Se il file è valido, aggiunge il nome del file alla lista
+                content = `<p>File accettato: ${fileUtente.name}</p>`;
+                isValidFileLoaded = true; // Imposta lo stato su vero
+            }
+
+            // Aggiorna lo stato del pulsante Continua
+            document.getElementById('continue-btn').disabled = !isValidFileLoaded;
+
+            // Una sola operazione DOM
+            fileList.innerHTML = content;
+        }
+    });
 }
 // ---------------------------------------------------------------------------------
 // Evento click sulla drop zone
@@ -160,7 +175,8 @@ async function createOnsetDetectorNode() {
 // Funzione per gestire il caricamento del file audio solo quando si clicca 'CONTINUA'
 let sampleRate = null;
 let file = null;
-onsetDetect = null;
+let audioBuffer = null;
+let onsetDetect = null;
 var onsetTimestamps = [];
 
 document.getElementById('continue-btn').addEventListener('click', async function (event) {
@@ -212,7 +228,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
             // decodeAudio si occupa di decodificare un buffer di dati audio (ad esempio, un file audio caricato) 
             // in un formato che può essere utilizzato dall'API Audio di JavaScript per l'elaborazione e la riproduzione
             const arrayBuffer = await file.arrayBuffer();
-            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio;                                                                       
+            audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio;                                                                       
             const sampleRate = audioBuffer.sampleRate;
 
             // Extract Left audio data
@@ -265,3 +281,57 @@ function detectOnsets(channelData, sampleRate, frameSize, hopSize, sensitivity) 
   
     return onsetTimestamps;
 }
+// _________________________________________________________________________________
+// ---------------------------------------------------------------------------------
+// In ascolto quando i dati sono pronti, poi chiama la funzione per estrarre il segmento e inserirlo nello slot
+window.addEventListener('waveDataReady', () => {
+    if (window.waveData) {
+        const { startTime, nextStartTime } = window.waveData;
+        //console.log('Start Time:', startTime);
+        //console.log('Next Start Time:', nextStartTime);
+
+        // Inserisci il segmento audio nello slot
+        const container = document.querySelector('.savings'); // Contenitore di slot
+        handleSegmentExtraction(audioBuffer, startTime, nextStartTime, container);
+    } else {
+        console.log('Dati audio non disponibili.');
+    }
+});
+
+// Ascolta quando waveData è pronto, l'utente ha fatto doppio-click su una regione
+// Funzione per estrarre e inserire un segmento audio, e riprodurlo al click
+let index = 0;
+function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, container) {
+
+    const startSample = Math.floor(startTime * audioBuffer.sampleRate);
+    const endSample = Math.floor(nextStartTime * audioBuffer.sampleRate);
+    let segmentBuffer = null;
+    
+    // Estraiamo la porzione dei dati audio dal buffer
+    const leftChannel = audioBuffer.getChannelData(0).slice(startSample, endSample); // Canale sinistro
+    if (audioBuffer.numberOfChannels > 1) {
+        const rightChannel = audioBuffer.getChannelData(1).slice(startSample, endSample); // Canale destro
+        segmentBuffer = audioContext.createBuffer(2, leftChannel.length, audioBuffer.sampleRate);
+        segmentBuffer.getChannelData(0).set(leftChannel);
+        segmentBuffer.getChannelData(1).set(rightChannel); 
+    } else { // Le rec sono MONO
+        segmentBuffer = audioContext.createBuffer(1, leftChannel.length, audioBuffer.sampleRate);
+        segmentBuffer.getChannelData(0).set(leftChannel);
+    }
+
+    // Trovo uno slot disponibile e inserisco lì il segmento audio selezionato
+    const slots = container.querySelectorAll('.slot');
+
+    slots[index].textContent = `${startTime.toFixed(2)} - ${nextStartTime.toFixed(2)}`; // la cella avrà questa label
+    const player = new Tone.Player(segmentBuffer).toDestination();
+    player.autostart = false;  // Impedisce la riproduzione automatica
+    
+    // Aggiungo un evento di click per riprodurre l'audio quando si clicca sullo slot
+    slots[index].addEventListener('click', () => {
+        player.start();
+    });
+    
+    slots[index].style.background = 'linear-gradient(180deg,rgb(250, 207, 139),rgb(247, 180, 80))';
+    // Aumento l'indice e faccio in modo che torni a 0 dopo 6
+    index = (index + 1) % 6;
+}  

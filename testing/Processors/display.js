@@ -6,6 +6,15 @@ let clickTimer = null;
 
 const regions = WaveSurfer.Regions.create() // Creiamo una prima istanza del Plugin Region -> Questi sono i marker
 const coloredRegions = WaveSurfer.Regions.create() // Creiamo una seconda istanza del Plugin Region -> Queste sono le regioni colorate
+const timeline = WaveSurfer.Timeline.create({
+  height: 20,
+  timeInterval: 0.1,
+  primaryLabelInterval: 0.5,
+  style: {
+    fontSize: '15px',
+    color: '#B8860B',
+  },
+})
 const regionStartTimes = {}; // Qui mi salverò tutti i starting points
 
 // Give regions a random color when they are created
@@ -16,11 +25,11 @@ const randomColor = () => `rgba(${random(0, 255)}, ${random(0, 255)}, ${random(0
 // Creiamo la waveform
 const ws = WaveSurfer.create({
   container: '#waveform',
-  waveColor: '#dd5e98',
-  progressColor: '#ff4e00',
+  waveColor: '#748DA6',
+  progressColor: '#EDD27C',
   cursorColor: '#ddd5e9',
   cursorWidth: 2,
-  plugins: [regions, coloredRegions]
+  plugins: [regions, coloredRegions, timeline]
 })
 
 function displayWaveform(file) { // Viene chiamata dallo script.js  e disegna la waveform del file
@@ -31,11 +40,12 @@ function displayWaveform(file) { // Viene chiamata dallo script.js  e disegna la
 
   // Mostra la sezione contenente la checkbox e lo zoom
   ws.on('ready', function () {
+    document.querySelector('.savings').style.display = 'flex';
     document.getElementById('waveform-controls').style.display = 'block';
 
     p5on = true
     setup(p5on) // avvia setup (poi draw()) e quindi rendi visibile tutto il codice p5
-
+    
   });
 }
 
@@ -210,6 +220,7 @@ ws.once('decode', () => {
 function doubleclick() {
   const clickTime = ws.getCurrentTime(); // Ottieni il tempo in cui è stato cliccato
   const regionsArray = regions.getRegions();
+  let data = null;
   let newRegion = null;
   let startTime = null;
   let nextStartTime = null;
@@ -231,6 +242,7 @@ function doubleclick() {
           resize: false,       // Permette di ridimensionare la regione
         });
 
+        data = { startTime: startTime, nextStartTime: nextStartTime };
         break;
       }
     } else {
@@ -245,14 +257,16 @@ function doubleclick() {
         resize: false,       // Permette di ridimensionare la regione
       });
 
+      data = { startTime: startTime, nextStartTime: ws.getDuration()};
       break;
     }
   }
 
-
   // LOGICA DI ESPORTAZIONE
-
-
+  const event = new CustomEvent('waveDataReady');
+  // Memorizza i dati in una variabile globale (window)
+  window.waveData = data;
+  window.dispatchEvent(event);
 }
 // _________________________________________________________________________________
 // ######################################## GESTIONE DELLA DRUM MACHINE IN p5

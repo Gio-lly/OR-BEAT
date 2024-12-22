@@ -17,6 +17,7 @@
     <script src="https://unpkg.com/wavesurfer.js@latest"></script>
     <script src="https://unpkg.com/wavesurfer.js@latest/dist/plugins/regions.min.js"></script>
     <script src="https://unpkg.com/wavesurfer.js@latest/dist/plugins/record.min.js"></script>
+    <script src="https://unpkg.com/wavesurfer.js@latest/dist/plugins/timeline.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/meyda/dist/web/meyda.min.js"></script>
 
     <link rel="icon" href="favicon.png" type="image/png">
@@ -75,15 +76,39 @@
     <!-- Qui abbiamo la nostra workstation, abilitata una volta caricato il file -->
     <div class="page home" id="workstation">
        
+        <!-- Qui abbiamo la waveform -->
        <div id="waveform"></div>
-       <div id="waveform-controls" style="display: none;">
-        <label style="margin-left: 2em">
-          Zoom: <input type="range" min="10" max="1000" value="10" />
-        </label>
-       </div>
        
-       <br>
-       <br>
+       <!-- Qui abbiamo le celle con i segmenti audio selezionati dall'utente -->
+       <div class="savings" style="display: none;">
+            <div class="slot" draggable="true">
+                <label></label>
+            </div>
+            <div class="slot" draggable="true">
+                <label></label>
+            </div>
+            <div class="slot" draggable="true">
+                <label></label>
+            </div>
+            <div class="slot" draggable="true">
+                <label></label>
+            </div>
+            <div class="slot" draggable="true">
+                <label></label>
+            </div>
+            <div class="slot" draggable="true">
+                <label></label>
+            </div>
+
+            <!-- Qui abbiamo controlli come lo zoom -->
+            <div id="waveform-controls" style="display: none;">
+                <label style="margin-left: 2em">
+                  Zoom <input type="range" min="10" max="1000" value="10" />
+                </label>
+            </div>
+        </div>
+
+       <!-- Qui abbiamo la drum machine -->
        <div id="matrix-container"></div>
        <!--div id="canvas-container"></div>
 
