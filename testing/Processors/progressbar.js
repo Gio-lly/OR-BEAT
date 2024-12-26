@@ -7,14 +7,16 @@ function createLoadingModal() {
     modal.style.left = '0';
     modal.style.width = '100%';
     modal.style.height = '100%';
-    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    modal.style.backgroundColor = 'rgba(1, 1, 1, 0.8)';
     modal.style.display = 'flex';
     modal.style.justifyContent = 'center';
     modal.style.alignItems = 'center';
     modal.style.zIndex = '1000';
+    modal.style.fontFamily = 'Space, monospace';
+    modal.style.color = 'rgba(221, 221, 221, 1)'
 
     const modalContent = document.createElement('div');
-    modalContent.style.backgroundColor = '#fff';
+    modalContent.style.color = 'rgba(221, 221, 221, 1)'
     modalContent.style.padding = '20px';
     modalContent.style.borderRadius = '10px';
     modalContent.style.textAlign = 'center';

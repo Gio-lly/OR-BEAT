@@ -11,7 +11,7 @@ if (!window.AudioContext) {
 // ---------------------------------------------------------------------------------
 // Tipi di file audio supportati
 const allowedTypes = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/aac'];
-const dropZone = document.getElementById('dropZone'); // Zona di drop per il file
+const dropZone = document.getElementById('welcomePage'); // Zona di drop per il file
 const fileInput = document.getElementById('file-input');
 const fileList = document.getElementById('file-list');
 let isValidFileLoaded = false; // Stato per il file valido
@@ -31,15 +31,15 @@ function displayFileNames(fileUtente) {
 
             if (!allowedTypes.includes(fileUtente.type)) {
                 // Se il file non è valido, mostra un messaggio di errore
-                content = `<p style="color: red;">Errore: Il file "${fileUtente.name}" non è consentito. 
+                content = `<p style="color: #E52137;">Il file "${fileUtente.name}" non è consentito.\n 
                            I file consentiti sono .wav/.mp3/.aac</p>`;
             } else if (duration > 120) { 
                 // Se il file dura più di 2 minuti
-                content = `<p style="color: red;">Errore: Il file "${fileUtente.name}" non è consentito 
+                content = `<p style="color: #E52137;">Il file "${fileUtente.name}" non è consentito 
                            perchè dura più di 2 minuti</p>`;
             } else {
                 // Se il file è valido, aggiunge il nome del file alla lista
-                content = `<p>File accettato: ${fileUtente.name}</p>`;
+                content = `<p>File accepted: ${fileUtente.name}</p>`;
                 isValidFileLoaded = true; // Imposta lo stato su vero
             }
 
@@ -65,15 +65,24 @@ fileInput.addEventListener('change', (event) => {
 });
 
 // Drag-and-drop eventi
+let isDragging = false;
+
 dropZone.addEventListener('dragover', (event) => {
     event.preventDefault(); // Impedisce il comportamento di default del browser
-    document.getElementById("title").textContent = "DROP!"; // Modifica il testo della zona di drop
-    dropZone.classList.add('dragover'); // Aggiunge stile alla zona di drop
+    if (!isDragging) {
+        isDragging = true;
+        document.getElementById("title").textContent = "DROP!"; // Modifica il testo della zona di drop
+        dropZone.classList.add('dragover'); // Aggiunge stile alla zona di drop
+    }
 });
 
-dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('dragover'); // Rimuove lo stile quando il file esce dalla zona di drop
-    document.getElementById("title").textContent = "Benvenuto!";
+dropZone.addEventListener('dragleave', (event) => {
+    // risolto bug dragleave
+    if(!dropZone.contains(event.relatedTarget)) {
+        isDragging = false;
+        dropZone.classList.remove('dragover'); // Rimuove lo stile quando il file esce dalla zona di drop
+        document.getElementById("title").textContent = "Welcome on the @endurancePlugin!";
+    }
 });
 
 // Questo Listener è necessario per gestire il drop audio
@@ -82,7 +91,7 @@ dropZone.addEventListener('drop', (event) => {
     dropZone.classList.remove('dragover');
     const files = event.dataTransfer.files; // File trascinati
     selectedFiles.unshift(files[0]);
-    document.getElementById("title").textContent = "Benvenuto!";
+    document.getElementById("title").textContent = "Welcome on the @endurancePlugin!";
     displayFileNames(files[0]);
 });
 // ---------------------------------------------------------------------------------
@@ -104,13 +113,15 @@ presetBtn.addEventListener('click', (event) => {
     // Aggiunge un pulsante per ogni preset
     presets.forEach(preset => {
         const presetItem = document.createElement('button');
+        presetItem.classList.add('preset-button'); // così gestiamo il css
+        
         presetItem.textContent = preset.name;
         presetItem.addEventListener('click', (event) => {
             event.stopPropagation();
 
             selectedFiles.unshift({ file: preset.file, type: preset.type });
             // Mostra il file selezionato nell'elenco file
-            fileList.innerHTML = `<p>Preset selezionato: ${preset.file.replace('Assets/', '')}</p>`;
+            fileList.innerHTML = `<p>Selected preset: ${preset.file.replace('Assets/', '')}</p>`;
             isValidFileLoaded = true; // Imposta lo stato su vero
             document.getElementById('continue-btn').disabled = false;
         });
@@ -185,8 +196,11 @@ document.getElementById('continue-btn').addEventListener('click', async function
 
         createLoadingModal();
         // Se un file/files valido è stato caricato, nasconde la zona di benvenuto e mostra la workstation
-        document.getElementById('welcomePage').style.display = 'none';
+        document.getElementById('welcomePage').style.display = 'none'; // eliminiamo quando continue
         document.getElementById('workstation').style.filter = 'none';
+        document.querySelector('.navbar').style.display = 'none'; // eliminiamo quando continue
+        document.querySelector('.credits').style.display = 'none'; // eliminiamo quando continue
+        document.querySelector('.letter-container').style.display = 'none'; // eliminiamo quando continue
 
         const fileOrPreset = selectedFiles[0];
 
@@ -209,6 +223,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
                 }
                 const blob = await response.blob();
                 file = new File([blob], fileOrPreset.file.split('/').pop(), { type: fileOrPreset.type });
+                updateProgressBar(30); // AGGIORNO PROGRESS BAR...
             } catch (error) {
                 console.error(error.message);
                 alert('Errore nel caricamento del preset audio.');
@@ -216,6 +231,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
         } else if (fileOrPreset instanceof File) {
             // Se è un file caricato dall'utente, lo usiamo
             file = fileOrPreset;
+            updateProgressBar(30); // AGGIORNO PROGRESS BAR...
         }
 
         // Se audioContext non è stato creato, lo crea
@@ -224,11 +240,13 @@ document.getElementById('continue-btn').addEventListener('click', async function
                 audioContext = new AudioContext();
             }
             await audioContext.resume();
+            updateProgressBar(50); // AGGIORNO PROGRESS BAR...
 
             // decodeAudio si occupa di decodificare un buffer di dati audio (ad esempio, un file audio caricato) 
             // in un formato che può essere utilizzato dall'API Audio di JavaScript per l'elaborazione e la riproduzione
             const arrayBuffer = await file.arrayBuffer();
-            audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio;                                                                       
+            audioBuffer = await audioContext.decodeAudioData(arrayBuffer); // dati utilizzabili in contesto audio; 
+            updateProgressBar(70); // AGGIORNO PROGRESS BAR...                                                                     
             const sampleRate = audioBuffer.sampleRate;
 
             // Extract Left audio data
@@ -241,11 +259,14 @@ document.getElementById('continue-btn').addEventListener('click', async function
             const onsetTimestamps = detectOnsets(channelData, sampleRate, 512, 256, 150);
 
             modello.setonsets(onsetTimestamps);
-            
-            //console.log("Detected onsets (seconds):", onsetTimestamps);
-            removeLoadingModal();
-            displayWaveform(file);
-            onsetsRegions(onsetTimestamps, audioBuffer.duration);
+            updateProgressBar(100); // AGGIORNO PROGRESS BAR...
+
+            setTimeout(() => {
+                //console.log("Detected onsets (seconds):", onsetTimestamps);
+                removeLoadingModal();
+                displayWaveform(file);
+                onsetsRegions(onsetTimestamps, audioBuffer.duration);
+            }, 1000);
         } catch (error) {
             console.error("Error processing the file:", error);
         }

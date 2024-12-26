@@ -1,4 +1,67 @@
+/*#####################################################################################################*/
+/*#################################### SEZIONE INIZIALE LOGO E ANIMAZIONI #############################*/
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.navbar {
+    position: fixed;
+    width: 100%;
+    height: 800px;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    font-family: Space, monospace !important;
+    font-size: 20px;
+    text-transform: uppercase;
+    line-height: 100px;
+    color: #010101;
+    z-index: 2;
+}
+
+.site-menu {
+	display: flex;
+    z-index: 2;
+}
+
+.credits {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	padding: 40px;
+	font-family: Space, monospace !important;
+    font-size: 20px;
+	text-transform: uppercase;
+	color: #010101;
+    z-index: 2;
+}
+
+.blocks {
+	display: flex;
+	font-size: 160px;
+	color: #010101;
+}
+
+.letter-container {
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #DDDDDD;
+	font-family: Space, monospace !important;
+    
+}
+
+/*#####################################################################################################*/
+/*#################################### SEZIONE PAGE MODAL #############################################*/
+
 body {
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center; /* Centratura verticale */
@@ -6,9 +69,9 @@ body {
     height: 100vh;          /* Assicura che il body occupi tutta l'altezza */
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: white;
+    font-family: Space, monospace;
+    background-color: #010101;
+    color: #DDDDDD;
 }
 
 .page {
@@ -16,15 +79,6 @@ body {
     width: 100%;
     height: 100vh;
     position: relative;
-}
-
-#workstation {
-    display: block; /* Nascondi la workstation all'inizio */
-    background-color: #1e1e1e;
-    color: white;
-    text-align: center;
-    font-size: 20px;
-    filter: blur(100px);
 }
 
 .modal {
@@ -37,61 +91,197 @@ body {
     transform: translate(-50%, -50%); /* Sposta esattamente al centro dello schermo */
     width: 70%; /* Larghezza della modale */
     height: 80vh; /* Altezza della modale */
-    background-color: rgba(38, 38, 38, 0.9); 
-    border: 2px solid white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    color: white;
+    background-color: #010101; 
+    border: 10px #DDDDDD;
+    border-radius: 80px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    color: #DDDDDD;
     text-align: center;
     flex-direction: column; /* Disposizione verticale */
-    z-index: 1000; }
+    z-index: 1000;
+}
 
 .modal p {
     font-size: 24px;
     margin: 20px 0;
 }
 
+.modal #title {
+    font-size: 34px;
+    margin: 20px 0;
+    border: 4px solid #DDDDDD; /* Aggiunge un contorno nero di 2px */
+    border-radius: 15px; /* Rende gli angoli rotondi con raggio di 15px */
+    padding: 10px; /* Aggiunge un po' di spazio interno per evitare che il testo tocchi il bordo */
+}
+
+
 button#continue-btn {
-    background-color: #007BFF;
-    color: white;
-    border: none;
+    font-family: Space, monospace;
+    text-align: center;
+    border: 1px solid;
+    background-color: #007AE2;
+    color: #DDDDDD;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 24px;
+
+    box-shadow: inset 0 0 25px #13274F;
+    outline: 1px solid;
+    outline-color: rgba(255, 255, 255, 0);
+    outline-offset: 0px;
+    text-shadow: none;
+    -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+            transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+    outline-color: #DDDDDD;
+    outline-offset: 0px;
 }
 
 button#continue-btn:hover {
     background-color: #0056b3;
-}
-
-/* Mostra la pagina modale all'avvio */
-#welcomePage {
-    display: flex;
-}
-
-/*PER CARICARE IL FILE*/
-.drop-zone {
-    width: 400px;
-    height: 200px;
-    border: 2px dashed #007BFF;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: #ffffff;
-    transition: background-color 0.3s;
+    border: 1px solid;
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+    outline-offset: 15px;
+    outline-color: rgba(255, 255, 255, 0);
+    text-shadow: 1px 1px 2px #427388;
 }
 
 .dragover {
     background-color: #4fa53e;
-    border-color: #0056b3;
+    border: 5px dashed #0056b3
 }
 
-.drop-zone p {  
-    font-size: 18px;
-    color: #333333;
+button#preset-btn {
+    font-family: Space, monospace;
+    text-align: center;
+    border: 0 solid;
+    background-color: #DDDDDD;
+    color: #181818;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+
+    box-shadow:rgb(40,40,40) 0px 4px 1px,	rgb(80,80,80) 0px 4px 8px -3px, rgb(105,105,105) 0px -3px 0px inset;
+    outline: 2px solid;
+    outline-offset: 0px;
+    text-shadow: none;
+    outline-color: rgb(105,105,105);
+    outline-offset: 0px;
 }
+
+#preset-list > button{
+    font-family: Space, monospace;
+    text-align: center;
+    border: 0 solid;
+    background-color: #DDDDDD;
+    color: #181818;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+
+    box-shadow:rgb(40,40,40) 0px 2px 1px,	rgb(80,80,80) 0px 4px 8px -3px, rgb(105,105,105) 0px -3px 0px inset;
+    outline: 2px solid;
+    outline-offset: 0px;
+    text-shadow: none;
+    outline-color: rgb(105,105,105);
+    outline-offset: 0px;
+}
+
+button#record-btn {
+    font-family: Space, monospace;
+    text-align: center;
+    border: 0 solid;
+    background-color: #f10c14;
+    color: #DDDDDD;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+
+    box-shadow: rgb(255, 60, 65) 0px 1px 2px,  rgb(255, 60, 65) 0px 4px 8px -3px, rgb(162, 2, 2) 0px -4px 0px inset;
+    outline: 0px solid;
+    outline-offset: 0px;
+    text-shadow: none;
+    outline-color: #DDDDDD;
+    outline-offset: 0px;
+}
+
+#record {
+    font-family: Space, monospace;
+    text-align: center;
+    border: 0 solid;
+    background-color: #ff3c41;
+    color: #DDDDDD;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 6px;
+
+    box-shadow: inset 0 0 60px #bb2649;
+    outline: 2px solid;
+    outline-offset: 0px;
+    text-shadow: none;
+    outline-color: #DDDDDD;
+    outline-offset: 0px;
+}
+
+#pause {
+    font-family: Space, monospace;
+    text-align: center;
+    border: 0 solid;
+    background-color: #108738;
+    color: #DDDDDD;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 6px;
+
+    box-shadow: inset 0 0 60px #0c5e8a;
+    outline: 2px solid;
+    outline-offset: 0px;
+    text-shadow: none;
+    outline-color: #DDDDDD;
+    outline-offset: 0px;
+}
+
+#mic-select {
+    font-family: Space, monospace;
+    text-align: center;
+    border: 0 solid;
+    background-color: #8f28c3;
+    color: #DDDDDD;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 6px;
+
+    outline: 2px solid;
+    outline-offset: 0px;
+    text-shadow: none;
+    outline-color: #DDDDDD;
+    outline-offset: 0px;
+}
+
+.preset-button {
+    font-family: Space, monospace;
+    text-align: center;
+    border: 0 solid;
+    background-color: #DDDDDD;
+    color: #181818;
+    padding: 4px 6px;
+    cursor: pointer;
+    font-size: 14px;
+
+    outline: 1px solid;
+    outline-offset: 0px;
+    text-shadow: none;
+    outline-color: #010101;
+    outline-offset: 0px;
+}
+/*#####################################################################################################*/
+/*#################################### SEZIONE MATRIX #################################################*/
 
 #progress-bar {
     transition: width 0.2s ease-in-out; /* Aggiungi una transizione per un effetto fluido */
@@ -104,7 +294,7 @@ button#continue-btn:hover {
     background-color: #1f1f1f;
     padding: 10px;
     border-radius: 8px;
-    color: #ffffff;
+    color: #DDDDDD;
     display: flex;
     margin-left: 20%;
     
@@ -130,7 +320,7 @@ table#matrixTable th, table#matrixTable td {
 
 select {
     font-weight: bold;
-    color: #fff;
+    color: #DDDDDD;
     border: 1px solid #333;
     text-shadow: -1px -1px 0 #000, 1px 1px 0 #000;
     border-radius: 5px;
@@ -142,7 +332,7 @@ select option {
 
 button.add-row-btn {
     background-color: #444;
-    color: white;
+    color: #DDDDDD;
     border: 1px solid #666;
     padding: 5px 10px;
     cursor: pointer;
@@ -151,7 +341,7 @@ button.add-row-btn {
 
 button.remove-btn {
     background-color: #e74c3c;
-    color: white;
+    color: #DDDDDD;
     border: 1px solid #c0392b;
     padding: 5px 10px;
     cursor: pointer;
@@ -168,14 +358,23 @@ button.remove-btn {
     background-color: #1e1e1e;
     border-radius: 10px;
 }
+/*#####################################################################################################*/
+/*#################################### SEZIONE WORKSTATION ############################################*/
 
+#workstation {
+    background-color: #181818;
+    color: #DDDDDD;
+    text-align: center;
+    font-size: 20px;
+    filter: blur(100px);
+}
 /*#####################################################################################################*/
 /*#################################### SEZIONE WAVEFORM ###############################################*/
 
 #waveform {
     background: rgba(6, 6, 6, 0.845); /* Trasparente, effetto vetro */
     /* Sfuoca lo sfondo dietro la sezione */
-    border: 4px solid #e2e1ea; /* Bordi spessi con colore del legno */
+    border: 4px solid #DDDDDD; /* Bordi spessi con colore del legno */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombra leggera per profondità *//* Centra il contenuto all'interno */
     box-sizing: border-box; /* Include il bordo nelle dimensioni */
 }
@@ -196,7 +395,7 @@ button.remove-btn {
     gap: 10px; /* Aumentato il gap per distanziare meglio gli slot */
     width: 100%; /* Aumentata la larghezza del container */
     justify-content: center; /* Gli slot saranno centrati all'interno del container */
-    background-color: #e2e1ea; /* Colore di sfondo invariato */
+    background-color: #DDDDDD; /* Colore di sfondo invariato */
     padding: 15px; /* Aggiunto padding per creare spazio tra gli slot e i bordi del container */
     box-sizing: border-box; /* Assicura che il padding non influisca sulle dimensioni complessive */
 }

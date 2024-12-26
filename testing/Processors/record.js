@@ -20,14 +20,13 @@ const createWaveSurfer = () => {
   // Creiamo una nuova istanza di wavesurfer
   wsurf = WaveSurfer.create({
     container: '#mic', // link all' html
-    waveColor: '#dd5e98',
-    progressColor: '#ff4e00',
+    waveColor: '#748DA6',
+    progressColor: '#EDD27C',
     plugins: [record] // aggiungiamo il plugin Record
   })
 
   //-------------------------------------------------------------------------------- GESTIONE INIZIO REC: 
   record.on('record-start', () => {
-    // sovrascriviamo la rec precedente se c'era...
     if (wave) {
       wave.destroy()
     }
@@ -46,7 +45,7 @@ const createWaveSurfer = () => {
     // Comportamento del Play/Pause button(s)
     const button = container.appendChild(document.createElement('button'))
     button.textContent = 'Play'
-    button.onclick = () => wsurf.playPause()
+    button.onclick = (e) => {e.stopPropagation(); wsurf.playPause()}
     wsurf.on('pause', () => (button.textContent = 'Play'))
     wsurf.on('play', () => (button.textContent = 'Pause'))
 
@@ -57,6 +56,10 @@ const createWaveSurfer = () => {
       download: 'recording.' + blob.type.split(';')[0].split('/')[1] || 'webm',
       textContent: 'Download recording',
     })
+    // Aggiungi l'event listener al link per il click
+    link.addEventListener('click', function(event) {
+      event.stopPropagation(); // Questo impedisce la propagazione dell'evento
+    });
 
     // Aggiungi il file Webm alla lista di selectedFiles in script.js
     const blobFile = new File([blob], 'recorded_audio.webm', { type: 'audio/webm' });
@@ -130,6 +133,7 @@ WaveSurfer.Record.getAvailableAudioDevices().then((devices) => {
 const recButton = document.querySelector('#record')
 
 recButton.onclick = (event) => {
+  event.stopPropagation();
   if (record.isRecording() || record.isPaused()) {
     record.stopRecording()
     recButton.textContent = 'Record'

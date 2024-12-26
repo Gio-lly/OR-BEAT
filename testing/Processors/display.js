@@ -19,7 +19,7 @@ const regionStartTimes = {}; // Qui mi salverò tutti i starting points
 
 // Give regions a random color when they are created
 const random = (min, max) => Math.random() * (max - min) + min
-const randomColor = () => `rgba(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)}, 0.5)`
+const randomColor = () => `rgba(139, 28, 29, 0.5)`;
 
 //-------------------------------------------------------------------------------- GESTIONE FORMA D'ONDA CON WAVESURFER
 // Creiamo la waveform
@@ -40,6 +40,7 @@ function displayWaveform(file) { // Viene chiamata dallo script.js  e disegna la
 
   // Mostra la sezione contenente la checkbox e lo zoom
   ws.on('ready', function () {
+    document.getElementById('workstation').style.display = 'block';
     document.querySelector('.savings').style.display = 'flex';
     document.getElementById('waveform-controls').style.display = 'block';
 
