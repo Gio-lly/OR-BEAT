@@ -304,7 +304,10 @@ function detectOnsets(channelData, sampleRate, frameSize, hopSize, sensitivity) 
 }
 // _________________________________________________________________________________
 // ---------------------------------------------------------------------------------
-// In ascolto quando i dati sono pronti, poi chiama la funzione per estrarre il segmento e inserirlo nello slot
+// Array globale per memorizzare i player associati agli slot
+let players = [];
+
+// In ascolto quando i dati sono pronti
 window.addEventListener('waveDataReady', () => {
     if (window.waveData) {
         const { startTime, nextStartTime } = window.waveData;
@@ -319,7 +322,6 @@ window.addEventListener('waveDataReady', () => {
     }
 });
 
-// Ascolta quando waveData è pronto, l'utente ha fatto doppio-click su una regione
 // Funzione per estrarre e inserire un segmento audio, e riprodurlo al click
 let index = 0;
 function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, container) {
@@ -335,7 +337,7 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
         segmentBuffer = audioContext.createBuffer(2, leftChannel.length, audioBuffer.sampleRate);
         segmentBuffer.getChannelData(0).set(leftChannel);
         segmentBuffer.getChannelData(1).set(rightChannel); 
-    } else { // Le rec sono MONO
+    } else { // Le registrazioni sono MONO
         segmentBuffer = audioContext.createBuffer(1, leftChannel.length, audioBuffer.sampleRate);
         segmentBuffer.getChannelData(0).set(leftChannel);
     }
@@ -343,16 +345,31 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
     // Trovo uno slot disponibile e inserisco lì il segmento audio selezionato
     const slots = container.querySelectorAll('.slot');
 
-    slots[index].textContent = `${startTime.toFixed(2)} - ${nextStartTime.toFixed(2)}`; // la cella avrà questa label
+    // Assegna un testo per identificare la porzione di audio
+    slots[index].textContent = `${startTime.toFixed(2)} - ${nextStartTime.toFixed(2)}`; // La cella avrà questa label
+    
+    // Crea un nuovo player e lo memorizza nell'array `players`
     const player = new Tone.Player(segmentBuffer).toDestination();
     player.autostart = false;  // Impedisce la riproduzione automatica
+    players[index] = player;   // Memorizza il player nell'array `players`
     
-    // Aggiungo un evento di click per riprodurre l'audio quando si clicca sullo slot
+    // Aggiungi un evento di click per riprodurre l'audio quando si clicca sullo slot
     slots[index].addEventListener('click', () => {
         player.start();
     });
     
+    // Cambia il colore dello slot per indicare che è stato riempito
     slots[index].style.background = 'linear-gradient(180deg,rgb(250, 207, 139),rgb(247, 180, 80))';
-    // Aumento l'indice e faccio in modo che torni a 0 dopo 6
+    
+    // Aumenta l'indice e ritorna a 0 dopo 6
     index = (index + 1) % 6;
-}  
+}
+
+// Funzione per riprodurre un segmento audio in un determinato slot
+function playSlot(slotIndex) {
+    if (players[slotIndex]) {
+        players[slotIndex].start();  // Avvia la riproduzione per il player specificato
+    } else {
+        console.log('Slot vuoto o non valido');
+    }
+}

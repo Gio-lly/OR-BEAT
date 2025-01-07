@@ -289,7 +289,7 @@ let rotationSpeed = 2; // Velocità di rotazione iniziale
 let isRunning = false; // Stato della rotazione della barra
 let bpm;
 
-
+let x = 0
 
 
 function setup(p5on) {
@@ -393,6 +393,7 @@ class Anello {
     this.color = color;
     this.diametro = diametro;
     this.bool_list = Array(steps).fill(false); // Inizialmente tutte le sezioni sono disattivate
+    this.lastHighlightedIndex = null; // Indice dell'ultima sezione evidenziata, serve per suoanre il sample solo nel momento in cui la barra incontra la parte di anello attiva
   }
 
   disegna() {
@@ -405,7 +406,6 @@ class Anello {
       let endAngolo = startAngolo + angoloStep;
 
       // Controlla se la barra si trova sopra questo segmento
-
       let highlight = angle >= startAngolo && angle < endAngolo;
 
 
@@ -413,6 +413,16 @@ class Anello {
       if (highlight & isRunning) {
         stroke(this.bool_list[i] ? this.color : 100); // Colore evidenziato
         strokeWeight(spessoreAnello + 5)
+        
+        // Se il segmento è attivo, chiama la funzione per suonare il sample
+        if (this.bool_list[i] && this.lastHighlightedIndex !== i) {
+          // Chiamata alla funzione
+          playSlot(anelli.indexOf(this))
+
+
+          
+          this.lastHighlightedIndex = i; // Aggiorna l'indice dell'ultima sezione evidenziata
+        }
 
       } else {
         stroke(this.bool_list[i] ? this.color : 100); // colore che ho scelto per l'anello
@@ -422,7 +432,18 @@ class Anello {
 
       // Disegna la parte dell'anello
       arc(0, 0, this.diametro, this.diametro, startAngolo, endAngolo);
+
+
+      
+      // Resetta l'indice quando la barra non evidenzia più alcun segmento attivo
+      if (!isRunning || !this.bool_list.some((isActive, index) => {
+        let startAngolo = index * (angoloStep + gap) + rotationOffset;
+        let endAngolo = startAngolo + angoloStep;
+        return angle >= startAngolo && angle < endAngolo && isActive;
+    })) {
+      this.lastHighlightedIndex = null;
     }
+      }
   }
 
   toggleStep(indice) {
