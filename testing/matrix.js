@@ -60,6 +60,32 @@ document.addEventListener('DOMContentLoaded', () => {
             phaseDropdown.appendChild(option);
         }
     }
+
+    //funzione per la logica dei booleani dati steps, fase e densità
+    function calculateBooleanList(steps, density, phase) {
+        // crea una lista di booleani basata sulla densità e sugli steps
+        const numOn = Math.round((density / 100) * steps); // quanti devono essere accesi
+        let booleanList = new Array(steps).fill(false);
+    
+        // calcola gli indici in base alla densità
+        const interval = Math.floor(steps / numOn);
+        let positions = [];
+        
+        for (let i = 0; i < numOn; i++) {
+            positions.push((i * interval) % steps);
+        }
+    
+        // applica uno shift ciclico in base alla fase
+        positions = positions.map(pos => (pos + phase) % steps);
+    
+        // imposta i valori true nei posti calcolati
+        positions.forEach(pos => {
+            booleanList[pos] = true;
+        });
+    
+        return booleanList;
+    }
+
     //crea una riga e aggiunge gli event Listeners ai vari campi, modificando al
     //il modello quando vengono cambiati
     function addRow() {
@@ -108,22 +134,60 @@ document.addEventListener('DOMContentLoaded', () => {
             anelli[parseInt(stepsDropdown.parentNode.parentNode.id)-1].steps=steps;
         });
 
-        phaseDropdown.addEventListener('change', event => {
-            phase = parseInt(event.target.value, 10);
-            if (!isNaN(phase)) {
-                populateDropdowns(newRow, phase);
-            }
-            modello.modifyRingPhase(parseInt(phaseDropdown.parentNode.parentNode.id)-1,phase);
-            anelli[parseInt(phaseDropdown.parentNode.parentNode.id)-1].phase=phase;
-        });
-        densityDropdown.addEventListener('change', event => {
-            density = parseInt(event.target.value, 10);
-            if (!isNaN(density)) {
-                populateDropdowns(newRow, density);
-            }
-            modello.modifyRingDensity(parseInt(densityDropdown.parentNode.parentNode.id)-1,density);
-            anelli[parseInt(densityDropdown.parentNode.parentNode.id)-1].density=density;
-        });
+
+// gestione del cambiamento della densità
+densityDropdown.addEventListener('change', event => {
+    const density = parseInt(event.target.value, 10);
+    if (!isNaN(density)) {
+        // aggiorna la densità nel modello
+        const ringId = parseInt(densityDropdown.parentNode.parentNode.id) - 1;
+        modello.modifyRingDensity(ringId, density);
+        anelli[ringId].density = density;
+
+        // imposta la fase a 0 di default se non è stata selezionata
+        let phase = anelli[ringId].phase;
+        if (isNaN(phase)) {
+            phase = 0; // Imposta la fase a 0 se non è selezionata
+        }
+
+        // calcola la nuova lista booleana considerando la densità e la fase
+        const steps = anelli[ringId].steps; 
+
+        const booleanList = calculateBooleanList(steps, density, phase);
+
+        // aggiorna la lista booleana nel modello
+        modello.modifyRingBooleanList(ringId, booleanList);
+        
+        // modifica anche la lista booleana nell'array anelli
+        anelli[ringId].bool_list = booleanList;
+    }
+});
+
+
+// gestione del cambiamento della fase
+phaseDropdown.addEventListener('change', event => {
+    const phase = parseInt(event.target.value, 10);
+    if (!isNaN(phase)) {
+        // aggiorna la fase nel modello
+        const ringId = parseInt(phaseDropdown.parentNode.parentNode.id) - 1;
+        modello.modifyRingPhase(ringId, phase);
+        anelli[ringId].phase = phase;
+
+        const steps = anelli[ringId].steps;  // Ottieni il numero di step per quel cerchio
+        const density = anelli[ringId].density;  // Ottieni la densità corrente
+
+        const booleanList = calculateBooleanList(steps, density, phase);
+
+        // aggiorna la lista booleana nel modello
+        modello.modifyRingBooleanList(ringId, booleanList);
+        
+        // modifica anche la lista booleana nell'array anelli
+        anelli[ringId].bool_list = booleanList;
+    }
+});
+
+
+        
         //QUI CI STA UN BUG:
         //se rimuovo una riga, poi chiamo rimuoviAnello(newRow.id-1)
         //se dopo rimuovo un'altra riga, è possibile che passdogli l'id la funzione rimuoviAnello
@@ -150,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addRowButtonRow.style.display = tableBody.children.length >= 6 ? 'none' : '';
     }
 
+    
     document.querySelector('.add-row-btn').addEventListener('click', addRow);
     addRow();//di default crea una riga al caricamento della pagina!
 });

@@ -387,6 +387,7 @@ function creaAnello(steps, colorInput) {
 
 
 
+
 class Anello {
   constructor(steps, color, diametro) {
     this.steps = steps;

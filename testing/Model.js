@@ -31,10 +31,14 @@ class Model {
     this.representation_matrix[i_ring][3]=steps;
   }
   modifyRingPhase(i_ring,phase){
-    this.representation_matrix[i_ring][5]=phase;
+    if (this.representation_matrix[i_ring]) {
+      this.representation_matrix[i_ring][5] = phase; 
+  }
   }
   modifyRingDensity(i_ring,density){
-    this.representation_matrix[i_ring][4]=density;
+    if (this.representation_matrix[i_ring]) {
+      this.representation_matrix[i_ring][4] = density; 
+  }
   }
   getRing(i){
     return this.representation_matrix[i];
@@ -43,7 +47,8 @@ class Model {
     this.representation_matrix.splice(i,1);
   }
   
-  //[ [[0,1],iring,steps,density,phase],  ]
+  
+  //[ [[0,1],iring,steps,density,phase,booleans],  ]
 
 
 }
