@@ -1,3 +1,4 @@
+
 class Model {
   constructor() {
     this.duration;
@@ -43,12 +44,18 @@ class Model {
   getRing(i){
     return this.representation_matrix[i];
   }
+  
   removeRing(i){
     this.representation_matrix.splice(i,1);
+    // Ora, aggiorna tutti gli iRing successivi
+    for (let j = i; j < this.representation_matrix.length; j++) {
+      // Decrementa di 1 l'indice dell'anello per ogni anello successivo
+      this.representation_matrix[j][1] = j + 1;  // j+1 per mantenere la numerazione corretta (1-based index)
   }
+  }
+
   
-  
-  //[ [[0,1],iring,steps,density,phase,booleans],  ]
+  //[ [[0,1],iring,steps,density,phase,[booleans]],  ]
 
 
 }

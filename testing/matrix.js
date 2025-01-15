@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const colors = ["#FF5733", "#2E8B57", "#3357FF", "#F1C40F", "#8E44AD", "#1ABC9C", "#E74C3C", "#2C3E50"];
     let usedColors = new Set();
 
-
     const matrixContainer = document.getElementById('matrix-container');
     matrixContainer.innerHTML = `
         <table id="matrixTable">
@@ -25,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </table>
     `;
 
-    // Funzioni di supporto
     function getNextColor() {
         for (const color of colors) {
             if (!usedColors.has(color)) {
@@ -61,13 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    //funzione per la logica dei booleani dati steps, fase e densità
     function calculateBooleanList(steps, density, phase) {
-        // crea una lista di booleani basata sulla densità e sugli steps
-        const numOn = Math.round((density / 100) * steps); // quanti devono essere accesi
+        const numOn = Math.round((density / 100) * steps);
         let booleanList = new Array(steps).fill(false);
-    
-        // calcola gli indici in base alla densità
         const interval = Math.floor(steps / numOn);
         let positions = [];
         
@@ -75,10 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
             positions.push((i * interval) % steps);
         }
     
-        // applica uno shift ciclico in base alla fase
         positions = positions.map(pos => (pos + phase) % steps);
     
-        // imposta i valori true nei posti calcolati
         positions.forEach(pos => {
             booleanList[pos] = true;
         });
@@ -86,9 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return booleanList;
     }
 
-    //crea una riga e aggiunge gli event Listeners ai vari campi, modificando al
-    //il modello quando vengono cambiati
     function addRow() {
+        logState();
         const tableBody = document.querySelector('#matrixTable tbody');
         const newRow = document.createElement('tr');
         newRow.id = tableBody.children.length + 1;
@@ -114,98 +105,110 @@ document.addEventListener('DOMContentLoaded', () => {
             </td>
             <td><button class="remove-btn">x</button></td>
         `;
-        //modello.addRing([],2,0,0,color);
-        
+
         const stepsDropdown = newRow.querySelector('.steps-dropdown');
         const densityDropdown = newRow.querySelector('.density-dropdown');
         const phaseDropdown = newRow.querySelector('.phase-dropdown');
         const defaultSteps = parseInt(stepsDropdown.value, 10);
         populateDropdowns(newRow, defaultSteps);
-        var steps=2;
-        var phase = 0;
-        var density = 0;
-        creaAnello(steps,color);
+
+        let steps = 2;
+        let phase = 0;
+        let density = 0;
+        creaAnello(steps, color);
+
         stepsDropdown.addEventListener('change', event => {
             steps = parseInt(event.target.value, 10);
             if (!isNaN(steps)) {
                 populateDropdowns(newRow, steps);
             }
-            modello.modifyRingSteps(parseInt(stepsDropdown.parentNode.parentNode.id)-1,steps);
-            anelli[parseInt(stepsDropdown.parentNode.parentNode.id)-1].steps=steps;
+            modello.modifyRingSteps(parseInt(stepsDropdown.parentNode.parentNode.id) - 1, steps);
+            anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].steps = steps;
         });
 
+        // gestione del cambiamento della densità
+        densityDropdown.addEventListener('change', event => {
+            const density = parseInt(event.target.value, 10);
+            if (!isNaN(density)) {
+                const ringId = parseInt(densityDropdown.parentNode.parentNode.id) - 1;
+                modello.modifyRingDensity(ringId, density);
+                anelli[ringId].density = density;
 
-// gestione del cambiamento della densità
-densityDropdown.addEventListener('change', event => {
-    const density = parseInt(event.target.value, 10);
-    if (!isNaN(density)) {
-        // aggiorna la densità nel modello
-        const ringId = parseInt(densityDropdown.parentNode.parentNode.id) - 1;
-        modello.modifyRingDensity(ringId, density);
-        anelli[ringId].density = density;
+                let phase = anelli[ringId].phase;
+                if (isNaN(phase)) {
+                    phase = 0;
+                }
 
-        // imposta la fase a 0 di default se non è stata selezionata
-        let phase = anelli[ringId].phase;
-        if (isNaN(phase)) {
-            phase = 0; // Imposta la fase a 0 se non è selezionata
-        }
+                const steps = anelli[ringId].steps;
+                const booleanList = calculateBooleanList(steps, density, phase);
 
-        // calcola la nuova lista booleana considerando la densità e la fase
-        const steps = anelli[ringId].steps; 
+                modello.modifyRingBooleanList(ringId, booleanList);
+                anelli[ringId].bool_list = booleanList;
+            }
+            logState();
+        });
 
-        const booleanList = calculateBooleanList(steps, density, phase);
+        // gestione del cambiamento della fase
+        phaseDropdown.addEventListener('change', event => {
+            const phase = parseInt(event.target.value, 10);
+            if (!isNaN(phase)) {
+                const ringId = parseInt(phaseDropdown.parentNode.parentNode.id) - 1;
+                modello.modifyRingPhase(ringId, phase);
+                anelli[ringId].phase = phase;
 
-        // aggiorna la lista booleana nel modello
-        modello.modifyRingBooleanList(ringId, booleanList);
-        
-        // modifica anche la lista booleana nell'array anelli
-        anelli[ringId].bool_list = booleanList;
-    }
-});
+                const steps = anelli[ringId].steps;
+                const density = anelli[ringId].density;
+                const booleanList = calculateBooleanList(steps, density, phase);
 
+                modello.modifyRingBooleanList(ringId, booleanList);
+                anelli[ringId].bool_list = booleanList;
+            }
+            logState();
+        });
 
-// gestione del cambiamento della fase
-phaseDropdown.addEventListener('change', event => {
-    const phase = parseInt(event.target.value, 10);
-    if (!isNaN(phase)) {
-        // aggiorna la fase nel modello
-        const ringId = parseInt(phaseDropdown.parentNode.parentNode.id) - 1;
-        modello.modifyRingPhase(ringId, phase);
-        anelli[ringId].phase = phase;
-
-        const steps = anelli[ringId].steps;  // Ottieni il numero di step per quel cerchio
-        const density = anelli[ringId].density;  // Ottieni la densità corrente
-
-        const booleanList = calculateBooleanList(steps, density, phase);
-
-        // aggiorna la lista booleana nel modello
-        modello.modifyRingBooleanList(ringId, booleanList);
-        
-        // modifica anche la lista booleana nell'array anelli
-        anelli[ringId].bool_list = booleanList;
-    }
-});
-
-
-        
-        //QUI CI STA UN BUG:
-        //se rimuovo una riga, poi chiamo rimuoviAnello(newRow.id-1)
-        //se dopo rimuovo un'altra riga, è possibile che passdogli l'id la funzione rimuoviAnello
-        //che sta nel file display.js, non trovi un elemento Anello nell'array anelli[] con quell'indice
-        //POSSIBILE SOLUZIONE: non passargli l'id della riga ma qualcos'altro
+        // gestione del click sul pulsante di rimozione
         newRow.querySelector('.remove-btn').addEventListener('click', () => {
-            if(newRow.id-1==0){
-                alert("Non puoi rimuovere il primo anello!");
+            const rowIndex = Array.from(tableBody.children).indexOf(newRow);  // ottieni l'indice della riga
+
+            // verifica se l'anello è l'ultimo, se sì, rimuovilo senza comprimere gli altri
+            if (anelli.length === 1) {
+                alert("Non puoi rimuovere l'ultimo anello!");
                 return;
             }
+
+            console.log("Anello da rimuovere:", rowIndex);
+            console.log("Stato degli anelli prima della rimozione:", anelli);
+
+            // se l'anello è l'ultimo, chiama solo rimuoviAnello senza comprimere gli altri
+            if (rowIndex === anelli.length - 1) {
+                console.log("SONO QUI - Rimuovo l'ultimo anello");
+
+                releaseColor(color);
+                newRow.remove();
+                rimuoviAnello(rowIndex);  // Passa l'indice della riga
+                logState();
+                console.log("Stato degli anelli dopo la rimozione dell'ultimo:", anelli);
+                return;
+            }
+
+            // altrimenti, se non è l'ultimo, comprimiamo e rimuoviamo
             releaseColor(color);
             newRow.remove();
-            rimuoviAnello(newRow.id-1);//qua viene chiamata la funzione incriminata
-            toggleAddButtonVisibility();
+            comprimiAnelli(rowIndex);
+            rimuoviAnello(rowIndex);
+
+            // ora aggiorniamo gli ID delle righe
+            const allRows = document.querySelectorAll('#matrixTable tbody tr');
+            allRows.forEach((row, index) => {
+                row.id = index + 1;  // Impostiamo l'ID come l'indice della riga + 1
+            });
+
+            logState();
+            console.log("Stato degli anelli dopo la rimozione:", anelli);
         });
 
         tableBody.appendChild(newRow);
-        toggleAddButtonVisibility(); 
+        toggleAddButtonVisibility();
     }
 
     function toggleAddButtonVisibility() {
@@ -214,7 +217,11 @@ phaseDropdown.addEventListener('change', event => {
         addRowButtonRow.style.display = tableBody.children.length >= 6 ? 'none' : '';
     }
 
-    
     document.querySelector('.add-row-btn').addEventListener('click', addRow);
-    addRow();//di default crea una riga al caricamento della pagina!
+    addRow();  // riga di default al caricamento della pagina
 });
+
+function logState() {
+    console.log("Anelli: ", anelli);
+    console.log("Representation Matrix: ", modello.representation_matrix);
+}

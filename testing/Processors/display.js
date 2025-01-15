@@ -275,7 +275,7 @@ p5on = false // se imposta su false setup non runna, quindi tutto il codice p5 n
 
 // Variabili per gli anelli
 let anelli = []; // Array per memorizzare gli anelli creati
-let maxAnelli = 5; // Numero massimo di anelli consentiti
+let maxAnelli = 6; // Numero massimo di anelli consentiti
 let diametroBase = 150; // Diametro base del primo anello
 let spessoreAnello = 10; // Spessore degli anelli
 let bottoneCreaAnello;
@@ -360,6 +360,8 @@ function draw() {
 
 
 
+
+
 }
 
 
@@ -367,10 +369,33 @@ function rimuoviUltimoAnello() {
   anelli.pop();
   modello.removeRing(anelli.length-1);
 }
+
 function rimuoviAnello(i) {
+  console.log("Rimuovo anello con indice:", i);
+  
+  // rimuovo l'anello dall'array degli anelli
   anelli.splice(i, 1);
+
+  // rimuovo l'anello dalla matrice di rappresentazione
   modello.removeRing(i);
-} 
+
+  console.log("Stato degli anelli dopo la rimozione:", anelli);
+  console.log("Stato della matrice di rappresentazione:", modello.representation_matrix);
+}
+
+
+function comprimiAnelli(index) {
+  //quì mi salvo i diametri
+  let diametri = anelli.map(anello => anello.diametro);
+  console.log('Diametri prima della compressione:', diametri);
+
+  for (let i = index + 1; i < anelli.length; i++) {
+    console.log(`Aggiornando diametro di anello ${i}, da ${anelli[i].diametro} a ${diametri[i - 1]}`);
+    anelli[i].diametro = diametri[i - 1];
+  }
+
+  console.log('Anelli dopo compressione:', anelli);
+}
 
 
 function creaAnello(steps, colorInput) {
@@ -518,4 +543,3 @@ function stopRotation() {
   isRunning = false;
   angle = rotationOffset; // Resetta l'angolo
 }
-
