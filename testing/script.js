@@ -71,7 +71,14 @@ dropZone.addEventListener('dragover', (event) => {
     event.preventDefault(); // Impedisce il comportamento di default del browser
     if (!isDragging) {
         isDragging = true;
-        document.getElementById("title").textContent = "DROP!"; // Modifica il testo della zona di drop
+        document.getElementById('title').innerHTML = `
+                DROP!
+                <div class="mainTitle">
+                    <div class="mainTitle__item"></div>
+                    <div class="mainTitle__item"></div>
+                    <div class="mainTitle__item"></div>
+                    <div class="mainTitle__item"></div>
+                </div>`;
         dropZone.classList.add('dragover'); // Aggiunge stile alla zona di drop
     }
 });
@@ -81,7 +88,14 @@ dropZone.addEventListener('dragleave', (event) => {
     if(!dropZone.contains(event.relatedTarget)) {
         isDragging = false;
         dropZone.classList.remove('dragover'); // Rimuove lo stile quando il file esce dalla zona di drop
-        document.getElementById("title").textContent = "Welcome on the @endurancePlugin!";
+        document.getElementById('title').innerHTML = `
+        Welcome on iStem
+        <div class="mainTitle">
+            <div class="mainTitle__item"></div>
+            <div class="mainTitle__item"></div>
+            <div class="mainTitle__item"></div>
+            <div class="mainTitle__item"></div>
+        </div>`;
     }
 });
 
@@ -91,7 +105,14 @@ dropZone.addEventListener('drop', (event) => {
     dropZone.classList.remove('dragover');
     const files = event.dataTransfer.files; // File trascinati
     selectedFiles.unshift(files[0]);
-    document.getElementById("title").textContent = "Welcome on the @endurancePlugin!";
+    document.getElementById('title').innerHTML = `
+                Welcome on iStem
+                <div class="mainTitle">
+                    <div class="mainTitle__item"></div>
+                    <div class="mainTitle__item"></div>
+                    <div class="mainTitle__item"></div>
+                    <div class="mainTitle__item"></div>
+                </div>`;
     displayFileNames(files[0]);
 });
 // ---------------------------------------------------------------------------------
