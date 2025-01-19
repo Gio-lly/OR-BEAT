@@ -12,6 +12,7 @@ let record = WaveSurfer.Record.create({
 document.getElementById("record-btn").addEventListener("click", function (event) {
   event.stopPropagation(); //opzionale qui
   document.getElementById("recording-section").style.display = "block"; // Mostra la sezione di registrazione
+  document.getElementById("title").style.display = "none"; // Nasconde il welcome...
   document.getElementById("record-btn").style.display = "none"; // Nasconde il bottone "Registra"
   createWaveSurfer(); // Creaimo la session
 });
@@ -44,10 +45,13 @@ const createWaveSurfer = () => {
     
     // Comportamento del Play/Pause button(s)
     const button = container.appendChild(document.createElement('button'))
-    button.textContent = 'Play'
+    button.textContent = 'Play';
+    button.id = 'play-button';
     button.onclick = (e) => {e.stopPropagation(); wsurf.playPause()}
     wsurf.on('pause', () => (button.textContent = 'Play'))
     wsurf.on('play', () => (button.textContent = 'Pause'))
+
+    button.style.marginRight = '10px';
 
     // rendiamo disponibile un Download link
     const link = container.appendChild(document.createElement('a'))
@@ -56,6 +60,7 @@ const createWaveSurfer = () => {
       download: 'recording.' + blob.type.split(';')[0].split('/')[1] || 'webm',
       textContent: 'Download recording',
     })
+    link.id = 'download-link';
     // Aggiungi l'event listener al link per il click
     link.addEventListener('click', function(event) {
       event.stopPropagation(); // Questo impedisce la propagazione dell'evento

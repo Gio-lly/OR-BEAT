@@ -36,7 +36,7 @@
     <!-- Qui possiamo aggiungere tutorial o altro -->
     <div class="navbar">
 		<div class="site-menu">
-			<div class="menu-item">How to use nome_plugin (come lo chiamiamo?Endurance?)</div>
+			<div class="menu-item">How to use nome_plugin</div>
 		</div>
 	</div>
     <!-- Qui abbiamo i credits -->
@@ -65,8 +65,8 @@
         <p>Drag and drop or Click here to upload a file</p>
         <input type="file" id="file-input" style="display: none;"
             accept=".mp3,.wav,.aac,audio/wav,audio/mpeg,audio/aac" />
-        
-        <button id="preset-btn">Or select a preset</button>
+
+        <button id="preset-btn"><span>Or select a preset</span></button>
         <div id="preset-list" style="display: none;">
             <!-- Qui verranno mostrati i preset -->
         </div>
@@ -83,12 +83,12 @@
             <button id="pause" style="display: none;">Pause</button>
 
             <select id="mic-select">
-                <option value="" hidden>Select mic</option>
+                <option value="" hidden>Select your preferred mic</option>
             </select>
             
             <p id="progress">00:00</p>
             <div id="mic" style="border: 1px solid #ddd; border-radius: 4px; margin-top: 1rem"></div>
-
+            <br>
             <div id="recordings"></div>
         </div>
         <br>

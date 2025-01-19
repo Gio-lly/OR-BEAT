@@ -113,8 +113,7 @@ body {
     border-radius: 15px; /* Rende gli angoli rotondi con raggio di 15px */
     padding: 10px; /* Aggiunge un po' di spazio interno per evitare che il testo tocchi il bordo */
 }
-
-
+/*-----------------------------------------------*/
 button#continue-btn {
     font-family: Space, monospace;
     text-align: center;
@@ -145,32 +144,64 @@ button#continue-btn:hover {
     outline-color: rgba(255, 255, 255, 0);
     text-shadow: 1px 1px 2px #427388;
 }
-
+/*-----------------------------------------------*/
 .dragover {
     background-color: #4fa53e;
     border: 5px dashed #0056b3
 }
-
+/*-----------------------------------------------*/
 button#preset-btn {
     font-family: Space, monospace;
     text-align: center;
-    border: 0 solid;
+    border: 2px solid rgb(105, 105, 105);;
     background-color: #DDDDDD;
     color: #181818;
-    padding: 4px 8px;
+    padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
+    position: relative; /* Necessario per posizionare l'effetto "before" */
+    overflow: hidden; /* Nasconde l'animazione in eccesso */
+    text-transform: uppercase;
+    transition: color 0.3s ease, border-color 0.3s ease; /* Transizione per il colore e il bordo */
 
-    box-shadow:rgb(40,40,40) 0px 4px 1px,	rgb(80,80,80) 0px 4px 8px -3px, rgb(105,105,105) 0px -3px 0px inset;
-    outline: 2px solid;
-    outline-offset: 0px;
+    box-shadow: rgb(40, 40, 40) 0px 2px 1px, rgb(80, 80, 80) 0px 4px 8px -3px, rgb(105, 105, 105) 0px -1px 0px inset;
     text-shadow: none;
-    outline-color: rgb(105,105,105);
-    outline-offset: 0px;
 }
 
-#preset-list > button{
+button#preset-btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 140%;
+    width: 240%;
+    background-color: #13274F; /* Colore di sfondo per l'animazione */
+    transform: translateX(-150%);
+    transition: transform 0.4s ease-in-out;
+    z-index: 1; /* Mette l'elemento before dietro al testo */
+}
+
+button#preset-btn span {
+    position: relative;
+    z-index: 2; /* Garantisce che il testo rimanga sopra l'elemento before */
+    transition: color 0.4s ease-in-out;
+}
+
+button#preset-btn:hover::before {
+    transform: translateX(-50%); /* Animazione che sposta il background */
+}
+
+button#preset-btn:hover {
+    color: #DDDDDD; /* Colore del testo cambia durante l'hover */
+    border-color: #DDDDDD; /* Colore del bordo cambia */
+}
+
+button#preset-btn:hover span {
+    color: #DDDDDD; /* Colore del testo cambia durante l'hover */
+}
+/*-----------------------------------------------*/
+#preset-list > button {
     font-family: Space, monospace;
     text-align: center;
     border: 0 solid;
@@ -181,14 +212,24 @@ button#preset-btn {
     cursor: pointer;
     font-size: 16px;
 
-    box-shadow:rgb(40,40,40) 0px 2px 1px,	rgb(80,80,80) 0px 4px 8px -3px, rgb(105,105,105) 0px -3px 0px inset;
+    box-shadow: rgb(40, 40, 40) 0px 2px 1px, rgb(80, 80, 80) 0px 4px 8px -3px, rgb(105, 105, 105) 0px -3px 0px inset;
     outline: 2px solid;
+    outline-color: rgb(105, 105, 105);
     outline-offset: 0px;
     text-shadow: none;
-    outline-color: rgb(105,105,105);
-    outline-offset: 0px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
+#preset-list > button:hover {
+    transform: translateY(2px);
+    box-shadow: rgb(40, 40, 40) 0px 1px 2px, rgb(80, 80, 80) 0px 6px 6px -2px, rgb(105, 105, 105) 0px -2px 0px inset;
+}
+
+#preset-list > button:active {
+    transform: translateY(4px);
+    box-shadow: rgb(40, 40, 40) 0px 1px 2px, rgb(80, 80, 80) 0px 6px 4px -1px, rgb(105, 105, 105) 0px 0px 0px inset;
+}
+/*-----------------------------------------------*/
 button#record-btn {
     font-family: Space, monospace;
     text-align: center;
@@ -200,86 +241,129 @@ button#record-btn {
     cursor: pointer;
     font-size: 16px;
 
-    box-shadow: rgb(255, 60, 65) 0px 1px 2px,  rgb(255, 60, 65) 0px 4px 8px -3px, rgb(162, 2, 2) 0px -4px 0px inset;
+    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 4px 8px -3px, rgb(162, 2, 2) 0px -4px 0px inset;
     outline: 0px solid;
     outline-offset: 0px;
     text-shadow: none;
     outline-color: #DDDDDD;
     outline-offset: 0px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+button#record-btn:hover {
+    transform: translateY(3px); /* Sposta il bottone verso il basso */
+    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 3px 6px -2px, rgb(162, 2, 2) 0px -2px 0px inset;
+}
+
+button#record-btn:active {
+    transform: translateY(5px); /* Sposta il bottone verso il basso di più durante il clic */
+    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 2px 4px -1px, rgb(162, 2, 2) 0px -3px 0px inset;
+}
+/*-----------------------------------------------*/
 #record {
     font-family: Space, monospace;
     text-align: center;
     border: 0 solid;
-    background-color: #ff3c41;
+    background-color: #f10c14;
     color: #DDDDDD;
-    padding: 5px 10px;
+    padding: 10px 20px;
+    border-radius: 20px;
     cursor: pointer;
     font-size: 16px;
-    border-radius: 6px;
 
-    box-shadow: inset 0 0 60px #bb2649;
-    outline: 2px solid;
+    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 2px 4px -3px, rgb(162, 2, 2) 0px -3px 0px inset;
+    outline: 0px solid;
     outline-offset: 0px;
     text-shadow: none;
     outline-color: #DDDDDD;
     outline-offset: 0px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease; 
 }
 
+#record:hover {
+    transform: translateY(2px); /* Sposta il bottone verso il basso */
+    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 3px 6px -2px, rgb(162, 2, 2) 0px -1px 0px inset; 
+}
+
+#record:active {
+    transform: translateY(3px); /* Sposta il bottone verso il basso di più durante il clic */
+    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 2px 4px -1px, rgb(162, 2, 2) 0px -2px 0px inset;
+}
+/*-----------------------------------------------*/
 #pause {
     font-family: Space, monospace;
     text-align: center;
     border: 0 solid;
     background-color: #108738;
     color: #DDDDDD;
-    padding: 5px 10px;
+    padding: 10px 20px;
+    border-radius: 20px;
     cursor: pointer;
     font-size: 16px;
-    border-radius: 6px;
 
-    box-shadow: inset 0 0 60px #0c5e8a;
-    outline: 2px solid;
+    box-shadow: rgb(16, 135, 56) 0px 1px 2px, rgb(16, 135, 56) 0px 2px 4px -3px, rgb(8, 72, 34) 0px -3px 0px inset;
+    outline: 0px solid;
     outline-offset: 0px;
     text-shadow: none;
     outline-color: #DDDDDD;
     outline-offset: 0px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
+#pause:hover {
+    transform: translateY(2px); /* Sposta il bottone verso il basso */
+    box-shadow: rgb(16, 135, 56) 0px 1px 2px,  rgb(16, 135, 56) 0px 3px 6px -2px, rgb(8, 72, 34) 0px -1px 0px inset;
+}
+
+#pause:active {
+    transform: translateY(3px); /* Sposta il bottone verso il basso di più durante il clic */
+    box-shadow: rgb(16, 135, 56) 0px 1px 2px,  rgb(16, 135, 56) 0px 2px 4px -1px, rgb(8, 72, 34) 0px -2px 0px inset;
+}
+/*-----------------------------------------------*/
 #mic-select {
     font-family: Space, monospace;
     text-align: center;
     border: 0 solid;
-    background-color: #8f28c3;
+    background-color: #0c5e8a;
     color: #DDDDDD;
-    padding: 5px;
+    padding: 4px 1px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
-    border-radius: 6px;
 
-    outline: 2px solid;
+    outline: 0px solid;
     outline-offset: 0px;
     text-shadow: none;
     outline-color: #DDDDDD;
     outline-offset: 0px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
-
-.preset-button {
+/*-----------------------------------------------*/
+#play-button {
     font-family: Space, monospace;
     text-align: center;
-    border: 0 solid;
+    border: 1px solid #DDDDDD;
     background-color: #DDDDDD;
-    color: #181818;
-    padding: 4px 6px;
+    color: #0c5e8a;
+    padding: 5px 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
 
-    outline: 1px solid;
-    outline-offset: 0px;
-    text-shadow: none;
-    outline-color: #010101;
-    outline-offset: 0px;
 }
+/*-----------------------------------------------*/
+#download-link {
+    font-family: Space, monospace;
+    text-align: center;
+    border: 1px solid #DDDDDD;
+    background-color: #DDDDDD;
+    color: #0c5e8a;
+    padding: 5px 4px; 
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
 /*#####################################################################################################*/
 /*#################################### SEZIONE MATRIX #################################################*/
 
