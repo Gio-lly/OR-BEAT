@@ -5,7 +5,7 @@ modello = new Model();
 
 // Controlla se il browser supporta AudioContext
 if (!window.AudioContext) {
-    alert("Il tuo browser non supporta le funzionalità audio necessarie.");
+    alert("[ITA]: Il tuo browser non supporta le funzionalità audio necessarie.");
     document.body.innerHTML = '';
 }
 // ---------------------------------------------------------------------------------
@@ -31,12 +31,12 @@ function displayFileNames(fileUtente) {
 
             if (!allowedTypes.includes(fileUtente.type)) {
                 // Se il file non è valido, mostra un messaggio di errore
-                content = `<p style="color: #E52137;">Il file "${fileUtente.name}" non è consentito.\n 
-                           I file consentiti sono .wav/.mp3/.aac</p>`;
+                content = `<p style="color: #f10c14;">\nThe file "${fileUtente.name}" 
+                            is not allowed. \n The allowed file types are .wav/.mp3.</p>`;
             } else if (duration > 120) { 
                 // Se il file dura più di 2 minuti
-                content = `<p style="color: #E52137;">Il file "${fileUtente.name}" non è consentito 
-                           perchè dura più di 2 minuti</p>`;
+                content = `<p style="color: #f10c14;">\nThe file "${fileUtente.name}" 
+                            is not allowed because it lasts longer than 2 minutes.</p>`;
             } else {
                 // Se il file è valido, aggiunge il nome del file alla lista
                 content = `<p>File accepted: ${fileUtente.name}</p>`;
@@ -173,8 +173,8 @@ async function createOnsetDetectorNode() {
         try {
             audioContext = new AudioContext(); // Crea un nuovo AudioContext se non è stato già creato
         } catch (e) {
-            console.error("Errore nella creazione dell'AudioContext", e);
-            alert("Impossibile creare un contesto audio. Verifica la compatibilità del tuo browser.");
+            console.error("[ITA]: Errore nella creazione dell'AudioContext", e);
+            alert("[ITA]: Impossibile creare un contesto audio. Verifica la compatibilità del tuo browser.");
             return null; // Se non è possibile creare l'AudioContext, restituisce null
         }
     }
@@ -227,12 +227,12 @@ document.getElementById('continue-btn').addEventListener('click', async function
 
         // Se non c'è il file, esci
         if (!fileOrPreset) {
-            console.error("Nessun file selezionato."); return;
+            console.error("[ITA]: Nessun file selezionato."); return;
         } // Esce dalla funzione
 
         // Se il file non è valido, esci
         if (!allowedTypes.includes(fileOrPreset.type)) {
-            console.error(`Errore: Il file "${fileOrPreset.name}" non è consentito. I file consentiti sono .wav, .mp3, .aac.`);
+            console.error(`[ITA]: Errore: Il file "${fileOrPreset.name}" non è consentito. I file consentiti sono .wav, .mp3, .aac.`);
             return; // Esce dalla funzione se il file non è valido
         }
 
@@ -240,14 +240,14 @@ document.getElementById('continue-btn').addEventListener('click', async function
             try {
                 const response = await fetch(fileOrPreset.file);
                 if (!response.ok) {
-                    throw new Error(`Errore nel caricamento del preset: ${response.statusText}`);
+                    throw new Error(`[ITA]: Errore nel caricamento del preset: ${response.statusText}`);
                 }
                 const blob = await response.blob();
                 file = new File([blob], fileOrPreset.file.split('/').pop(), { type: fileOrPreset.type });
                 updateProgressBar(30); // AGGIORNO PROGRESS BAR...
             } catch (error) {
                 console.error(error.message);
-                alert('Errore nel caricamento del preset audio.');
+                alert('[ITA]: Errore nel caricamento del preset audio.');
             }
         } else if (fileOrPreset instanceof File) {
             // Se è un file caricato dall'utente, lo usiamo
@@ -339,7 +339,7 @@ window.addEventListener('waveDataReady', () => {
         const container = document.querySelector('.savings'); // Contenitore di slot
         handleSegmentExtraction(audioBuffer, startTime, nextStartTime, container);
     } else {
-        console.log('Dati audio non disponibili.');
+        console.log('[ITA]: Dati audio non disponibili.');
     }
 });
 
@@ -391,6 +391,6 @@ function playSlot(slotIndex) {
     if (players[slotIndex]) {
         players[slotIndex].start();  // Avvia la riproduzione per il player specificato
     } else {
-        console.log('Slot vuoto o non valido');
+        console.log('[ITA]: Slot vuoto o non valido');
     }
 }

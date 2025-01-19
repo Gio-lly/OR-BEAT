@@ -12,7 +12,7 @@ function createLoadingModal() {
     modal.style.justifyContent = 'center';
     modal.style.alignItems = 'center';
     modal.style.zIndex = '1000';
-    modal.style.fontFamily = 'Space, monospace';
+    modal.style.fontFamily = "Inter, DM Sans, Arial, sans-serif";
     modal.style.color = 'rgba(221, 221, 221, 1)'
 
     const modalContent = document.createElement('div');
@@ -24,7 +24,7 @@ function createLoadingModal() {
     modalContent.style.maxWidth = '400px';
 
     const loadingText = document.createElement('p');
-    loadingText.textContent = 'Elaborazione in corso...';
+    loadingText.textContent = 'Loading...';
     modalContent.appendChild(loadingText);
 
     const progressBarContainer = document.createElement('div');
@@ -39,7 +39,7 @@ function createLoadingModal() {
     progressBar.id = 'progress-bar';
     progressBar.style.width = '0';
     progressBar.style.height = '100%';
-    progressBar.style.backgroundColor = '#4caf50';
+    progressBar.style.backgroundColor = '#33ff8c';
     progressBarContainer.appendChild(progressBar);
 
     modalContent.appendChild(progressBarContainer);

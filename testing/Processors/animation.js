@@ -44,16 +44,17 @@ TweenMax.from(".credits", 1.6, {
 /*#################################### SEZIONE LETTERE #############################################*/
 
 TweenMax.to(".block-1", 2, {
-    x: "-60%",  // Spostamento
+    x: "20%",  // Spostamento
     opacity: 0,  // Rendi invisibile
     ease: Expo.easeInOut
 });
 TweenMax.to(".block-2", 2, {
+    x: "60%",
     opacity: 0,  // Rendi invisibile
     ease: Expo.easeInOut
 });
 TweenMax.to(".block-3", 2, {
-    x: "220%",  // Spostamento
+    x: "320%",  // Spostamento
     opacity: 0,  // Rendi invisibile
     rotation: 90,  // Ruota di 90 gradi
     scaleX: 2,  // Allunga orizzontalmente il trattino
@@ -62,7 +63,7 @@ TweenMax.to(".block-3", 2, {
 });
 
 TweenMax.to(".block-4", 2, {
-    x: "-150%",  // Spostamento
+    x: "-50%",  // Spostamento
     //y: "-240%",
     opacity: 0,  // Rendi invisibile
     ease: Expo.easeInOut

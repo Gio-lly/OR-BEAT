@@ -366,7 +366,7 @@ button#record-btn:active {
 
 #progress-bar {
     transition: width 0.2s ease-in-out; /* Aggiungi una transizione per un effetto fluido */
-    background-color: #4caf50;
+    background-color: #33ff8c;
 }
 
 #matrix-container {
@@ -458,7 +458,7 @@ button.remove-btn {
     border: 4px solid #DDDDDD; /* Bordi spessi con colore del legno */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombra leggera per profondità *//* Centra il contenuto all'interno */
     box-sizing: border-box; /* Include il bordo nelle dimensioni */
-}
+} 
 
 #waveform ::part(marker) {
     border: 1px solid #d12d2d;
