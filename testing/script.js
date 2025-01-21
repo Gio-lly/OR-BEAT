@@ -89,7 +89,7 @@ dropZone.addEventListener('dragleave', (event) => {
         isDragging = false;
         dropZone.classList.remove('dragover'); // Rimuove lo stile quando il file esce dalla zona di drop
         document.getElementById('title').innerHTML = `
-        Welcome on iStem
+        Welcome on Or-Beat
         <div class="mainTitle">
             <div class="mainTitle__item"></div>
             <div class="mainTitle__item"></div>
@@ -106,7 +106,7 @@ dropZone.addEventListener('drop', (event) => {
     const files = event.dataTransfer.files; // File trascinati
     selectedFiles.unshift(files[0]);
     document.getElementById('title').innerHTML = `
-                Welcome on iStem
+                Welcome on Or-Beat
                 <div class="mainTitle">
                     <div class="mainTitle__item"></div>
                     <div class="mainTitle__item"></div>
@@ -120,7 +120,7 @@ dropZone.addEventListener('drop', (event) => {
 const presetBtn = document.getElementById('preset-btn');
 const presetList = document.getElementById('preset-list');
 const presets = [
-    { name: "Preset 1", file: "Assets/drum_loop_minimal_tribal.wav", type: 'audio/wav' },
+    { name: "Preset 1", file: "Assets/X-intro.mp3", type: 'audio/wav' },
     { name: "Preset 2", file: "Assets/drum_108.wav", type: 'audio/wav' },
     { name: "Preset 3", file: "Assets/drum_loop.mp3", type: 'audio/mpeg' },
 ];
@@ -248,6 +248,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
             } catch (error) {
                 console.error(error.message);
                 alert('[ITA]: Errore nel caricamento del preset audio.');
+                return;
             }
         } else if (fileOrPreset instanceof File) {
             // Se è un file caricato dall'utente, lo usiamo
@@ -290,6 +291,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
             }, 1000);
         } catch (error) {
             console.error("Error processing the file:", error);
+            return;
         }
     }
 });

@@ -105,6 +105,10 @@ body {
     font-size: 24px;
     margin: 20px 0;
 }
+
+.modal:hover {
+    transform: perspective(3000px) rotateY(5deg);
+  }
 /*-----------------------------------------------*/
 button#continue-btn {
     font-family: "Inter", "DM Sans", Arial, sans-serif;
@@ -113,7 +117,7 @@ button#continue-btn {
     background-color: #00c2ff;
     color: #DDDDDD;
     padding: 10px 20px;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 26px;
 
@@ -122,8 +126,8 @@ button#continue-btn {
     outline-color: rgba(255, 255, 255, 0);
     outline-offset: 0px;
     text-shadow: none;
-    -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
-            transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+    -webkit-transition: all 1250ms cubic-bezier(0.20, 1, 0, 1);
+            transition: all 1250ms cubic-bezier(0.20, 1, 0, 1);
     outline-color: #DDDDDD;
     outline-offset: 0px;
 }
@@ -169,9 +173,9 @@ button#preset-btn::before {
     top: 0;
     height: 140%;
     width: 240%;
-    background-color: #00c2ff; /* Colore di sfondo per l'animazione */
-    box-shadow: inset 0 0 60px #13274F;
-    text-shadow: 1px 1px 2px #427388;
+    background-color: #33ff8c;
+    box-shadow: inset 0 0 60px #07421b;
+    text-shadow: 1px 1px 2px #07421b;
     transform: translateX(-150%);
     transition: transform 0.4s ease-in-out;
     z-index: 1; /* Mette l'elemento before dietro al testo */
@@ -255,110 +259,167 @@ button#record-btn:active {
     box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 2px 4px -1px, rgb(162, 2, 2) 0px -3px 0px inset;
 }
 /*-----------------------------------------------*/
-#record {
+ #record{
+    background-color: initial;
+    background-image: linear-gradient(-180deg, #ef0d0d, #c91403);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     text-align: center;
-    border: 0 solid;
-    background-color: #f10c14;
-    color: #DDDDDD;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
     font-size: 16px;
-
-    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 2px 4px -3px, rgb(162, 2, 2) 0px -3px 0px inset;
-    outline: 0px solid;
-    outline-offset: 0px;
-    text-shadow: none;
-    outline-color: #DDDDDD;
-    outline-offset: 0px;
-    transition: transform 0.1s ease, box-shadow 0.1s ease; 
+    height: 40px;
+    line-height: 40px;
+    outline: 0;
+    overflow: hidden;
+    padding: 0 14px;
+    pointer-events: auto;
+    position: relative;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: top;
+    white-space: nowrap;
+    z-index: 9;
+    border: 0;
+    transition: box-shadow .2s;
 }
 
 #record:hover {
-    transform: translateY(2px); /* Sposta il bottone verso il basso */
-    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 3px 6px -2px, rgb(162, 2, 2) 0px -1px 0px inset; 
+    box-shadow: rgba(253, 10, 10, 0.774) 0 4px 8px;
 }
 
-#record:active {
-    transform: translateY(3px); /* Sposta il bottone verso il basso di più durante il clic */
-    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 2px 4px -1px, rgb(162, 2, 2) 0px -2px 0px inset;
-}
 /*-----------------------------------------------*/
 #pause {
+    background-color: initial;
+    background-image: linear-gradient(-180deg, #19e044, #038930);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     text-align: center;
-    border: 0 solid;
-    background-color: #108738;
-    color: #DDDDDD;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
     font-size: 16px;
-
-    box-shadow: #33ff8c 0px 1px 2px, #33ff8c 0px 2px 4px -3px, rgb(8, 72, 34) 0px -3px 0px inset;
-    outline: 0px solid;
-    outline-offset: 0px;
-    text-shadow: none;
-    outline-color: #DDDDDD;
-    outline-offset: 0px;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    height: 40px;
+    line-height: 40px;
+    outline: 0;
+    overflow: hidden;
+    padding: 0 14px;
+    pointer-events: auto;
+    position: relative;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: top;
+    white-space: nowrap;
+    z-index: 9;
+    border: 0;
+    transition: box-shadow .2s;
 }
 
 #pause:hover {
-    transform: translateY(2px); /* Sposta il bottone verso il basso */
-    box-shadow: #33ff8c 0px 1px 2px,  #33ff8c 0px 3px 6px -2px, rgb(8, 72, 34) 0px -1px 0px inset;
-}
-
-#pause:active {
-    transform: translateY(3px); /* Sposta il bottone verso il basso di più durante il clic */
-    box-shadow: #33ff8c 0px 1px 2px,  #33ff8c 0px 2px 4px -1px, rgb(8, 72, 34) 0px -2px 0px inset;
+    box-shadow: #33ff8c 0 3px 8px;
 }
 /*-----------------------------------------------*/
 #mic-select {
+    background-color: initial;
+    background-image: linear-gradient(-180deg, #DDDDDD, #8b8888dd);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+    color: #010101;
+    cursor: pointer;
+    display: inline-block;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     text-align: center;
-    border: 0 solid;
-    background-color: #00c2ff; /* Colore di sfondo per l'animazione */
-    box-shadow: inset 0 0 50px #13274F;
-    text-shadow: 1px 1px 2px #427388;
-    color: #DDDDDD;
-    padding: 4px 1px;
-    border-radius: 10px;
-    cursor: pointer;
+    text-shadow: 1px 2px 2px #DDDDDD;
     font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    outline: 0;
+    overflow: hidden;
+    pointer-events: auto;
+    position: relative;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: top;
+    white-space: nowrap;
+    z-index: 9;
+    border: 0;
+    transition: box-shadow .2s;
+}
 
-    outline: 0px solid;
-    outline-offset: 0px;
-    text-shadow: none;
-    outline-color: #DDDDDD;
-    outline-offset: 0px;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+#mic-select:hover {
+    box-shadow: #DDDDDD 0 2px 8px;
 }
 /*-----------------------------------------------*/
 #play-button {
+    background-color: initial;
+    background-image: linear-gradient(-180deg, #DDDDDD, #8b8888dd);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+    color: #010101;
+    cursor: pointer;
+    display: inline-block;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     text-align: center;
-    border: 1px solid #DDDDDD;
-    background-color: #DDDDDD;
-    color: #0c5e8a;
-    padding: 5px 4px;
-    border-radius: 6px;
-    cursor: pointer;
+    text-shadow: 1px 2px 2px #DDDDDD;
     font-size: 16px;
+    height: 40px;
+    width: 50px;
+    line-height: 40px;
+    outline: 0;
+    overflow: hidden;
+    pointer-events: auto;
+    position: relative;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: top;
+    white-space: nowrap;
+    z-index: 9;
+    border: 0;
+    transition: box-shadow .2s;
+}
 
+#play-button:hover {
+    box-shadow: #DDDDDD 0 1px 4px;
 }
 /*-----------------------------------------------*/
 #download-link {
+    background-color: initial;
+    background-image: linear-gradient(-180deg, #DDDDDD, #8b8888dd);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+    color: #0056b3;
+    cursor: pointer;
+    display: inline-block;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     text-align: center;
-    border: 1px solid #DDDDDD;
-    background-color: #DDDDDD;
-    color: #0c5e8a;
-    padding: 5px 4px; 
-    border-radius: 6px;
-    cursor: pointer;
+    text-shadow: 1px 2px 2px #DDDDDD;
     font-size: 16px;
+    height: 40px;
+    width: 180px;
+    line-height: 40px;
+    outline: 0;
+    overflow: hidden;
+    pointer-events: auto;
+    position: relative;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: top;
+    white-space: nowrap;
+    z-index: 9;
+    border: 0;
+    transition: box-shadow .2s;
+}
+
+#download-link:hover {
+    box-shadow: #DDDDDD 0 1px 4px;
 }
 
 /*#####################################################################################################*/
