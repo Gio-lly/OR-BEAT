@@ -39,6 +39,41 @@
     z-index: 2;
 }
 
+.credits span {
+    position: relative;
+    display: inline-block;
+}
+
+.credits span::before,
+.credits span::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 4px;
+    background-color: #010101;
+    transition: width 0.3s ease;
+}
+
+.credits span::before {
+    top: -5px;
+    left: 0;
+}
+
+.credits span::after {
+    bottom: -5px;
+    right: 0;
+}
+
+.credits:hover span::before {
+    width: 100%;
+    left: 0;
+}
+
+.credits:hover span::after {
+    width: 100%;
+    right: 0;
+}
+
 .blocks {
 	display: flex;
 	font-size: 160px;
@@ -108,7 +143,72 @@ body {
 
 .modal:hover {
     transform: perspective(3000px) rotateY(5deg);
-  }
+}
+/*-----------------------------------------------*/
+#credits-page {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%; /* Posiziona al centro verticale */
+    left: 50%; /* Posiziona al centro orizzontale */
+    transform: translate(-50%, -50%); /* Sposta esattamente al centro dello schermo */
+    width: 100%;        /* Imposta la larghezza al 100% del viewport */
+    height: 100%;       /* Imposta l'altezza al 100% del viewport */
+    margin: 0;          /* Rimuovi margini di default */
+    padding: 0;         /* Rimuovi padding di default */
+    overflow-x: hidden;
+    background-color: #010101; 
+    border: 10px #DDDDDD;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    color: #DDDDDD;
+    text-align: center;
+    flex-direction: column; /* Disposizione verticale */
+    z-index: 1000;
+}
+
+#close-btn {
+  background-color: #FFFFFF;
+  border: 1px solid #222222;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #222222;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  padding: 8px 12px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+  user-select: none;
+  -webkit-user-select: none;
+  width: auto;
+}
+
+#close-btn:focus-visible {
+  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+  transition: box-shadow .2s;
+}
+
+#close-btn:active {
+  background-color: #F7F7F7;
+  border-color: #000000;
+  transform: scale(.96);
+}
+
+#close-btn:disabled {
+  border-color: #DDDDDD;
+  color: #DDDDDD;
+  cursor: not-allowed;
+  opacity: 1;
+}
 /*-----------------------------------------------*/
 button#continue-btn {
     font-family: "Inter", "DM Sans", Arial, sans-serif;
@@ -160,7 +260,7 @@ button#preset-btn {
     position: relative; /* Necessario per posizionare l'effetto "before" */
     overflow: hidden; /* Nasconde l'animazione in eccesso */
     text-transform: uppercase;
-    transition: color 0.3s ease, border-color 0.3s ease; /* Transizione per il colore e il bordo */
+    transition: color 0.2s ease, border-color 0.2s ease; /* Transizione per il colore e il bordo */
 
     box-shadow: rgb(40, 40, 40) 0px 2px 1px, rgb(80, 80, 80) 0px 4px 8px -3px, rgb(105, 105, 105) 0px -1px 0px inset;
     text-shadow: none;
