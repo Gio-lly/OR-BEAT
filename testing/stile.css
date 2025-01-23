@@ -638,45 +638,79 @@ button.remove-btn {
     width: 100%; /* Aumentata la larghezza del container */
     justify-content: center; /* Gli slot saranno centrati all'interno del container */
     background-color: #DDDDDD; /* Colore di sfondo invariato */
-    padding: 15px; /* Aggiunto padding per creare spazio tra gli slot e i bordi del container */
+    padding-top: 15px; /* Aggiunto padding per creare spazio tra gli slot e i bordi del container */
+    padding-bottom: 20px;
     box-sizing: border-box; /* Assicura che il padding non influisca sulle dimensioni complessive */
 }
 
-.slot {
-    width: 130px;
-    height: 80px;
-    background: linear-gradient(180deg, #8A898F, #6C6C6F); /* Gradiente per simulare profondità */
-    border: none; /* Rimuove il bordo visibile */
-    display: flex;
+.discard-btn {
+    height: 25%;
+    width: 46%;
     justify-content: center;
-    align-items: center;
-    border-radius: 10px; /* Arrotonda i bordi */
-    box-shadow: 
-        inset 4px 4px 8px rgba(0, 0, 0, 0.4),  /* Ombra scura interna (sotto e sinistra) */
-        inset -4px -4px 8px rgba(255, 255, 255, 0.2), /* Ombra chiara interna (sopra e destra) */
-        0 1px 2px rgba(0, 0, 0, 0.2); /* Leggera ombra esterna */
-    box-sizing: border-box; /* Include padding e border nel calcolo delle dimensioni */
-    transition: box-shadow 0.2s, transform 0.2s; /* Transizioni per interattività */
-
-    font-size: 17px; /* Dimensione del testo */
-    font-family: 'Archivo'; /* Font del testo */
-    color: #000000; /* Colore del testo */
-    text-align: center; /* Allinea il testo */
+    border-radius: 40px 40px 0px 0px;
+    color: #010101;
+    font-size: 10px;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    z-index: 1;
+    transition: background-color 150ms ease;
 }
 
-/* Effetto al passaggio del mouse */
+.discard-btn:hover {
+    background-color: #d12d2d;
+    color: #fff;
+}
+
+.slot {
+  align-items: center;
+  background-color: initial;
+  background-image: linear-gradient(#464d55, #28282d);
+  border-radius: 40px 40px 40px 40px;
+  border-width: 0;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .1),0 3px 6px rgba(0, 0, 0, .05);
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: row;
+  font-size: 13px;
+  height: 52px;
+  width: 120px;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 32px;
+  text-align: center;
+  text-decoration: none;
+  transform: translate3d(0, 0, 0);
+  transition: all 150ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
 .slot:hover {
-    box-shadow: 
-        inset 3px 3px 6px rgba(0, 0, 0, 0.5), 
-        inset -3px -3px 6px rgba(255, 255, 255, 0.2), 
-        0 2px 4px rgba(0, 0, 0, 0.3); /* Ombra più pronunciata */
+    box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
+    transform: translate3d(0, -2px, 0);
+    opacity: .85;
+    border: 3px solid #fff;
 }
 
-/* Effetto clic (pressione) */
 .slot:active {
-    box-shadow: 
-        inset 2px 2px 4px rgba(0, 0, 0, 0.6), 
-        inset -2px -2px 4px rgba(255, 255, 255, 0.3), 
-        0 1px 2px rgba(0, 0, 0, 0.2); /* Ombra ridotta */
-    transform: translateY(1px); /* Simula un leggero spostamento */
+  outline: 0;
+}
+
+.slot:focus {
+  box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
+}
+
+@media (max-width: 420px) {
+  .slot {
+    height: 48px;
+  }
 }
