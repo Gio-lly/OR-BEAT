@@ -341,7 +341,7 @@ window.addEventListener('waveDataReady', () => {
         const container = document.querySelector('.savings'); // Contenitore di slot
         handleSegmentExtraction(audioBuffer, startTime, nextStartTime, container);
     } else {
-        console.log('[ITA]: Dati audio non disponibili.');
+        console.log('Dati audio non disponibili.');
     }
 });
 

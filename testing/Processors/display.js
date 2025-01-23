@@ -186,6 +186,7 @@ function checkStartTimesOrder() {
 
 // NO OVERLAPPING REGIONS
 regions.on('region-updated', (region) => {
+  try{
   let draggedRegion = null;
   const originalStartTime = regionStartTimes[region.id];
   const newStartTime = region.start;
@@ -203,10 +204,14 @@ regions.on('region-updated', (region) => {
     region.setOptions({ start: originalStartTime });
     return;
   }
-
-  // Aggiorna i tempi solo se non ci sono sovrapposizioni
+  
+    // Aggiorna i tempi solo se non ci sono sovrapposizioni
   draggedRegion = { id: region.id, start: newStartTime };
   regionStartTimes[region.id] = newStartTime;
+  }catch(e){
+    console.log("Errore nel muovere la regione");
+    alert("Errore nel muovere la regione");
+  }
 })
 
 // ZOOM LEVEL
