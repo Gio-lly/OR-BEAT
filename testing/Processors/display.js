@@ -208,6 +208,9 @@ regions.on('region-updated', (region) => {
     // Aggiorna i tempi solo se non ci sono sovrapposizioni
   draggedRegion = { id: region.id, start: newStartTime };
   regionStartTimes[region.id] = newStartTime;
+
+  //aggiorna la posizione dell'onset anche nel modello
+  modello.onsets[region.id-1] = newStartTime;
   }catch(e){
     console.log("Errore nel muovere la regione");
     alert("Errore nel muovere la regione");
@@ -226,7 +229,7 @@ ws.once('decode', () => {
 function doubleclick() {
   const clickTime = ws.getCurrentTime(); // Ottieni il tempo in cui è stato cliccato
   const regionsArray = regions.getRegions();
-  let data = null;
+  var data = null;
   let newRegion = null;
   let startTime = null;
   let nextStartTime = null;

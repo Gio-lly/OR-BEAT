@@ -21,11 +21,11 @@ let selectedFiles = [];
 function displayFileNames(fileUtente) {
     isValidFileLoaded = false; // Resetta lo stato del file valido
     let content = '';
-    let duration = null; 
+    let duration = null;
 
     // Controlliamo la durata del file -> se supera 2 minuti lancia eccezione
     const player = new Tone.Player({
-        url: URL.createObjectURL(fileUtente), 
+        url: URL.createObjectURL(fileUtente),
         onload: () => {
             duration = player.buffer.duration; // Ottieni la durata dopo il caricamento
 
@@ -33,7 +33,7 @@ function displayFileNames(fileUtente) {
                 // Se il file non è valido, mostra un messaggio di errore
                 content = `<p style="color: #f10c14;">\nThe file "${fileUtente.name}" 
                             is not allowed. \n The allowed file types are .wav/.mp3.</p>`;
-            } else if (duration > 120) { 
+            } else if (duration > 120) {
                 // Se il file dura più di 2 minuti
                 content = `<p style="color: #f10c14;">\nThe file "${fileUtente.name}" 
                             is not allowed because it lasts longer than 2 minutes.</p>`;
@@ -85,7 +85,7 @@ dropZone.addEventListener('dragover', (event) => {
 
 dropZone.addEventListener('dragleave', (event) => {
     // risolto bug dragleave
-    if(!dropZone.contains(event.relatedTarget)) {
+    if (!dropZone.contains(event.relatedTarget)) {
         isDragging = false;
         dropZone.classList.remove('dragover'); // Rimuove lo stile quando il file esce dalla zona di drop
         document.getElementById('title').innerHTML = `
@@ -135,7 +135,7 @@ presetBtn.addEventListener('click', (event) => {
     presets.forEach(preset => {
         const presetItem = document.createElement('button');
         presetItem.classList.add('preset-button'); // così gestiamo il css
-        
+
         presetItem.textContent = preset.name;
         presetItem.addEventListener('click', (event) => {
             event.stopPropagation();
@@ -154,7 +154,7 @@ presetBtn.addEventListener('click', (event) => {
 // Ascolta l'evento personalizzato 'recording-completed' quando la registrazione è finita
 window.addEventListener('recording-completed', (event) => {
     const file = event.detail.file; // Ottieni il file dalla proprietà detail
-    
+
     // Aggiungi il file alla lista selectedFiles
     selectedFiles.unshift(file);
 
@@ -196,7 +196,7 @@ async function createOnsetDetectorNode() {
             updateProgressBar(progress); // Aggiorna la barra di caricamento
         } else if (type === 'onsets') {
             //console.log("Onsets rilevati:", onsets);
-            testonsets(audioBuffer); // Mostra i pulsanti dei campioni
+            //testonsets(audioBuffer); // Mostra i pulsanti dei campioni
         }
     };
 
@@ -273,7 +273,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
 
             // Extract Left audio data
             const channelData = audioBuffer.getChannelData(0); // Use first channel (Left Channel)
-            
+
             // Analyze audio and detect onsets
             // ## FrameSize (valore ideale per transients di batteria): 512, 
             // ## Hopsize: framesize/2 oppure framesize/4, 
@@ -296,33 +296,33 @@ document.getElementById('continue-btn').addEventListener('click', async function
     }
 });
 
-function detectOnsets(channelData, sampleRate, frameSize, hopSize, sensitivity) { 
+function detectOnsets(channelData, sampleRate, frameSize, hopSize, sensitivity) {
     const onsetTimestamps = [];
     let previousSpectrum = null;
-    
+
     for (let i = 0; i < channelData.length - frameSize; i += hopSize) {
-      const frame = channelData.slice(i, i + frameSize);
-  
-      // Calculate spectrum using Meyda.js
-      const currentSpectrum = Meyda.extract("amplitudeSpectrum", frame);
-  
-      if (previousSpectrum) {
-        // Calculate spectral flux
-        let flux = 0;
-        for (let j = 0; j < currentSpectrum.length; j++) {
-          const diff = currentSpectrum[j] - (previousSpectrum[j] || 0);
-          flux += Math.max(0, diff); // Only consider increases
+        const frame = channelData.slice(i, i + frameSize);
+
+        // Calculate spectrum using Meyda.js
+        const currentSpectrum = Meyda.extract("amplitudeSpectrum", frame);
+
+        if (previousSpectrum) {
+            // Calculate spectral flux
+            let flux = 0;
+            for (let j = 0; j < currentSpectrum.length; j++) {
+                const diff = currentSpectrum[j] - (previousSpectrum[j] || 0);
+                flux += Math.max(0, diff); // Only consider increases
+            }
+
+            if (flux > sensitivity) {
+                const time = i / sampleRate;
+                onsetTimestamps.push(time);
+            }
         }
-  
-        if (flux > sensitivity) {
-          const time = i / sampleRate;
-          onsetTimestamps.push(time);
-        }
-      }
-  
-      previousSpectrum = currentSpectrum;
+
+        previousSpectrum = currentSpectrum;
     }
-  
+
     return onsetTimestamps;
 }
 // _________________________________________________________________________________
@@ -346,21 +346,20 @@ window.addEventListener('waveDataReady', () => {
 });
 
 // Funzione per estrarre e inserire un segmento audio, e riprodurlo al click
-let index = 0;
 let slotStatus = new Array(6).fill(false);
 function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, container) {
 
     const startSample = Math.floor(startTime * audioBuffer.sampleRate);
     const endSample = Math.floor(nextStartTime * audioBuffer.sampleRate);
     let segmentBuffer = null;
-    
+
     // Estraiamo la porzione dei dati audio dal buffer
     const leftChannel = audioBuffer.getChannelData(0).slice(startSample, endSample); // Canale sinistro
     if (audioBuffer.numberOfChannels > 1) {
         const rightChannel = audioBuffer.getChannelData(1).slice(startSample, endSample); // Canale destro
         segmentBuffer = audioContext.createBuffer(2, leftChannel.length, audioBuffer.sampleRate);
         segmentBuffer.getChannelData(0).set(leftChannel);
-        segmentBuffer.getChannelData(1).set(rightChannel); 
+        segmentBuffer.getChannelData(1).set(rightChannel);
     } else { // Le registrazioni sono MONO
         segmentBuffer = audioContext.createBuffer(1, leftChannel.length, audioBuffer.sampleRate);
         segmentBuffer.getChannelData(0).set(leftChannel);
@@ -382,31 +381,31 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
 
     // Assegna un testo per identificare la porzione di audio
     slots[freeSlotIndex].textContent = `${startTime.toFixed(2)} - ${nextStartTime.toFixed(2)}`; // La cella avrà questa label
-    
+
     // Crea un nuovo player e lo memorizza nell'array `players`
     const player = new Tone.Player(segmentBuffer).toDestination();
     player.autostart = false;  // Impedisce la riproduzione automatica
     players[freeSlotIndex] = player;   // Memorizza il player nell'array `players`
-    
+
     // Aggiungi un evento di click per riprodurre l'audio quando si clicca sullo slot
     slots[freeSlotIndex].addEventListener('click', () => {
         player.start();
     });
 
     // Aggiungi l'event listener per il pulsante "DISCARD"
-    const discardButton = container.querySelectorAll('.discard-btn')[index];
-    discardButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        // Reset del testo dello slot e rimozione del segmento audio
-        slots[freeSlotIndex].textContent = ''; // Libera il testo dello slot
-        player.stop(); // Ferma la riproduzione (se in corso)
-        players[freeSlotIndex] = null; // Rimuovi il player dalla lista
-        slotStatus[freeSlotIndex] = false;
+    const discardButtons = container.querySelectorAll('.discard-btn');
+    discardButtons.forEach((discardButton, buttonIndex) => {
+        discardButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+    
+            // Reset del testo dello slot e rimozione del segmento audio
+            slots[buttonIndex].textContent = ''; // Libera il testo dello slot
+    
+            player.stop(); // Ferma la riproduzione (se in corso)
+            players[buttonIndex] = null; // Rimuovi il player dalla lista
+            slotStatus[buttonIndex] = false;
+        });
     });
-
-    if (freeSlotIndex === index) {
-        index = (index + 1) % 6;
-    }
 }
 
 // Funzione per riprodurre un segmento audio in un determinato slot
