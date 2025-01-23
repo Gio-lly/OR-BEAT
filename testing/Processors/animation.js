@@ -21,8 +21,8 @@ gsap.from(".navbar > div", {
     duration: 1.8,
     opacity: 0,
     y: 40,
-    scale: 0.9,  // Aggiungiamo un piccolo effetto di scalatura
-    delay: 1.6,
+    scale: 0.9,
+    delay: 2.6,
 });
 
 // Animazione della site-menu con effetto "stagger" migliorato
@@ -31,7 +31,7 @@ gsap.from(".site-menu > div", {
     opacity: 0,
     y: 60,
     scale: 0.9,  // Aggiungiamo una leggera scalatura per un effetto più morbido
-    ease: "power4.out", // Più morbido rispetto a Power2
+    ease: "power4.out", 
     stagger: {
         amount: 0.5, // Maggiore varianza nel tempo di attesa tra gli elementi
         from: "start", // Animazione dall'inizio
@@ -43,65 +43,93 @@ gsap.from(".credits", {
     duration: 1.8,
     opacity: 0,
     y: 40,
-    scale: 0.95,  // Effetto di scalatura leggera
-    delay: 1.6,
+    scale: 0.95,
+    delay: 2.6,
 });
 
 /*#####################################################################################################*/
 /*#################################### SEZIONE LETTERE #############################################*/
 
+// Animazione di spostamento per ciascun blocco (prima parte)
 gsap.to(".block-1", {
     duration: 2,
     x: "20%",  // Spostamento
-    opacity: 0,  // Rendi invisibile
-    ease: "expo.inOut"
+    opacity: 1,  // Mantieni la visibilità inizialmente
+    ease: "expo.inOut",
+    onStart: () => {
+        // Una volta completato il movimento della lettera 1, inizia la dissolvenza
+        gsap.to(".block-1", {
+            duration: 3,   // Durata per l'opacità (dissolvenza)
+            opacity: 0,    
+            ease: "expo.inOut",
+            delay: 0.5
+        });
+    }
 });
 
 gsap.to(".block-2", {
     duration: 2,
-    x: "60%",  // Spostamento
-    opacity: 0,  // Rendi invisibile
-    ease: "expo.inOut"
+    x: "60%",  
+    opacity: 1,  // Mantieni la visibilità inizialmente
+    ease: "expo.inOut",
+    onStart: () => {
+        // Una volta completato il movimento della lettera 1, inizia la dissolvenza
+        gsap.to(".block-2", {
+            duration: 3,   // Durata per l'opacità (dissolvenza)
+            opacity: 0,    
+            ease: "expo.inOut",
+            delay: 0.5
+        });
+    }
 });
 
 gsap.to(".block-3", {
     duration: 2,
-    x: "330%",  // Spostamento
-    opacity: 0,  // Rendi invisibile
+    x: "340%", 
+    opacity: 1,  // Mantieni la visibilità inizialmente
     rotation: 90,  // Ruota di 90 gradi
     scaleX: 2,  // Allunga orizzontalmente
     scaleY: 2,  // Inspessisce
-    ease: "expo.inOut"
+    ease: "expo.inOut",
+    onStart: () => {
+        // Una volta completato il movimento della lettera 1, inizia la dissolvenza
+        gsap.to(".block-3", {
+            duration: 3,   // Durata per l'opacità (dissolvenza)
+            opacity: 0,    
+            ease: "expo.inOut",
+            delay: 0.5
+        });
+    }
 });
 
 gsap.to(".block-4", {
     duration: 2,
-    x: "-50%",  // Spostamento
-    opacity: 0,  // Rendi invisibile
-    ease: "expo.inOut"
+    x: "-50%", 
+    ease: "expo.inOut",
+    onStart: () => {
+        // Una volta completato il movimento della lettera 1, inizia la dissolvenza
+        gsap.to(".block-4", {
+            duration: 3,   // Durata per l'opacità (dissolvenza)
+            opacity: 0,    
+            ease: "expo.inOut",
+            delay: 0.5
+        });
+    }
 });
-
-// gsap.to(".block-5", {
-//     duration: 2,
-//     x: "-200%",  // Spostamento
-//     y: "240%",
-//     opacity: 0,  // Rendi invisibile
-//     ease: "expo.inOut"
-// });
 
 gsap.to(".block-6", {
     duration: 2,
-    x: "400%",  // Spostamento
+    x: "400%", 
     y: "-240%",
-    opacity: 0,  // Rendi invisibile
+    opacity: 0, 
     ease: "expo.inOut"
 });
 
 gsap.to(".block-7", {
     duration: 2,
-    x: "400%",  // Spostamento
+    x: "400%", 
     y: "240%",
-    opacity: 0,  // Rendi invisibile
+    opacity: 0, 
     ease: "expo.inOut"
 });
 
@@ -113,7 +141,7 @@ gsap.from("#welcomePage", {
     y: 80,  // Spostiamo la modale dal basso verso l'alto
     opacity: 0,
     ease: "expo.inOut",
-    delay: 1.4, // Ritarda l'animazione se necessario
+    delay: 3, // Ritarda l'animazione se necessario
     onStart: function() {
         document.getElementById("welcomePage").style.display = 'flex';  // Mostra la pagina modale
         document.querySelector('.blocks').style.display = 'none';

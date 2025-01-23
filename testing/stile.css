@@ -321,7 +321,7 @@ button#preset-btn:hover span {
 
 #preset-list > button:hover {
     transform: translateY(2px);
-    box-shadow: rgb(40, 40, 40) 0px 1px 2px, rgb(80, 80, 80) 0px 6px 6px -2px, rgb(105, 105, 105) 0px -2px 0px inset;
+    box-shadow: rgb(40, 40, 40) 0px 1px 2px, rgb(80, 80, 80) 0px 6px 6px -2px, rgb(105, 105, 105) 0px -2px 0px inset; 
 }
 
 #preset-list > button:active {
@@ -696,9 +696,9 @@ button.remove-btn {
 
 .slot:hover {
     box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
-    transform: translate3d(0, -2px, 0);
-    opacity: .85;
-    border: 3px solid #fff;
+    transform: translate3d(0, -1px, 0);
+    opacity: .90;
+    border: 1px solid #fff;
 }
 
 .slot:active {

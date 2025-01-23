@@ -25,6 +25,7 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link href="stile.css" rel="stylesheet" type="text/css">
     <link href="stile-title.css" rel="stylesheet" type="text/css">
+    <link href="stile-knobs.css" rel="stylesheet" type="text/css">
     <script src="script.js" charset="UTF-8" defer></script>
     <script src="matrix.js" charset="UTF-8" defer></script>
     <script src="Processors/progressbar.js" charset="UTF-8" defer></script>
@@ -51,10 +52,10 @@
         <div class="credits-content">
             <p>OR-BEAT © 2025</p><br>
             <p>Developed and Programmed by</p><br> 
-            <p>MATTINA, Giorgio</p>
-            <p>MORETTI, Francesco</p>
-            <p>PARIS, Filippo</p>
-            <p>TRAPELLA, Luca</p>
+            <p>MATTINA · Giorgio</p>
+            <p>MORETTI · Francesco</p>
+            <p>PARIS · Filippo</p>
+            <p>TRAPELLA · Luca</p>
             <br><br><button id="close-btn">Back</button>
             <p style="position: fixed;bottom: 16px;font-size: 10px;text-align: center; width: 16%;">© 2025 All Rights Reserved</p>
         </div>
@@ -173,7 +174,7 @@
             <!-- Qui abbiamo controlli come lo zoom -->
             <div id="waveform-controls" style="display: none;">
                 <label style="margin-left: 2em">
-                    Zoom <input type="range" min="10" max="1000" value="10" />
+                    Zoom <input id="zoom" type="range" min="10" max="1000" value="10" />
                 </label>
             </div>
         </div>
