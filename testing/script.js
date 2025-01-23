@@ -347,6 +347,7 @@ window.addEventListener('waveDataReady', () => {
 
 // Funzione per estrarre e inserire un segmento audio, e riprodurlo al click
 let index = 0;
+let slotStatus = new Array(6).fill(false);
 function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, container) {
 
     const startSample = Math.floor(startTime * audioBuffer.sampleRate);
@@ -365,27 +366,47 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
         segmentBuffer.getChannelData(0).set(leftChannel);
     }
 
+    // Trova il primo slot libero
+    let freeSlotIndex = slotStatus.indexOf(false);
+    if (freeSlotIndex === -1) {
+        // Se tutti gli slot sono pieni, lanciamo un messaggio
+        alert("All slots are full. Please try again.");
+        return;
+    } else {
+        // Se esiste uno slot libero, usa quello
+        slotStatus[freeSlotIndex] = true; // Marca lo slot come occupato
+    }
+
     // Trovo uno slot disponibile e inserisco lì il segmento audio selezionato
     const slots = container.querySelectorAll('.slot');
 
     // Assegna un testo per identificare la porzione di audio
-    slots[index].textContent = `${startTime.toFixed(2)} - ${nextStartTime.toFixed(2)}`; // La cella avrà questa label
+    slots[freeSlotIndex].textContent = `${startTime.toFixed(2)} - ${nextStartTime.toFixed(2)}`; // La cella avrà questa label
     
     // Crea un nuovo player e lo memorizza nell'array `players`
     const player = new Tone.Player(segmentBuffer).toDestination();
     player.autostart = false;  // Impedisce la riproduzione automatica
-    players[index] = player;   // Memorizza il player nell'array `players`
+    players[freeSlotIndex] = player;   // Memorizza il player nell'array `players`
     
     // Aggiungi un evento di click per riprodurre l'audio quando si clicca sullo slot
-    slots[index].addEventListener('click', () => {
+    slots[freeSlotIndex].addEventListener('click', () => {
         player.start();
     });
-    
-    // Cambia il colore dello slot per indicare che è stato riempito
-    slots[index].style.background = 'linear-gradient(180deg,rgb(250, 207, 139),rgb(247, 180, 80))';
-    
-    // Aumenta l'indice e ritorna a 0 dopo 6
-    index = (index + 1) % 6;
+
+    // Aggiungi l'event listener per il pulsante "DISCARD"
+    const discardButton = container.querySelectorAll('.discard-btn')[index];
+    discardButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        // Reset del testo dello slot e rimozione del segmento audio
+        slots[freeSlotIndex].textContent = ''; // Libera il testo dello slot
+        player.stop(); // Ferma la riproduzione (se in corso)
+        players[freeSlotIndex] = null; // Rimuovi il player dalla lista
+        slotStatus[freeSlotIndex] = false;
+    });
+
+    if (freeSlotIndex === index) {
+        index = (index + 1) % 6;
+    }
 }
 
 // Funzione per riprodurre un segmento audio in un determinato slot

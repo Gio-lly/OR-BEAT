@@ -19,7 +19,7 @@
     <script src="https://unpkg.com/wavesurfer.js@latest/dist/plugins/record.min.js"></script>
     <script src="https://unpkg.com/wavesurfer.js@latest/dist/plugins/timeline.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/meyda/dist/web/meyda.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
     <script src="https://cdn.rawgit.com/sarathsaleem/grained/master/grained.js"></script> <!-- MIT -->
 
     <link rel="icon" href="favicon.png" type="image/png">
@@ -40,8 +40,26 @@
 			<div class="menu-item">How to use Or-Beat</div>
 		</div>
 	</div>
+
     <!-- Qui abbiamo i credits -->
-	<div class="credits">Credits</div>
+    <div class="credits">
+        <span id="credits-btn">Credits</span>
+    </div>
+
+    <!-- Modal di Credits -->
+    <div id="credits-page">
+        <div class="credits-content">
+            <p>OR-BEAT © 2025</p><br>
+            <p>Developed and Programmed by</p><br> 
+            <p>MATTINA, Giorgio</p>
+            <p>MORETTI, Francesco</p>
+            <p>PARIS, Filippo</p>
+            <p>TRAPELLA, Luca</p>
+            <br><br><button id="close-btn">Back</button>
+            <p style="position: fixed;bottom: 16px;font-size: 10px;text-align: center; width: 16%;">© 2025 All Rights Reserved</p>
+        </div>
+    </div>
+
     <!-- Queste sono le lettere a scomparsa iniziali, possiamo mettere il nome che ci piace del plugin -->
     <div id="grained" class="letter-container">
         <div class="blocks">
@@ -111,40 +129,58 @@
     <div class="page home" id="workstation" style="display: none;">
        
         <!-- Qui abbiamo la waveform -->
-       <div id="waveform"></div>
+        <div id="waveform"></div>
        
-       <!-- Qui abbiamo le celle con i segmenti audio selezionati dall'utente -->
-       <div class="savings" style="display: none;">
-            <div class="slot" draggable="true">
-                <label></label>
+        <!-- Qui abbiamo le celle con i segmenti audio selezionati dall'utente -->
+        <div class="savings" style="display: none;">
+            <div class="slot-container">
+                <button class="discard-btn">Discard</button>
+                <div class="slot" draggable="true">
+                    <label></label>
+                </div>
             </div>
-            <div class="slot" draggable="true">
-                <label></label>
+            <div class="slot-container">
+                <button class="discard-btn">Discard</button>
+                <div class="slot" draggable="true">
+                    <label></label>
+                </div>
             </div>
-            <div class="slot" draggable="true">
-                <label></label>
+            <div class="slot-container">
+                <button class="discard-btn">Discard</button>
+                <div class="slot" draggable="true">
+                    <label></label>
+                </div>
             </div>
-            <div class="slot" draggable="true">
-                <label></label>
+            <div class="slot-container">
+                <button class="discard-btn">Discard</button>
+                <div class="slot" draggable="true">
+                    <label></label>
+                </div>
             </div>
-            <div class="slot" draggable="true">
-                <label></label>
+            <div class="slot-container">
+                <button class="discard-btn">Discard</button>
+                <div class="slot" draggable="true">
+                    <label></label>
+                </div>
             </div>
-            <div class="slot" draggable="true">
-                <label></label>
+            <div class="slot-container">
+                <button class="discard-btn">Discard</button>
+                <div class="slot" draggable="true">
+                    <label></label>
+                </div>
             </div>
 
             <!-- Qui abbiamo controlli come lo zoom -->
             <div id="waveform-controls" style="display: none;">
                 <label style="margin-left: 2em">
-                  Zoom <input type="range" min="10" max="1000" value="10" />
+                    Zoom <input type="range" min="10" max="1000" value="10" />
                 </label>
             </div>
         </div>
-       <br> 
-       <!-- Qui abbiamo la drum machine -->
-       <div id="matrix-container"></div>
-       <!--div id="canvas-container"></div-->
+        <br> 
+        <!-- Qui abbiamo la drum machine -->
+        <div id="matrix-container"></div>
+        <!--div id="canvas-container"></div-->
 
     </div>
 

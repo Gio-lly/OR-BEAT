@@ -16,84 +16,103 @@ grained('#grained',options)
 /*#####################################################################################################*/
 /*#################################### ANIMAZIONE PAROLE MENU #########################################*/
 
-TweenMax.from(".navbar > div", 1.6, {
+// Animazione della navbar con un effetto più fluido
+gsap.from(".navbar > div", {
+    duration: 1.8,
     opacity: 0,
     y: 40,
-    ease: Expo.easeInOut,
-    delay: 0.6,
+    scale: 0.9,  // Aggiungiamo un piccolo effetto di scalatura
+    delay: 1.6,
 });
-TweenMax.staggerFrom(
-    ".site-menu > div",
-    1,
-    {
-        opacity: 0,
-        y: 60,
-        ease: Power2.easeOut,
+
+// Animazione della site-menu con effetto "stagger" migliorato
+gsap.from(".site-menu > div", {
+    duration: 1.2,
+    opacity: 0,
+    y: 60,
+    scale: 0.9,  // Aggiungiamo una leggera scalatura per un effetto più morbido
+    ease: "power4.out", // Più morbido rispetto a Power2
+    stagger: {
+        amount: 0.5, // Maggiore varianza nel tempo di attesa tra gli elementi
+        from: "start", // Animazione dall'inizio
     },
-    0.2
-);
-TweenMax.from(".credits", 1.6, {
+});
+
+// Animazione dei crediti con un ingresso più fluido
+gsap.from(".credits", {
+    duration: 1.8,
     opacity: 0,
     y: 40,
-    ease: Expo.easeInOut,
-    delay: 0.6,
-    
+    scale: 0.95,  // Effetto di scalatura leggera
+    delay: 1.6,
 });
 
 /*#####################################################################################################*/
 /*#################################### SEZIONE LETTERE #############################################*/
 
-TweenMax.to(".block-1", 2, {
+gsap.to(".block-1", {
+    duration: 2,
     x: "20%",  // Spostamento
     opacity: 0,  // Rendi invisibile
-    ease: Expo.easeInOut
-});
-TweenMax.to(".block-2", 2, {
-    x: "60%",
-    opacity: 0,  // Rendi invisibile
-    ease: Expo.easeInOut
-});
-TweenMax.to(".block-3", 2, {
-    x: "320%",  // Spostamento
-    opacity: 0,  // Rendi invisibile
-    rotation: 90,  // Ruota di 90 gradi
-    scaleX: 2,  // Allunga orizzontalmente il trattino
-    scaleY: 2,  // Inspessisce il trattino
-    ease: Expo.easeInOut
+    ease: "expo.inOut"
 });
 
-TweenMax.to(".block-4", 2, {
-    x: "-50%",  // Spostamento
-    //y: "-240%",
+gsap.to(".block-2", {
+    duration: 2,
+    x: "60%",  // Spostamento
     opacity: 0,  // Rendi invisibile
-    ease: Expo.easeInOut
+    ease: "expo.inOut"
 });
-/*TweenMax.to(".block-5", 2, {
-    x: "-200%",  // Spostamento
-    y: "240%",
+
+gsap.to(".block-3", {
+    duration: 2,
+    x: "330%",  // Spostamento
     opacity: 0,  // Rendi invisibile
-    ease: Expo.easeInOut
-});*/
-TweenMax.to(".block-6", 2, {
+    rotation: 90,  // Ruota di 90 gradi
+    scaleX: 2,  // Allunga orizzontalmente
+    scaleY: 2,  // Inspessisce
+    ease: "expo.inOut"
+});
+
+gsap.to(".block-4", {
+    duration: 2,
+    x: "-50%",  // Spostamento
+    opacity: 0,  // Rendi invisibile
+    ease: "expo.inOut"
+});
+
+// gsap.to(".block-5", {
+//     duration: 2,
+//     x: "-200%",  // Spostamento
+//     y: "240%",
+//     opacity: 0,  // Rendi invisibile
+//     ease: "expo.inOut"
+// });
+
+gsap.to(".block-6", {
+    duration: 2,
     x: "400%",  // Spostamento
     y: "-240%",
     opacity: 0,  // Rendi invisibile
-    ease: Expo.easeInOut
+    ease: "expo.inOut"
 });
-TweenMax.to(".block-7", 2, {
+
+gsap.to(".block-7", {
+    duration: 2,
     x: "400%",  // Spostamento
     y: "240%",
     opacity: 0,  // Rendi invisibile
-    ease: Expo.easeInOut
+    ease: "expo.inOut"
 });
 
 /*#####################################################################################################*/
 /*#################################### ANIMAZIONE WELCOME PAGE ########################################*/
 
-TweenMax.from("#welcomePage", 1.6, {
+gsap.from("#welcomePage", {
+    duration: 1.6,
     y: 80,  // Spostiamo la modale dal basso verso l'alto
     opacity: 0,
-    ease: Expo.easeInOut,
+    ease: "expo.inOut",
     delay: 1.4, // Ritarda l'animazione se necessario
     onStart: function() {
         document.getElementById("welcomePage").style.display = 'flex';  // Mostra la pagina modale
@@ -106,12 +125,70 @@ TweenMax.from("#welcomePage", 1.6, {
     }
 });
 
-window.addEventListener('resize', function() { // Utile per ridimensionamento
-    // Ricalcola la posizione della modale quando la finestra viene ridimensionata
-    const modal = document.querySelector('.modal');
-    if (modal) {
-        modal.style.top = '50%';
-        modal.style.left = '50%';
-        modal.style.transform = 'translate(-50%, -50%)'; // Riallinea la modale
-    }
+let resizeTimeout;
+window.addEventListener('resize', function() {
+    if (resizeTimeout) cancelAnimationFrame(resizeTimeout);
+    resizeTimeout = requestAnimationFrame(function() {
+        const modal = document.querySelector('.modal');
+        if (modal) {
+            modal.style.top = '50%';
+            modal.style.left = '50%';
+            modal.style.transform = 'translate(-50%, -50%)'; // Riallinea la modale
+        }
+    });
+});
+
+/*#####################################################################################################*/
+/*#################################### ANIMAZIONE CREDITS #############################################*/
+// Apri la modal "credits-page" con animazione
+document.getElementById("credits-btn").addEventListener("click", function() {
+    const modal = document.getElementById("credits-page");
+    
+    // Mostra la modal e applica l'animazione
+    modal.style.display = 'flex';
+
+    // Utilizza GSAP per l'animazione della modal
+    gsap.from(modal, {
+        duration: 1.4, // Durata dell'animazione
+        y: innerHeight,
+        opacity: 0, // Inizia con opacità 0
+        ease: "expo.inOut", // Tipo di easing
+        onStart: function() {
+            document.getElementById("credits-page").style.display = 'flex';
+            // Nascondi la pagina di benvenuto
+            document.getElementById("welcomePage").style.display = 'none';
+        }
+    });
+});
+
+// Chiudi la modal "credits-page" e torna alla pagina di benvenuto
+document.getElementById("close-btn").addEventListener("click", function() {
+    const modal = document.getElementById("credits-page");
+
+    // Esegui l'animazione di chiusura
+    gsap.to(modal, {
+        duration: 0.2, // Durata dell'animazione
+        opacity: innerHeight,
+        onComplete: function() {
+            // Una volta che la modal è invisibile e fuori schermo, nascondiamola
+            modal.style.display = 'none';
+
+            // Mostriamo la pagina di benvenuto con una nuova animazione
+            const welcomePage = document.getElementById("welcomePage");
+            welcomePage.style.display = 'flex';
+
+            gsap.from(welcomePage, {
+                duration: 1.6, // Durata dell'animazione
+                y: 80, // Distanza iniziale dall'alto
+                opacity: 0, // Inizia con opacità 0
+                ease: "expo.inOut", // Tipo di easing
+                onStart: function() {
+                    // Centra la pagina di benvenuto
+                    welcomePage.style.top = '50%';
+                    welcomePage.style.left = '50%';
+                    welcomePage.style.transform = 'translate(-50%, -50%)';
+                }
+            });
+        }
+    });
 });
