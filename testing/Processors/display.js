@@ -299,15 +299,13 @@ let bpm;
 
 let x = 0
 
-
 function setup(p5on) {
   createCanvas(0, 0); // scrivo questo altrimenti di default si vede il canvas di p5 nella pagina iniziale
 
   if (!p5on) { return }
 
   const canvas = createCanvas(400, 400);
-  canvas.parent('matrix-container'); // Collegalo al contenitore della forma d'onda
-
+  canvas.parent('canvas-container'); // Collegalo al contenitore della forma d'onda
 
   angleMode(DEGREES);
   // let nuovoAnello = new Anello(2, "#FF5733", diametroBase +  spessoreAnello* 5);
@@ -364,14 +362,7 @@ function draw() {
       }
     }
   }
-
-
-
-
-
-
 }
-
 
 function rimuoviUltimoAnello() {
   anelli.pop();
@@ -391,7 +382,6 @@ function rimuoviAnello(i) {
   console.log("Stato della matrice di rappresentazione:", modello.representation_matrix);
 }
 
-
 function comprimiAnelli(index) {
   //quì mi salvo i diametri
   let diametri = anelli.map(anello => anello.diametro);
@@ -401,10 +391,8 @@ function comprimiAnelli(index) {
     console.log(`Aggiornando diametro di anello ${i}, da ${anelli[i].diametro} a ${diametri[i - 1]}`);
     anelli[i].diametro = diametri[i - 1];
   }
-
   console.log('Anelli dopo compressione:', anelli);
 }
-
 
 function creaAnello(steps, colorInput) {
   if (anelli.length >= maxAnelli) {
@@ -417,17 +405,14 @@ function creaAnello(steps, colorInput) {
   modello.addRing([], steps, 0, 0, colorInput); //todo linkare alla matrice
 }
 
-
-
-
-
 class Anello {
   constructor(steps, color, diametro) {
     this.steps = steps;
     this.color = color;
     this.diametro = diametro;
     this.bool_list = Array(steps).fill(false); // Inizialmente tutte le sezioni sono disattivate
-    this.lastHighlightedIndex = null; // Indice dell'ultima sezione evidenziata, serve per suoanre il sample solo nel momento in cui la barra incontra la parte di anello attiva
+    this.lastHighlightedIndex = null; // Indice dell'ultima sezione evidenziata, 
+    // serve per suoanre il sample solo nel momento in cui la barra incontra la parte di anello attiva
   }
 
   disegna() {
@@ -442,7 +427,6 @@ class Anello {
       // Controlla se la barra si trova sopra questo segmento
       let highlight = angle >= startAngolo && angle < endAngolo;
 
-
       // Imposta il colore del segmento
       if (highlight & isRunning) {
         stroke(this.bool_list[i] ? this.color : 100); // Colore evidenziato
@@ -452,32 +436,26 @@ class Anello {
         if (this.bool_list[i] && this.lastHighlightedIndex !== i) {
           // Chiamata alla funzione
           playSlot(anelli.indexOf(this))
-
-
           
           this.lastHighlightedIndex = i; // Aggiorna l'indice dell'ultima sezione evidenziata
         }
-
       } else {
         stroke(this.bool_list[i] ? this.color : 100); // colore che ho scelto per l'anello
         strokeWeight(spessoreAnello)
-
       }
 
       // Disegna la parte dell'anello
       arc(0, 0, this.diametro, this.diametro, startAngolo, endAngolo);
 
-
-      
       // Resetta l'indice quando la barra non evidenzia più alcun segmento attivo
       if (!isRunning || !this.bool_list.some((isActive, index) => {
         let startAngolo = index * (angoloStep + gap) + rotationOffset;
         let endAngolo = startAngolo + angoloStep;
         return angle >= startAngolo && angle < endAngolo && isActive;
-    })) {
-      this.lastHighlightedIndex = null;
-    }
+      })) {
+          this.lastHighlightedIndex = null;
       }
+    }
   }
 
   toggleStep(indice) {
@@ -512,27 +490,31 @@ function mousePressed() {
 
 function createControls() {
   // Crea i pulsanti per il controllo della rotazione
-  let startButton = createButton('Avvia');
-  startButton.position(1200, height - 100); // Posizionato a destra
+  let startButton = createButton('Start');
+  startButton.id('startOrbit-btn');
+  startButton.position(1130, height - 20); // Posizionato a destra
   startButton.size(50, 50);
   startButton.style('border-radius', '50%');
   startButton.mousePressed(startRotation);
 
-  let pauseButton = createButton('Pausa');
-  pauseButton.position(1300, height - 100); // Posizionato accanto al pulsante di avvio
+  let pauseButton = createButton('Pause');
+  pauseButton.id('pauseOrbit-btn');
+  pauseButton.position(1260, height - 20); // Posizionato accanto al pulsante di avvio
   pauseButton.size(50, 50);
   pauseButton.style('border-radius', '50%');
   pauseButton.mousePressed(pauseRotation);
 
-  let stopButton = createButton('Ferma');
-  stopButton.position(1400, height - 100); // Posizionato accanto al pulsante di pausa
+  let stopButton = createButton('Reset');
+  stopButton.id('resetOrbit-btn');
+  stopButton.position(1380, height - 20); // Posizionato accanto al pulsante di pausa
   stopButton.size(50, 50);
   stopButton.style('border-radius', '50%');
   stopButton.mousePressed(stopRotation);
 
   // Crea la barra di controllo della velocità
   let speedSlider = createSlider(1, 10, 2, 0.1);
-  speedSlider.position(1200, height - 50); // Posizionato sotto i pulsanti
+  speedSlider.id('sliderOrbit-btn');
+  speedSlider.position(1130, height - 100); // Posizionato sotto i pulsanti
   speedSlider.input(() => { rotationSpeed = speedSlider.value(); });
 }
 

@@ -150,20 +150,20 @@ body {
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 50%; /* Posiziona al centro verticale */
-    left: 50%; /* Posiziona al centro orizzontale */
-    transform: translate(-50%, -50%); /* Sposta esattamente al centro dello schermo */
-    width: 100%;        /* Imposta la larghezza al 100% del viewport */
-    height: 100%;       /* Imposta l'altezza al 100% del viewport */
-    margin: 0;          /* Rimuovi margini di default */
-    padding: 0;         /* Rimuovi padding di default */
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 100%;        
+    height: 100%;       
+    margin: 0;          
+    padding: 0;         
     overflow-x: hidden;
     background-color: #010101; 
     border: 10px #DDDDDD;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
     color: #DDDDDD;
     text-align: center;
-    flex-direction: column; /* Disposizione verticale */
+    flex-direction: column;
     z-index: 1000;
 }
 
@@ -175,7 +175,7 @@ body {
   color: #222222;
   cursor: pointer;
   display: inline-block;
-  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+  font-family: "Inter", "DM Sans", Arial, sans-serif;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
@@ -256,7 +256,6 @@ button#continue-btn:disabled:hover {
     box-shadow: inset 0 0 30px #555555; 
     transform: none;
 }
-
 /*-----------------------------------------------*/
 .dragover {
     background-color: #108738;
@@ -274,12 +273,14 @@ button#preset-btn {
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
-    position: relative; /* Necessario per posizionare l'effetto "before" */
+    position: relative; 
     overflow: hidden; /* Nasconde l'animazione in eccesso */
     text-transform: uppercase;
     transition: color 0.2s ease, border-color 0.2s ease; /* Transizione per il colore e il bordo */
 
-    box-shadow: rgb(40, 40, 40) 0px 2px 1px, rgb(80, 80, 80) 0px 4px 8px -3px, rgb(105, 105, 105) 0px -1px 0px inset;
+    box-shadow: rgb(40, 40, 40) 0px 2px 1px,
+                rgb(80, 80, 80) 0px 4px 8px -3px,
+                rgb(105, 105, 105) 0px -1px 0px inset;
     text-shadow: none;
 }
 
@@ -333,7 +334,7 @@ button#preset-btn:hover span {
     position: relative; 
     box-sizing: border-box;
     box-shadow: rgb(40, 40, 40) 0px 2px 1px, 
-                rgb(80, 80, 80) 0px 4px 8px -3px, 
+                rgb(80, 80, 80) 0px 2px 8px -3px, 
                 rgb(105, 105, 105) 0px -3px 0px inset;
     outline: 1px solid;
     outline-color: rgb(105, 105, 105);
@@ -356,18 +357,16 @@ button#preset-btn:hover span {
 #preset-list > button:hover::after {
     transform: translateY(2px); 
     box-shadow: rgb(40, 40, 40) 0px 1px 2px, 
-                rgb(80, 80, 80) 0px 3px 3px -2px, 
+                rgb(80, 80, 80) 0px 1px 1px -2px, 
                 rgb(105, 105, 105) 0px -2px 0px inset;
 }
 
 #preset-list > button:active::after {
-    transform: translateY(3px); 
+    transform: translateY(2px); 
     box-shadow: rgb(40, 40, 40) 0px 1px -2px, 
                 rgb(80, 80, 80) 0px -4.5px -2px -1px, 
                 rgb(105, 105, 105) 0px 0px 0px inset;
 }
-
-
 /*-----------------------------------------------*/
 button#record-btn {
     font-family: "Inter", "DM Sans", Arial, sans-serif;
@@ -380,7 +379,9 @@ button#record-btn {
     cursor: pointer;
     font-size: 16px;
 
-    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 4px 8px -3px, rgb(162, 2, 2) 0px -4px 0px inset;
+    box-shadow: rgb(255, 60, 65) 0px 1px 2px,
+                rgb(255, 60, 65) 0px 4px 8px -3px,
+                rgb(162, 2, 2) 0px -4px 0px inset;
     outline: 0px solid;
     outline-offset: 0px;
     text-shadow: none;
@@ -391,12 +392,16 @@ button#record-btn {
 
 button#record-btn:hover {
     transform: translateY(3px); /* Sposta il bottone verso il basso */
-    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 3px 6px -2px, rgb(162, 2, 2) 0px -2px 0px inset;
+    box-shadow: rgb(255, 60, 65) 0px 1px 2px,
+                rgb(255, 60, 65) 0px 3px 6px -2px,
+                rgb(162, 2, 2) 0px -2px 0px inset;
 }
 
 button#record-btn:active {
     transform: translateY(5px); /* Sposta il bottone verso il basso di più durante il clic */
-    box-shadow: rgb(255, 60, 65) 0px 1px 2px, rgb(255, 60, 65) 0px 2px 4px -1px, rgb(162, 2, 2) 0px -3px 0px inset;
+    box-shadow: rgb(255, 60, 65) 0px 1px 2px,
+                rgb(255, 60, 65) 0px 2px 4px -1px,
+                rgb(162, 2, 2) 0px -3px 0px inset;
 }
 /*-----------------------------------------------*/
  #record{
@@ -430,7 +435,6 @@ button#record-btn:active {
 #record:hover {
     box-shadow: rgba(253, 10, 10, 0.774) 0 4px 8px;
 }
-
 /*-----------------------------------------------*/
 #pause {
     background-color: initial;
@@ -562,18 +566,16 @@ button#record-btn:active {
     box-shadow: #DDDDDD 0 1px 4px;
 }
 
+#progress-bar {
+    transition: width 0.2s ease-in-out;
+    background-color: #33ff8c;
+}
 /*#####################################################################################################*/
 /*#################################### SEZIONE MATRIX #################################################*/
 
-#progress-bar {
-    transition: width 0.2s ease-in-out; /* Aggiungi una transizione per un effetto fluido */
-    background-color: #33ff8c;
-}
-
 #matrix-container {
     float: left;
-
-    background-color: #1f1f1f;
+    background-color: #DDDDDD;
     padding: 10px;
     border-radius: 8px;
     color: #DDDDDD;
@@ -583,13 +585,22 @@ button#record-btn:active {
 }
 
 table#matrixTable {
-    width: 100%;
+    background: #28282d;
+    width: 580px;
+    height: 50%;
+    position: absolute;
+    left: 25;
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
+    color: #DDDDDD;
+    text-align: center;
     border-collapse: collapse;
+    z-index: 1;
+    box-shadow: 6px 8px 18px rgba(0, 0, 0, 0.5);
 }
 
 table#matrixTable th, table#matrixTable td {
-    border: 1px solid #555;
-    padding: 5px;
+    border: 2px inset #ccc;
+    padding: 10px;
     text-align: center;
 }
 
@@ -631,34 +642,82 @@ button.remove-btn {
 }
 
 #canvas-container {
-    position: absolute;
-    top: 50%;
+    position: fixed;
+    top: 64%;
     left: 55%;
     transform: translate(-50%, -50%);
-    width: 40%;
-    height: 400px;
-    background-color: #1e1e1e;
+    width: 30%;
+    background-color: #DDDDDD;
     border-radius: 10px;
 }
 /*#####################################################################################################*/
 /*#################################### SEZIONE WORKSTATION ############################################*/
 
 #workstation {
-    background-color: #181818;
-    color: #DDDDDD;
+    background-color: #DDDDDD;
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
     text-align: center;
     font-size: 20px;
     filter: blur(100px);
+}
+
+#sliderOrbit-btn {
+    appearance: none;
+    width: 300px;
+    height: 40px;
+    padding: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: -2px -2px 6px white, 6px 6px 14px rgba(0, 0, 0, 0.5);
+}
+
+#sliderOrbit-btn::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: #28282d; 
+    border-radius: 50%;
+    border: 2px solid #28282d;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: -4px;
+}
+
+#sliderOrbit-btn::-moz-range-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px; 
+    background-color: #28282d; 
+    border-radius: 50%;
+    border: 2px solid #28282d;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: -4px;
+}
+
+#sliderOrbit-btn::-webkit-slider-runnable-track {
+    height: 10px;
+    border-radius: 5px; 
+    background: #ccc;
+}
+
+#sliderOrbit-btn::-moz-range-track {
+    height: 10px;
+    border-radius: 5px; 
+    background: #ccc;
 }
 /*#####################################################################################################*/
 /*#################################### SEZIONE WAVEFORM ###############################################*/
 
 #waveform {
-    background: rgba(6, 6, 6, 0.845); /* Trasparente, effetto vetro */
-    /* Sfuoca lo sfondo dietro la sezione */
-    border: 4px solid #DDDDDD; /* Bordi spessi con colore del legno */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombra leggera per profondità *//* Centra il contenuto all'interno */
-    box-sizing: border-box; /* Include il bordo nelle dimensioni */
+    background: rgba(6, 6, 6, 0.845); 
+    border: 4px solid #DDDDDD;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    box-sizing: border-box; 
 } 
 
 #waveform ::part(marker) {
@@ -667,20 +726,21 @@ button.remove-btn {
 }
 
 #waveform-controls {
-    color: #000000; /* Colore del testo */
+    color: #000000; 
 }
 
 /*#####################################################################################################*/
-/*#################################### SEZIONE SLOT AUDIO #############################################*/
+/*#################################### SEZIONE SLOT/ZOOM ##############################################*/
 .savings {
     display: flex;
-    gap: 2px; /* Aumentato il gap per distanziare meglio gli slot */
-    width: 100%; /* Aumentata la larghezza del container */
-    justify-content: center; /* Gli slot saranno centrati all'interno del container */
-    background-color: #DDDDDD; /* Colore di sfondo invariato */
-    padding-top: 15px; /* Aggiunto padding per creare spazio tra gli slot e i bordi del container */
+    gap: 2px;
+    width: 100%; 
+    justify-content: center; 
+    background-color: #DDDDDD; 
+    padding-top: 15px; 
     padding-bottom: 20px;
-    box-sizing: border-box; /* Assicura che il padding non influisca sulle dimensioni complessive */
+    box-sizing: border-box; 
+    box-shadow: 0px 0px 2px white, 0px 2px 14px rgba(0, 0, 0, 0.5);
 }
 
 .discard-btn {
@@ -760,10 +820,11 @@ button.remove-btn {
     width: 300px;
     height: 40px;
     padding: 20px;
-    margin-top: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     background: #e0e0e0;
     border-radius: 10px;
-    box-shadow: -2px -2px 6px white, 8px 6px 14px rgba(0, 0, 0, 0.5);
+    box-shadow: -2px -2px 6px white, 6px 6px 14px rgba(0, 0, 0, 0.5);
 }
 
 #zoom::-webkit-slider-thumb {
@@ -810,11 +871,11 @@ datalist {
     color: #fff;
     width: 25rem;
     line-height: 1.75;
-    transform: translateY(0.8rem);
+    transform: translateY(0.3rem);
     gap: 1rem; 
-  }
+}
   
-  datalist > option {
+datalist > option {
     z-index: 1;
     display: flex;
     position: relative;
@@ -825,9 +886,9 @@ datalist {
     border-radius: 0.5rem;
     text-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-  }
+}
   
-  datalist > option:before {
+datalist > option:before {
     content: '';
     display: inline-block;
     position: relative;
@@ -835,12 +896,15 @@ datalist {
     height: 13px;
     width: 0.8px;
     background: #28282d;
-    transform: translateY(-100%);
-  }
+    transform: translateY(-80%);
+}
 
 #ticks option:nth-child(1) { left: 24%; }  /* 0% */
 #ticks option:nth-child(2) { left: 16%; } /* 25% */
 #ticks option:nth-child(3) { left: 8%; } /* 50% */
 #ticks option:nth-child(4) { right: 1%; } /* 75% */
 #ticks option:nth-child(5) { right: 10%; } /* 100% */
+
+/*#####################################################################################################*/
+/*#################################### SEZIONE ########################################################*/
 
