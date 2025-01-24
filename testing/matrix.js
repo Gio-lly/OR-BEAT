@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const colors = ["#FF5733", "#2E8B57", "#3357FF", "#F1C40F", "#8E44AD", "#1ABC9C", "#E74C3C", "#2C3E50"];
+    const colors = ["#d12d2d", "#038930", "#2d3dd1", "#F1C40F", "#8E44AD", "#1ABC9C", "#E74C3C", "#2C3E50"];
     let usedColors = new Set();
 
     const matrixContainer = document.getElementById('matrix-container');
@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <table id="matrixTable">
             <thead>
                 <tr>
-                    <th>Circle</th>
+                    <th>Color</th>
                     <th>Sample</th>
                     <th>Steps</th>
                     <th>Density</th>
                     <th>Phase</th>
-                    <th>Action</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         newRow.innerHTML = `
             <td><div class="color-box" style="background-color: ${color};"></div></td>
-            <td>Drop the sample here!</td>
+            <td>Drop the sample</td>
             <td>
                 <select class="steps-dropdown" style="background-color: ${color};">
                     ${Array.from({ length: 15 }, (_, i) => `<option value="${i + 2}">${i + 2}</option>`).join('')}

@@ -576,7 +576,6 @@ button#record-btn:active {
 #matrix-container {
     float: left;
     background-color: #DDDDDD;
-    padding: 10px;
     border-radius: 8px;
     color: #DDDDDD;
     display: flex;
@@ -586,31 +585,122 @@ button#record-btn:active {
 
 table#matrixTable {
     background: #28282d;
-    width: 580px;
-    height: 50%;
-    position: absolute;
-    left: 25;
+    font-size: 12px;
+    border-radius: 20px;
+    position: relative;
+    width: 550px;
+    height: 200px;
+    right: 280;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     color: #DDDDDD;
     text-align: center;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0 16px;
     z-index: 1;
-    box-shadow: 6px 8px 18px rgba(0, 0, 0, 0.5);
+    box-shadow:
+        rgba(22, 31, 39, 0.42) 0px 60px 123px -25px,
+        rgba(19, 26, 32, 0.08) 0px 35px 75px -35px;
 }
 
 table#matrixTable th, table#matrixTable td {
-    border: 2px inset #ccc;
     padding: 10px;
     text-align: center;
 }
 
-.color-box {
+table#matrixTable tr td:nth-child(2){
+    align-items: center;
+    background-color: #DDDDDD;
+    background-image: #DDDDDD;
+    border-radius: 40px 40px 40px 40px;
+    border-width: 0;
+    box-shadow: inset 4px -6px 8px rgba(0, 0, 0, 0.3), inset -6px -10px 10px rgba(0, 0, 0, 0.15);
+    box-sizing: border-box;
+    color: #000;
+    cursor: pointer;
+    flex-direction: row;
+    font-size: 11px;
+    height: 52px;
+    width: 120px;
+    justify-content: center;
+    line-height: 1;
+    margin: 0;
+    padding: 2px 2px;
+    outline: auto;
+    outline-offset: -3px;
+    outline-style: auto;
+    outline-color: #28282d;
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+    transform: translate3d(0, 0, 0);
+    transition: all 150ms;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+/*-----------------------------------------------*/
+#matrixTable tr:nth-child(1) .color-box {
     width: 20px;
     height: 20px;
     border-radius: 50%;
     margin: 0 auto;
-}
 
+    background-color:#fff !important;
+    border: 1px solid rgba(211, 45, 45, 1); 
+    box-shadow: 0 0 15px rgba(211, 45, 45, 1); 
+}
+#matrixTable tr:nth-child(2) .color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 0 auto;
+
+    background-color:#fff !important;
+    border: 1px solid rgba(3, 137, 48, 1);
+    box-shadow: 0 0 15px rgba(3, 137, 48, 1);
+}
+#matrixTable tr:nth-child(3) .color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 0 auto;
+
+    background-color:#fff !important;
+    border: 1px solid rgba(0, 0, 255, 1); 
+    box-shadow: 0 0 15px rgba(0, 0, 255, 1);
+}
+#matrixTable tr:nth-child(4) .color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 0 auto;
+
+    background-color:#fff !important;
+    border: 1px solid rgba(241, 196, 15, 1); 
+    box-shadow: 0 0 15px rgba(241, 196, 15, 1);  
+}
+#matrixTable tr:nth-child(5) .color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 0 auto;
+
+    background-color:#fff !important;
+    border: 1px solid rgba(142, 68, 173, 1); 
+    box-shadow: 0 0 15px rgba(142, 68, 173, 1); 
+}
+#matrixTable tr:nth-child(6) .color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 0 auto;
+
+    background-color:#fff !important;
+    border: 1px solid rgba(81, 203, 238, 1);
+    box-shadow: 0 0 15px rgba(81, 203, 238, 1);
+}
+/*-----------------------------------------------*/
 select {
     font-weight: bold;
     color: #DDDDDD;
@@ -624,21 +714,23 @@ select option {
 }
 
 button.add-row-btn {
-    background-color: #444;
-    color: #DDDDDD;
-    border: 1px solid #666;
+    background-color: #DDDDDD;
+    color: #28282d;
+    border: 2px solid #666;
     padding: 5px 10px;
     cursor: pointer;
     font-size: 18px;
+    text-align: center;
 }
 
 button.remove-btn {
     background-color: #e74c3c;
     color: #DDDDDD;
-    border: 1px solid #c0392b;
+    border: 3px solid #c0392b;
     padding: 5px 10px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 50%;
+    text-align: center;
 }
 
 #canvas-container {
