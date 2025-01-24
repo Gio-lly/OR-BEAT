@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 newRow.remove();
                 rimuoviAnello(rowIndex);  // Passa l'indice della riga
                 logState();
+                
                 console.log("Stato degli anelli dopo la rimozione dell'ultimo:", anelli);
                 return;
             }
@@ -196,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
             newRow.remove();
             comprimiAnelli(rowIndex);
             rimuoviAnello(rowIndex);
-
+            toggleAddButtonVisibility();
             // ora aggiorniamo gli ID delle righe
             const allRows = document.querySelectorAll('#matrixTable tbody tr');
             allRows.forEach((row, index) => {
