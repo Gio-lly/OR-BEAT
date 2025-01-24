@@ -389,7 +389,7 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
 
     // Aggiungi un evento di click per riprodurre l'audio quando si clicca sullo slot
     slots[freeSlotIndex].addEventListener('click', () => {
-        player.start();
+        playSlot(freeSlotIndex);
     });
 
     // Aggiungi l'event listener per il pulsante "DISCARD"
@@ -401,7 +401,7 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
             // Reset del testo dello slot e rimozione del segmento audio
             slots[buttonIndex].textContent = ''; // Libera il testo dello slot
     
-            player.stop(); // Ferma la riproduzione (se in corso)
+            players[buttonIndex].stop(); // Ferma la riproduzione (se in corso)
             players[buttonIndex] = null; // Rimuovi il player dalla lista
             slotStatus[buttonIndex] = false;
         });

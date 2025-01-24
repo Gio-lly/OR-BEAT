@@ -25,7 +25,6 @@
     <link rel="icon" href="favicon.png" type="image/png">
     <link href="stile.css" rel="stylesheet" type="text/css">
     <link href="stile-title.css" rel="stylesheet" type="text/css">
-    <link href="stile-knobs.css" rel="stylesheet" type="text/css">
     <script src="script.js" charset="UTF-8" defer></script>
     <script src="matrix.js" charset="UTF-8" defer></script>
     <script src="Processors/progressbar.js" charset="UTF-8" defer></script>
@@ -71,8 +70,6 @@
             <div class="block-6 block">E</div>
             <div class="block-7 block">A</div>
             <div class="block-4 block">T</div>
-            <!--div class="block-7 block">C</div>
-            <div class="block-3 block">E</div-->
         </div>
     </div>
 
@@ -174,7 +171,14 @@
             <!-- Qui abbiamo controlli come lo zoom -->
             <div id="waveform-controls" style="display: none;">
                 <label style="margin-left: 2em">
-                    Zoom <input id="zoom" type="range" min="10" max="1000" value="10" />
+                    <input id="zoom" type="range" min="10" max="1000" value="10" />
+                    <datalist id="ticks">
+                        <option value="0" label="0%"></option>
+                        <option value="25" label="25%"></option>
+                        <option value="50" label="50%"></option>
+                        <option value="75" label="75%"></option>
+                        <option value="100" label="100%"></option>
+                    </datalist>
                 </label>
             </div>
         </div>

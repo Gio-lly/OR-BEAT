@@ -634,7 +634,7 @@ button.remove-btn {
 /*#################################### SEZIONE SLOT AUDIO #############################################*/
 .savings {
     display: flex;
-    gap: 10px; /* Aumentato il gap per distanziare meglio gli slot */
+    gap: 2px; /* Aumentato il gap per distanziare meglio gli slot */
     width: 100%; /* Aumentata la larghezza del container */
     justify-content: center; /* Gli slot saranno centrati all'interno del container */
     background-color: #DDDDDD; /* Colore di sfondo invariato */
@@ -714,3 +714,93 @@ button.remove-btn {
     height: 48px;
   }
 }
+
+#zoom {
+    appearance: none;
+    width: 300px;
+    height: 40px;
+    padding: 20px;
+    margin-top: 20px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: -2px -2px 6px white, 8px 6px 14px rgba(0, 0, 0, 0.5);
+}
+
+#zoom::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: #28282d; 
+    border-radius: 50%;
+    border: 2px solid #28282d;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: -4px;
+}
+
+#zoom::-moz-range-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px; 
+    background-color: #28282d; 
+    border-radius: 50%;
+    border: 2px solid #28282d;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: -4px;
+}
+
+#zoom::-webkit-slider-runnable-track {
+    height: 10px;
+    border-radius: 5px; 
+    background: #ccc;
+}
+
+#zoom::-moz-range-track {
+    height: 10px;
+    border-radius: 5px; 
+    background: #ccc;
+}
+
+datalist {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    width: 25rem;
+    line-height: 1.75;
+    transform: translateY(0.8rem);
+    gap: 1rem; 
+  }
+  
+  datalist > option {
+    z-index: 1;
+    display: flex;
+    position: relative;
+    padding: 0 0.25rem;
+    border: 1px solid #28282d;
+    background-color: #28282d;
+    font-size: 10px;
+    border-radius: 0.5rem;
+    text-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
+  }
+  
+  datalist > option:before {
+    content: '';
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    height: 13px;
+    width: 0.8px;
+    background: #28282d;
+    transform: translateY(-100%);
+  }
+
+#ticks option:nth-child(1) { left: 24%; }  /* 0% */
+#ticks option:nth-child(2) { left: 16%; } /* 25% */
+#ticks option:nth-child(3) { left: 8%; } /* 50% */
+#ticks option:nth-child(4) { right: 1%; } /* 75% */
+#ticks option:nth-child(5) { right: 10%; } /* 100% */
+
