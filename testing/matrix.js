@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 newRow.remove();
                 rimuoviAnello(rowIndex);  // Passa l'indice della riga
                 logState();
-                
+                toggleAddButtonVisibility();
                 console.log("Stato degli anelli dopo la rimozione dell'ultimo:", anelli);
                 return;
             }
