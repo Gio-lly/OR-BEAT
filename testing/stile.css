@@ -802,6 +802,90 @@ button.remove-btn {
     border-radius: 5px; 
     background: #ccc;
 }
+
+#startOrbit-btn {
+    display: block;
+    text-decoration: none;
+    background-color: #e0e0e0;
+    background-image: -webkit-linear-gradient(top, #f7f7f7, #e7e7e7); 
+    background-image: -moz-linear-gradient(top, #f7f7f7, #e7e7e7);
+    color: #28282d;
+    width: 144px;
+    height: 144px;
+    font-size: 14px;
+    text-transform: uppercase;
+    position: relative;
+    text-align: center;
+    line-height: 144px;
+    border-radius: 50%;
+    box-shadow: 0px 3px 8px #555, 0 6px 10px #ccc;
+    border: solid 1px transparent;
+}
+
+#startOrbit-btn:hover {
+    text-decoration: none;
+    color: #038930;
+}
+
+#startOrbit-btn:active {
+    box-shadow: 0px 4px 6px #ccc inset, 0px 2px 3px #555;
+}
+
+#pauseOrbit-btn {
+    display: block;
+    text-decoration: none;
+    background-color: #e0e0e0;
+    background-image: -webkit-linear-gradient(top, #f7f7f7, #e7e7e7); 
+    background-image: -moz-linear-gradient(top, #f7f7f7, #e7e7e7);
+    color: #28282d;
+    width: 144px;
+    height: 144px;
+    font-size: 14px;
+    text-transform: uppercase;
+    position: relative;
+    text-align: center;
+    line-height: 144px;
+    border-radius: 50%;
+    box-shadow: 0px 3px 8px #555, 0 6px 10px #ccc;
+    border: solid 1px transparent;
+}
+
+#pauseOrbit-btn:hover {
+    text-decoration: none;
+    color: #d12d2d;
+}
+
+#pauseOrbit-btn:active {
+    box-shadow: 0px 4px 6px #ccc inset, 0px 2px 3px #555;
+}
+
+#resetOrbit-btn {
+    display: block;
+    text-decoration: none;
+    background-color: #e0e0e0;
+    background-image: -webkit-linear-gradient(top, #f7f7f7, #e7e7e7); 
+    background-image: -moz-linear-gradient(top, #f7f7f7, #e7e7e7);
+    color: #28282d;
+    width: 144px;
+    height: 144px;
+    font-size: 14px;
+    text-transform: uppercase;
+    position: relative;
+    text-align: center;
+    line-height: 144px;
+    border-radius: 50%;
+    box-shadow: 0px 3px 8px #555, 0 6px 10px #ccc;
+    border: solid 1px transparent;
+}
+
+#resetOrbit-btn:hover {
+    text-decoration: none;
+    color: #B8860B;
+}
+
+#resetOrbit-btn:active {
+    box-shadow: 0px 4px 6px #ccc inset, 0px 2px 3px #555;
+}
 /*#####################################################################################################*/
 /*#################################### SEZIONE WAVEFORM ###############################################*/
 
