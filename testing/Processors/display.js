@@ -516,7 +516,7 @@ function createControls() {
   stopButton.mousePressed(stopRotation);
 
   // Crea l'elemento testo per visualizzare il valore del BPM
-  let bpmText = createDiv(`${bpm} bpm`);
+  let bpmText = createDiv(`${bpm} BPM`);
   bpmText.id('bpm-value'); // Aggiungi l'ID per personalizzare tramite CSS
   bpmText.position(1130 + 320, height - 85); // Posiziona accanto allo slider
 
@@ -526,7 +526,7 @@ function createControls() {
   bpmSlider.position(1130, height - 100); // Posizionato sotto i pulsanti
   bpmSlider.input(() => { 
     bpm = bpmSlider.value();
-    bpmText.html(`${bpm} bpm`); // Aggiorna il testo del BPM
+    bpmText.html(`${bpm} BPM`); // Aggiorna il testo del BPM
   });
 
 }

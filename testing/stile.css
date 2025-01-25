@@ -580,40 +580,122 @@ button#record-btn:active {
     color: #DDDDDD;
     display: flex;
     margin-left: 20%;
-    
 }
 
+#sliderOrbit-btn {
+    appearance: none;
+    width: 300px;
+    height: 40px;
+    padding: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: -2px -2px 6px white, 
+                6px 6px 14px rgba(0, 0, 0, 0.5);
+}
+/*-----------------------------------------------*/
 table#matrixTable {
-    background: #28282d;
-    font-size: 12px;
-    border-radius: 20px;
+    background: #e0e0e0;
+    font-size: 13px;
+    border-radius: 30px;
     position: relative;
     width: 550px;
     height: 200px;
     right: 280;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
-    color: #DDDDDD;
+    color: #28282d;
     text-align: center;
     border-collapse: separate;
-    border-spacing: 0 16px;
+    border-spacing: 4px 16px;
     z-index: 1;
-    box-shadow:
-        rgba(22, 31, 39, 0.42) 0px 60px 123px -25px,
-        rgba(19, 26, 32, 0.08) 0px 35px 75px -35px;
+    box-shadow: -3px -2px 10px white, 
+                6px 6px 10px rgba(0, 0, 0, 0.5);
 }
 
 table#matrixTable th, table#matrixTable td {
     padding: 10px;
     text-align: center;
 }
-
+/*-----------------------------------------------*/
+select {
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
+    font-weight: bold;
+    text-align: center;
+}
+.steps-dropdown {
+    background-color: #28282d !important; 
+    color: #fff; /* Colore del testo */
+    border: 3px outset #010101; 
+    padding: 5px 0px; 
+    font-size: 12px; 
+    border-radius: 8px; 
+    cursor: pointer;
+    width: 100%;
+    margin-right: 10px;
+    box-shadow: -2px -2px 6px white, 
+                1px 1px 8px rgba(0, 0, 0, 0.5);
+}
+.steps-dropdown:focus {
+    outline: none; 
+    border-color: #010101;
+}
+.steps-dropdown option {
+    background-color: #28282d;
+    color: #fff; 
+}
+/*-----------------------------------------------*/
+.density-dropdown {
+    background-color: #28282d !important; 
+    color: #fff; /* Colore del testo */
+    border: 3px outset #010101; 
+    padding: 5px 0px; 
+    font-size: 12px; 
+    border-radius: 8px; 
+    cursor: pointer;
+    width: 75%;
+    margin-right: 10px;
+    box-shadow: -2px -2px 6px white, 
+                1px 1px 8px rgba(0, 0, 0, 0.5);
+}
+.density-dropdown:focus {
+    outline: none; 
+    border-color: #010101;
+}
+.density-dropdown option {
+    background-color: #28282d;
+    color: #fff; 
+}
+/*-----------------------------------------------*/
+.phase-dropdown {
+    background-color: #28282d !important; 
+    color: #fff; /* Colore del testo */
+    border: 3px outset #010101; 
+    padding: 5px 6px; 
+    font-size: 12px; 
+    border-radius: 8px; 
+    cursor: pointer;
+    width: 85%;
+    margin-right: 10px;
+    box-shadow: -2px -2px 6px white, 
+                1px 1px 8px rgba(0, 0, 0, 0.5);
+}
+.phase-dropdown:focus {
+    outline: none; 
+    border-color: #010101;
+}
+.phase-dropdown option {
+    background-color: #28282d;
+    color: #fff; 
+}
+/*-----------------------------------------------*/
 table#matrixTable tr td:nth-child(2){
     align-items: center;
-    background-color: #DDDDDD;
-    background-image: #DDDDDD;
+    background-color: #e0e0e0;
+    background-image: #e0e0e0;
     border-radius: 40px 40px 40px 40px;
     border-width: 0;
-    box-shadow: inset 4px -6px 8px rgba(0, 0, 0, 0.3), inset -6px -10px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 1px -6px 2px rgba(0, 0, 0, 0.3), inset -6px -10px 10px rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
     color: #000;
     cursor: pointer;
@@ -646,8 +728,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(211, 45, 45, 1); 
+    background-color: rgb(214, 70, 70) !important;
+    border: 2px groove rgba(211, 45, 45, 1); 
     box-shadow: 0 0 15px rgba(211, 45, 45, 1); 
 }
 #matrixTable tr:nth-child(2) .color-box {
@@ -656,8 +738,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(3, 137, 48, 1);
+    background-color: rgb(35, 167, 79) !important;
+    border: 2px groove rgba(3, 137, 48, 1);
     box-shadow: 0 0 15px rgba(3, 137, 48, 1);
 }
 #matrixTable tr:nth-child(3) .color-box {
@@ -666,8 +748,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(0, 0, 255, 1); 
+    background-color: rgb(83, 83, 231) !important;
+    border: 2px groove rgba(0, 0, 255, 1); 
     box-shadow: 0 0 15px rgba(0, 0, 255, 1);
 }
 #matrixTable tr:nth-child(4) .color-box {
@@ -676,8 +758,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(241, 196, 15, 1); 
+    background-color: #f5c661 !important;
+    border: 1px groove rgb(241, 151, 15); 
     box-shadow: 0 0 15px rgba(241, 196, 15, 1);  
 }
 #matrixTable tr:nth-child(5) .color-box {
@@ -686,8 +768,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(142, 68, 173, 1); 
+    background-color: rgb(145, 79, 173) !important;
+    border: 2px groove rgba(142, 68, 173, 1); 
     box-shadow: 0 0 15px rgba(142, 68, 173, 1); 
 }
 #matrixTable tr:nth-child(6) .color-box {
@@ -696,41 +778,30 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(81, 203, 238, 1);
-    box-shadow: 0 0 15px rgba(81, 203, 238, 1);
+    background-color: rgb(242, 103, 177) !important;
+    border: 2px groove rgb(206, 95, 154);
+    box-shadow: 0 0 15px rgb(206, 95, 154);
 }
 /*-----------------------------------------------*/
-select {
-    font-weight: bold;
-    color: #DDDDDD;
-    border: 1px solid #333;
-    text-shadow: -1px -1px 0 #000, 1px 1px 0 #000;
-    border-radius: 5px;
-}
-
-select option {
-    background-color: #333;
-}
-
 button.add-row-btn {
-    background-color: #DDDDDD;
-    color: #28282d;
-    border: 2px solid #666;
+    background-color: #28282d;
+    color: #fff;
+    border: 2px outset #010101;
     padding: 5px 10px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 15px;
     text-align: center;
+    box-shadow: -4px -6px 10px white, 
+                1px 1px 10px rgba(0, 0, 0, 0.5);
 }
 
 button.remove-btn {
-    background-color: #e74c3c;
-    color: #DDDDDD;
-    border: 3px solid #c0392b;
-    padding: 5px 10px;
+    background-color: #e0e0e0;
+    color: #d12d2d;
+    border: none;
     cursor: pointer;
-    border-radius: 50%;
     text-align: center;
+    font-size: 18px;
 }
 
 #canvas-container {
@@ -754,15 +825,14 @@ button.remove-btn {
 }
 
 #bpm-value {
-    font-size: 10px; /* Dimensione del font */
-    font-family: Arial, sans-serif; /* Font del testo */
-    color: #ffffff; /* Colore del testo */
-    background-color: rgba(0, 0, 0, 0.8); /* Sfondo trasparente */
-    padding: 5px 10px; /* Spaziatura interna */
-    border-radius: 5px; /* Angoli arrotondati */
-    box-shadow: -2px -2px 6px white, 6px 6px 14px rgba(0, 0, 0, 0.5);
+    font-size: 10px;
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 5px 10px; 
+    border-radius: 5px; 
+    box-shadow: -2px -2px 10px white, 6px 2px 16px rgba(40, 40, 45, 0.5);
 }
-
 
 #sliderOrbit-btn {
     appearance: none;
@@ -823,6 +893,7 @@ button.remove-btn {
     color: #28282d;
     width: 144px;
     height: 144px;
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
     font-size: 14px;
     text-transform: uppercase;
     position: relative;
@@ -851,6 +922,7 @@ button.remove-btn {
     color: #28282d;
     width: 144px;
     height: 144px;
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
     font-size: 14px;
     text-transform: uppercase;
     position: relative;
@@ -879,6 +951,7 @@ button.remove-btn {
     color: #28282d;
     width: 144px;
     height: 144px;
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
     font-size: 14px;
     text-transform: uppercase;
     position: relative;
@@ -1094,4 +1167,3 @@ datalist > option:before {
 
 /*#####################################################################################################*/
 /*#################################### SEZIONE ########################################################*/
-

@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <td>
                 <select class="phase-dropdown" style="background-color: ${color};"></select>
             </td>
-            <td><button class="remove-btn">x</button></td>
+            <td><button class="remove-btn"><i class="fa-solid fa-trash"></i></button></td>
         `;
 
         const stepsDropdown = newRow.querySelector('.steps-dropdown');
