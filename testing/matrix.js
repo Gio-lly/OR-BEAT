@@ -118,12 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
         creaAnello(steps, color);
 
         stepsDropdown.addEventListener('change', event => {
-            steps = parseInt(event.target.value, 10);
+            var steps = parseInt(event.target.value, 10);
             if (!isNaN(steps)) {
                 populateDropdowns(newRow, steps);
             }
             modello.modifyRingSteps(parseInt(stepsDropdown.parentNode.parentNode.id) - 1, steps);
             anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].steps = steps;
+            anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].bool_list=new Array(steps).fill(false);
         });
 
         // gestione del cambiamento della densità

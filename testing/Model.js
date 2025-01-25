@@ -30,6 +30,7 @@ class Model {
   }
   modifyRingSteps(i_ring,steps){
     this.representation_matrix[i_ring][3]=steps;
+    this.representation_matrix[i_ring][6]=new Array(steps).fill(false);
   }
   modifyRingPhase(i_ring,phase){
     if (this.representation_matrix[i_ring]) {
