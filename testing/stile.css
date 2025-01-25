@@ -334,8 +334,8 @@ button#preset-btn:hover span {
     position: relative; 
     box-sizing: border-box;
     box-shadow: rgb(40, 40, 40) 0px 2px 1px, 
-                rgb(80, 80, 80) 0px 2px 8px -3px, 
-                rgb(105, 105, 105) 0px -3px 0px inset;
+                rgb(80, 80, 80) 0px 2px 4px -3px, 
+                rgb(105, 105, 105) 0px -2px 0px inset;
     outline: 1px solid;
     outline-color: rgb(105, 105, 105);
     outline-offset: 0px;
@@ -352,20 +352,6 @@ button#preset-btn:hover span {
     bottom: 0;
     border-radius: 8px;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-#preset-list > button:hover::after {
-    transform: translateY(2px); 
-    box-shadow: rgb(40, 40, 40) 0px 1px 2px, 
-                rgb(80, 80, 80) 0px 1px 1px -2px, 
-                rgb(105, 105, 105) 0px -2px 0px inset;
-}
-
-#preset-list > button:active::after {
-    transform: translateY(2px); 
-    box-shadow: rgb(40, 40, 40) 0px 1px -2px, 
-                rgb(80, 80, 80) 0px -4.5px -2px -1px, 
-                rgb(105, 105, 105) 0px 0px 0px inset;
 }
 /*-----------------------------------------------*/
 button#record-btn {
@@ -728,9 +714,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color: rgb(214, 70, 70) !important;
-    border: 2px groove rgba(211, 45, 45, 1); 
-    box-shadow: 0 0 15px rgba(211, 45, 45, 1); 
+    /*border: 2px groove rgba(211, 45, 45, 1); 
+    box-shadow: 0 0 15px rgba(211, 45, 45, 1);*/
 }
 #matrixTable tr:nth-child(2) .color-box {
     width: 20px;
@@ -738,9 +723,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color: rgb(35, 167, 79) !important;
-    border: 2px groove rgba(3, 137, 48, 1);
-    box-shadow: 0 0 15px rgba(3, 137, 48, 1);
+    /*border: 2px groove rgba(3, 137, 48, 1);
+    box-shadow: 0 0 15px rgba(3, 137, 48, 1);*/
 }
 #matrixTable tr:nth-child(3) .color-box {
     width: 20px;
@@ -748,9 +732,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color: rgb(83, 83, 231) !important;
-    border: 2px groove rgba(0, 0, 255, 1); 
-    box-shadow: 0 0 15px rgba(0, 0, 255, 1);
+    /*border: 2px groove rgba(0, 0, 255, 1); 
+    box-shadow: 0 0 15px rgba(0, 0, 255, 1);*/
 }
 #matrixTable tr:nth-child(4) .color-box {
     width: 20px;
@@ -758,9 +741,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color: #f5c661 !important;
-    border: 1px groove rgb(241, 151, 15); 
-    box-shadow: 0 0 15px rgba(241, 196, 15, 1);  
+    /*border: 1px groove rgb(241, 151, 15); 
+    box-shadow: 0 0 15px rgba(241, 196, 15, 1);*/ 
 }
 #matrixTable tr:nth-child(5) .color-box {
     width: 20px;
@@ -768,9 +750,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color: rgb(145, 79, 173) !important;
-    border: 2px groove rgba(142, 68, 173, 1); 
-    box-shadow: 0 0 15px rgba(142, 68, 173, 1); 
+    /*border: 2px groove rgba(142, 68, 173, 1); 
+    box-shadow: 0 0 15px rgba(142, 68, 173, 1);*/
 }
 #matrixTable tr:nth-child(6) .color-box {
     width: 20px;
@@ -778,9 +759,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color: rgb(242, 103, 177) !important;
-    border: 2px groove rgb(206, 95, 154);
-    box-shadow: 0 0 15px rgb(206, 95, 154);
+    /*border: 2px groove rgb(206, 95, 154);
+    box-shadow: 0 0 15px rgb(206, 95, 154);*/
 }
 /*-----------------------------------------------*/
 button.add-row-btn {

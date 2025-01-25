@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const colors = ["#d12d2d", "#038930", "#2d3dd1", "#F1C40F", "#8E44AD", "#1ABC9C", "#E74C3C", "#2C3E50"];
+    const colors = ["#D64646", "#23A74F", "#5353E7", "#F5C661", "#914FAD", "#F267B1"];
     let usedColors = new Set();
 
     const matrixContainer = document.getElementById('matrix-container');
