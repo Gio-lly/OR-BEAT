@@ -293,9 +293,9 @@ let rotationOffset = -90 // perché l'angolo definito da p5 inizia "alle ore 3"
 
 // Variabili per la barra che ruota
 let angle = rotationOffset; // Angolo iniziale
-let rotationSpeed = 2; // Velocità di rotazione iniziale
+let rotationSpeed; // Velocità di rotazione
 let isRunning = false; // Stato della rotazione della barra
-let bpm;
+let bpm = 80;
 
 let x = 0
 
@@ -322,6 +322,7 @@ function setup(p5on) {
   // bottoneRimuoviAnello.position(200, 400);
   // bottoneRimuoviAnello.mousePressed(rimuoviUltimoAnello);
 
+
   // Creo i buttoni per controllare la barra
   createControls();
 }
@@ -329,15 +330,18 @@ function setup(p5on) {
 function draw() {
   background(30);
 
-  // Calcola i BPM
-  bpm = (60 * rotationSpeed * 60) / 360; // la formula è sbagliata
+  
 
-  // Mostra il risultato
-  fill(255); // Colore del testo
-  textSize(16);
-  text(`BPM: ${bpm.toFixed(0)}`, -100, height - 33);
+  // Calcola i BPM conoscendo rotation speed
+  // let timeForOneRotation = 360 / (rotationSpeed * frameRate());
+  // bpm = (60 * 4) / timeForOneRotation;
+  // console.log(`BPM: ${bpm.toFixed(2)}`); // Print dei BPM nella console
+
+  // Calcola rotation speed conoscendo i bpm
+  rotationSpeed = (bpm * 360) / (240 * frameRate());
 
   translate(width / 2, height / 2);
+  
 
   // Disegna tutti gli anelli
   for (let anello of anelli) {
@@ -511,11 +515,20 @@ function createControls() {
   stopButton.style('border-radius', '50%');
   stopButton.mousePressed(stopRotation);
 
-  // Crea la barra di controllo della velocità
-  let speedSlider = createSlider(1, 10, 2, 0.1);
-  speedSlider.id('sliderOrbit-btn');
-  speedSlider.position(1130, height - 100); // Posizionato sotto i pulsanti
-  speedSlider.input(() => { rotationSpeed = speedSlider.value(); });
+  // Crea l'elemento testo per visualizzare il valore del BPM
+  let bpmText = createDiv(`${bpm} bpm`);
+  bpmText.id('bpm-value'); // Aggiungi l'ID per personalizzare tramite CSS
+  bpmText.position(1130 + 320, height - 85); // Posiziona accanto allo slider
+
+  // Crea la barra di controllo dei bpm
+  let bpmSlider = createSlider(50, 200, 80, 1);
+  bpmSlider.id('sliderOrbit-btn');
+  bpmSlider.position(1130, height - 100); // Posizionato sotto i pulsanti
+  bpmSlider.input(() => { 
+    bpm = bpmSlider.value();
+    bpmText.html(`${bpm} bpm`); // Aggiorna il testo del BPM
+  });
+
 }
 
 // Funzione per avviare la rotazione

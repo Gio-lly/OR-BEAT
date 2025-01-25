@@ -753,6 +753,17 @@ button.remove-btn {
     filter: blur(100px);
 }
 
+#bpm-value {
+    font-size: 10px; /* Dimensione del font */
+    font-family: Arial, sans-serif; /* Font del testo */
+    color: #ffffff; /* Colore del testo */
+    background-color: rgba(0, 0, 0, 0.8); /* Sfondo trasparente */
+    padding: 5px 10px; /* Spaziatura interna */
+    border-radius: 5px; /* Angoli arrotondati */
+    box-shadow: -2px -2px 6px white, 6px 6px 14px rgba(0, 0, 0, 0.5);
+}
+
+
 #sliderOrbit-btn {
     appearance: none;
     width: 300px;
