@@ -393,7 +393,7 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
         playSlot(freeSlotIndex);
     });
 
-    // Aggiungi l'event listener per il pulsante "DISCARD"
+    
     
 }
 
