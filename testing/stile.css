@@ -908,6 +908,42 @@ button.remove-btn {
     box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.3); 
     transform: scale(0.95); 
   }
+
+  .randomize-btn {
+    display: none; /* Nascondi inizialmente il pulsante */
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #000000;
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.randomize-btn:hover {
+    background-color: #000000;
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+.randomize-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.randomize-btn i {
+    margin: 0;
+}
 /*#####################################################################################################*/
 /*#################################### SEZIONE WAVEFORM ###############################################*/
 

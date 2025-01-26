@@ -288,6 +288,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
                 removeLoadingModal();
                 displayWaveform(file);
                 onsetsRegions(onsetTimestamps, audioBuffer.duration);
+                document.querySelector('.randomize-btn').style.display = 'flex';
             }, 1000);
         } catch (error) {
             console.error("Error processing the file:", error);
