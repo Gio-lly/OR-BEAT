@@ -556,6 +556,5 @@ function pauseRotation() {
 
 // Funzione per fermare e resettare la rotazione
 function stopRotation() {
-  isRunning = false;
   angle = rotationOffset; // Resetta l'angolo
 }
