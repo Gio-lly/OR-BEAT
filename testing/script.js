@@ -397,15 +397,15 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
     discardButtons.forEach((discardButton, buttonIndex) => {
         discardButton.addEventListener('click', (event) => {
             event.stopPropagation();
-            try{
-            // Reset del testo dello slot e rimozione del segmento audio
-            slots[buttonIndex].textContent = ''; // Libera il testo dello slot
-    
-            players[buttonIndex].stop(); // Ferma la riproduzione (se in corso)
-            players[buttonIndex] = null; // Rimuovi il player dalla lista
-            slotStatus[buttonIndex] = false;
-            }catch(e){
-                
+            try {
+                // Reset del testo dello slot e rimozione del segmento audio
+                slots[buttonIndex].textContent = ''; // Libera il testo dello slot
+
+                players[buttonIndex].stop(); // Ferma la riproduzione (se in corso)
+                players[buttonIndex] = null; // Rimuovi il player dalla lista
+                slotStatus[buttonIndex] = false;
+            } catch (e) {
+
             }
         });
     });
