@@ -382,6 +382,7 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
 
     // Assegna un testo per identificare la porzione di audio
     slots[freeSlotIndex].textContent = `${startTime.toFixed(2)} - ${nextStartTime.toFixed(2)}`; // La cella avrà questa label
+    slots[freeSlotIndex].setAttribute('draggable', 'true'); // Rendiamo draggabile lo slot con audio
 
     // Crea un nuovo player e lo memorizza nell'array `players`
     const player = new Tone.Player(segmentBuffer).toDestination();

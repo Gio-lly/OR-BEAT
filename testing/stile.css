@@ -686,7 +686,7 @@ table#matrixTable tr td:nth-child(2){
     color: #000;
     cursor: pointer;
     flex-direction: row;
-    font-size: 11px;
+    font-size: 12px;
     height: 52px;
     width: 120px;
     justify-content: center;
@@ -694,7 +694,7 @@ table#matrixTable tr td:nth-child(2){
     margin: 0;
     padding: 2px 2px;
     outline: auto;
-    outline-offset: -3px;
+    outline-offset: -1px;
     outline-style: auto;
     outline-color: #28282d;
     overflow: hidden;

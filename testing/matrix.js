@@ -92,9 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Memorizza il colore direttamente nel 'data-color'
+        newRow.setAttribute('data-color', color);
+
         newRow.innerHTML = `
             <td><div class="color-box" style="background-color: ${color};"></div></td>
-            <td>Drop the sample</td>
+            <td class="second-cell">Drop the sample</td>
             <td>
                 <select class="steps-dropdown" style="background-color: ${color};">
                     ${Array.from({ length: 15 }, (_, i) => `<option value="${i + 2}">${i + 2}</option>`).join('')}
@@ -131,19 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     // Reset del testo dello slot e rimozione del segmento audio
                     slots[buttonIndex].textContent = ''; // Libera il testo dello slot
-
+                    slots[buttonIndex].setAttribute('draggable', 'false');
+                    
                     players[buttonIndex].stop(); // Ferma la riproduzione (se in corso)
                     players[buttonIndex] = null; // Rimuovi il player dalla lista
                     slotStatus[buttonIndex] = false;
                 } catch (e) {
 
                 }
-            });
-        });
-        slots.forEach((slot, slotIndex) => {
-            slot.addEventListener('dragStart', (event) => {
-                event.stopPropagation();
-                
             });
         });
         stepsDropdown.addEventListener('change', event => {
@@ -240,13 +238,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         tableBody.appendChild(newRow);
         toggleAddButtonVisibility();
+
+        // Inizializza il drag and drop per le nuove celle
+        initializeDragAndDrop();
     }
 
     function toggleAddButtonVisibility() {
         const tableBody = document.querySelector('#matrixTable tbody');
         const addRowButtonRow = document.querySelector('#addRowButtonRow');
         addRowButtonRow.style.display = tableBody.children.length >= 6 ? 'none' : '';
-    }
+    }   
 
     document.querySelector('.add-row-btn').addEventListener('click', addRow);
     addRow();  // riga di default al caricamento della pagina
@@ -313,4 +314,77 @@ function logState() {
     console.log("Representation Matrix: ", modello.representation_matrix);
 }
 
+/*#################################### DRAG & DROP SLOTS AUDIO ########################################################*/
+const slots = document.querySelectorAll('.slot');
+
+slots.forEach((slot, index) => {
+    slot.addEventListener('dragstart', (event) => {
+        // Memorizza il numero dello slot che stai trascinando
+        event.dataTransfer.setData('text/plain', index);
+        event.dataTransfer.setData('text/html', slot.innerHTML);
+        slot.classList.add('dragging');
+    });
+
+    slot.addEventListener('dragend', (event) => {
+        slot.classList.remove('dragging');
+    });
+});
+
+function initializeDragAndDrop() {
+    // Seleziona tutte le celle con la classe 'second-cell'
+    const secondCells = document.querySelectorAll('.second-cell');
+
+    secondCells.forEach(secondCell => {
+        secondCell.addEventListener('dragover', (event) => {
+            // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
+            if (secondCell.innerHTML.includes('-')) {
+                return;
+            }
+
+            event.preventDefault();
+            secondCell.innerHTML = `DROP HERE!`;
+            secondCell.classList.add('dragover');
+        });
+
+        secondCell.addEventListener('dragleave', (event) => {
+            // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
+            if (secondCell.innerHTML.includes('-')) {
+                return;
+            }
+
+            secondCell.classList.remove('dragover');
+            secondCell.innerHTML = `Drop the sample`;
+        });
+
+        secondCell.addEventListener('drop', (event) => {
+            event.preventDefault();
+            secondCell.classList.remove('dragover');
+            const slotIndex = event.dataTransfer.getData('text/plain');
+            const slotContent = event.dataTransfer.getData('text/html');
+            secondCell.innerHTML = ''; // Pulisce il contenuto precedente
+            secondCell.innerHTML = `Sample ${slotIndex} <br> ${slotContent}`; // Mostra il contenuto del drop
+
+            // Colorazione della cella 
+            colorize();
+        });
+    });
+}
+
+// Funzione per colorare gli slot con il colore assegnato
+function colorize() {
+    const secondCells = document.querySelectorAll('.second-cell');
+
+    secondCells.forEach((secondCell, index) => {
+        // Controlliamo se l'innerHTML della cella contiene il segno '-'
+        if (secondCell.innerHTML.includes('-')) {
+            // Ottieni il colore memorizzato nel data-color della riga
+            const row = secondCell.closest('tr');
+            const color = row.getAttribute('data-color');
+
+            // Assegna il colore alla cella
+            secondCell.style.backgroundColor = color;
+            secondCell.style.color = "#fff";
+        }
+    });
+}
 
