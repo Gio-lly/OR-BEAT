@@ -493,25 +493,27 @@ function mousePressed() {
 }
 
 function createControls() {
-  // Crea i pulsanti per il controllo della rotazione
-  let startButton = createButton('Start');
+  const baseX = 1130; 
+  const baseY = height - 120;
+
+  let startButton = createDiv('<i class="fas fa-play"></i>');
   startButton.id('startOrbit-btn');
-  startButton.position(1130, height - 40); // Posizionato a destra
-  startButton.size(50, 50);
+  startButton.position(baseX + 220, baseY + 180); // Posizionato sotto la barra
+  //startButton.size(50, 50);
   startButton.style('border-radius', '50%');
   startButton.mousePressed(startRotation);
 
-  let pauseButton = createButton('Pause');
+  let pauseButton = createDiv('<i class="fas fa-pause"></i>'); // Simbolo "Pausa"
   pauseButton.id('pauseOrbit-btn');
-  pauseButton.position(1260, height - 40); // Posizionato accanto al pulsante di avvio
-  pauseButton.size(50, 50);
+  pauseButton.position(baseX + 220, baseY + 280); // Posizionato sotto il primo pulsante
+  //pauseButton.size(50, 50);
   pauseButton.style('border-radius', '50%');
   pauseButton.mousePressed(pauseRotation);
 
-  let stopButton = createButton('Reset');
+  let stopButton = createDiv('<i class="fas fa-stop"></i>'); // Simbolo "Stop"
   stopButton.id('resetOrbit-btn');
-  stopButton.position(1380, height - 40); // Posizionato accanto al pulsante di pausa
-  stopButton.size(50, 50);
+  stopButton.position(baseX + 220, baseY + 380); // Posizionato sotto il secondo pulsante
+  //stopButton.size(50, 50);
   stopButton.style('border-radius', '50%');
   stopButton.mousePressed(stopRotation);
 
@@ -523,7 +525,7 @@ function createControls() {
   // Crea la barra di controllo dei bpm
   let bpmSlider = createSlider(40, 180, 80, 1);
   bpmSlider.id('sliderOrbit-btn');
-  bpmSlider.position(1130, height - 120); // Posizionato sopra i pulsanti
+  bpmSlider.position(1230, height - 80); // Posizionato sopra i pulsanti
   bpmSlider.input(() => { 
     bpm = bpmSlider.value();
     bpmText.html(`${bpm} BPM`); // Aggiorna il testo del BPM
