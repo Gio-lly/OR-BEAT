@@ -328,7 +328,7 @@ function setup(p5on) {
 }
 
 function draw() {
-  background(30);
+  background('#DDDDDD');
 
   
 
@@ -352,7 +352,7 @@ function draw() {
   if (anelli.length > 0) {
     push();
     rotate(angle); // Ruota secondo l'angolo
-    stroke(255); // Colore della barra
+    stroke(30); // Colore della barra
     strokeWeight(5); // Spessore della barra
     let lunghezzabarra = anelli[anelli.length - 1].diametro / 2 + 10 // è in funzione di quanti anelli ci sono
     line(0, 0, lunghezzabarra, 0); // Disegna la barra
@@ -433,7 +433,7 @@ class Anello {
 
       // Imposta il colore del segmento
       if (highlight & isRunning) {
-        stroke(this.bool_list[i] ? this.color : 100); // Colore evidenziato
+        stroke(this.bool_list[i] ? this.color : 180); // Colore evidenziato
         strokeWeight(spessoreAnello + 5)
         
         // Se il segmento è attivo, chiama la funzione per suonare il sample
@@ -444,7 +444,7 @@ class Anello {
           this.lastHighlightedIndex = i; // Aggiorna l'indice dell'ultima sezione evidenziata
         }
       } else {
-        stroke(this.bool_list[i] ? this.color : 100); // colore che ho scelto per l'anello
+        stroke(this.bool_list[i] ? this.color : 180); // colore che ho scelto per l'anello
         strokeWeight(spessoreAnello)
       }
 
