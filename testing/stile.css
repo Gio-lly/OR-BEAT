@@ -789,9 +789,8 @@ button.remove-btn {
     top: 64%;
     left: 55%;
     transform: translate(-50%, -50%);
-    width: 30%;
+    width: 100%;
     background-color: #DDDDDD;
-    border-radius: 10px;
 }
 /*#####################################################################################################*/
 /*#################################### SEZIONE WORKSTATION ############################################*/
@@ -869,55 +868,51 @@ button.remove-btn {
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    background-color: #f0f0f0; /* Colore di sfondo neutro */
-    background-image: linear-gradient(to top, #ffffff, #e0e0e0);
-    color: #000; 
+    background-color: #fff;
+    color: #28282d; 
     width: 80px; 
     height: 80px; 
     font-family: Arial, sans-serif;
-    font-size: 30px; 
-    font-weight: bold; /* Grassetto per un aspetto più marcato */
-    border-radius: 50%; /* Forma circolare */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2), 0px 6px 12px rgba(0, 0, 0, 0.1);
-    border: solid 2px #b8b8b8; /* Bordo sottile */
+    font-size: 38px;
+    border-radius: 50%; 
+    box-shadow: -2px -2px 4px white, 1px 1px 4px rgba(40, 40, 45, 0.5);
+    border: outset 2px #ccc;
     cursor: pointer;
-    transition: all 0.3s ease; /* Transizione fluida per gli stati hover/active */
+    transition: all 0.1s ease;
   }
   
-  /* Hover per i pulsanti */
   #startOrbit-btn:hover {
-    color: #4caf50; 
-    background-color: #e8f5e9; 
-    border-color: #4caf50;
+    color: #038930; 
+    background-color: #e0e0e0; 
+    border-color: #038930;
   }
   
   #pauseOrbit-btn:hover {
-    color: #f44336;
-    background-color: #ffebee; 
-    border-color: #f44336;
+    color: #d12d2d;
+    background-color: #e0e0e0; 
+    border-color: #d12d2d;
   }
   
   #resetOrbit-btn:hover {
-    color: #ff9800; 
-    background-color: #fff3e0; 
-    border-color: #ff9800;
+    color: #dca13b; 
+    background-color: #e0e0e0; 
+    border-color: #dca13b;
   }
   
-  /* Stati attivi per i pulsanti */
   #startOrbit-btn:active, #pauseOrbit-btn:active, #resetOrbit-btn:active {
-    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.3); 
+    box-shadow: outset 0px 2px 8px rgba(40, 40, 45, 0.5); 
     transform: scale(0.95); 
   }
 
   .randomize-btn {
-    display: none; /* Nascondi inizialmente il pulsante */
+    display: none;
     position: fixed;
     bottom: 50px;
     left: 50px;
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: #000000;
+    background-color: #010101;
     color: #fff;
     font-size: 24px;
     display: flex;
@@ -967,8 +962,8 @@ button.remove-btn {
 /*#################################### SEZIONE SLOT/ZOOM ##############################################*/
 .savings {
     display: flex;
-    gap: 2px;
-    width: 100%; 
+    gap: 12px;
+    width: 100%;
     justify-content: center; 
     background-color: #DDDDDD; 
     padding-top: 15px; 
@@ -1140,4 +1135,4 @@ datalist > option:before {
 #ticks option:nth-child(5) { right: 10%; } /* 100% */
 
 /*#####################################################################################################*/
-/*#################################### SEZIONE ########################################################*/
+/*####################################  ########################################################*/
