@@ -499,21 +499,21 @@ function createControls() {
   let startButton = createDiv('<i class="fas fa-play"></i>');
   startButton.id('startOrbit-btn');
   startButton.position(baseX + 220, baseY + 180); // Posizionato sotto la barra
-  //startButton.size(50, 50);
+  startButton.size(75, 75);
   startButton.style('border-radius', '50%');
   startButton.mousePressed(startRotation);
 
   let pauseButton = createDiv('<i class="fas fa-pause"></i>'); // Simbolo "Pausa"
   pauseButton.id('pauseOrbit-btn');
   pauseButton.position(baseX + 220, baseY + 280); // Posizionato sotto il primo pulsante
-  //pauseButton.size(50, 50);
+  pauseButton.size(75, 75);
   pauseButton.style('border-radius', '50%');
   pauseButton.mousePressed(pauseRotation);
 
   let stopButton = createDiv('<i class="fas fa-stop"></i>'); // Simbolo "Stop"
   stopButton.id('resetOrbit-btn');
   stopButton.position(baseX + 220, baseY + 380); // Posizionato sotto il secondo pulsante
-  //stopButton.size(50, 50);
+  stopButton.size(75, 75);
   stopButton.style('border-radius', '50%');
   stopButton.mousePressed(stopRotation);
 
