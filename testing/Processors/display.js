@@ -491,24 +491,18 @@ function mousePressed() {
     }
   }
 }
-
+let playPauseButton
 function createControls() {
   const baseX = 1130; 
   const baseY = height - 120;
 
-  let startButton = createDiv('<i class="fas fa-play-circle"></i>');
-  startButton.id('startOrbit-btn');
-  startButton.position(baseX + 100, baseY - 5); // Posizionato sotto la barra
-  startButton.size(45, 45);
-  startButton.style('border-radius', '50%');
-  startButton.mousePressed(startRotation);
-
-  let pauseButton = createDiv('<i class="fas fa-pause-circle"></i>'); // Simbolo "Pausa"
-  pauseButton.id('pauseOrbit-btn');
-  pauseButton.position(baseX + 180, baseY - 5); // Posizionato sotto il primo pulsante
-  pauseButton.size(45, 45);
-  pauseButton.style('border-radius', '50%');
-  pauseButton.mousePressed(pauseRotation);
+  // Crea un unico pulsante Play/Pause
+  playPauseButton = createDiv('<i class="fas fa-play-circle"></i>');
+  playPauseButton.id('playPauseOrbit-btn');
+  playPauseButton.position(baseX + 100, baseY - 5); // Posizionato nel layout originale
+  playPauseButton.size(45, 45);
+  playPauseButton.style('border-radius', '50%');
+  playPauseButton.mousePressed(toggleRotation);
 
   let stopButton = createDiv('<i class="fas fa-stop-circle"></i>'); // Simbolo "Stop"
   stopButton.id('resetOrbit-btn');
@@ -533,14 +527,31 @@ function createControls() {
 
 }
 
+
+// Funzione che alterna Play/Pause
+function toggleRotation() {
+  isRunning = !isRunning; // Cambia stato
+  if (isRunning) {
+    playPauseButton.html('<i class="fas fa-pause-circle"></i>'); // Cambia icona a "Pause"
+    playPauseButton.removeClass('play-hover'); // Rimuove il colore hover verde
+    playPauseButton.addClass('pause-hover');  // Aggiunge il colore hover rosso
+    startRotation(); // Avvia la rotazione
+  } else {
+    playPauseButton.html('<i class="fas fa-play-circle"></i>'); // Cambia icona a "Play"
+    playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
+    playPauseButton.addClass('play-hover');  // Aggiunge il colore hover verde
+    pauseRotation(); // Metti in pausa la rotazione
+  }
+}
+
 // Funzione per avviare la rotazione
 function startRotation() {
-  isRunning = true;
+  console.log("Rotazione avviata"); // Puoi aggiungere la logica qui
 }
 
 // Funzione per mettere in pausa la rotazione
 function pauseRotation() {
-  isRunning = false;
+  console.log("Rotazione in pausa"); // Puoi aggiungere la logica qui
 }
 
 // Funzione per fermare e resettare la rotazione
