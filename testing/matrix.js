@@ -67,17 +67,17 @@ document.addEventListener('DOMContentLoaded', () => {
         let booleanList = new Array(steps).fill(false);
         const interval = Math.floor(steps / numOn);
         let positions = [];
-        
+
         for (let i = 0; i < numOn; i++) {
             positions.push((i * interval) % steps);
         }
-    
+
         positions = positions.map(pos => (pos + phase) % steps);
-    
+
         positions.forEach(pos => {
             booleanList[pos] = true;
         });
-    
+
         return booleanList;
     }
 
@@ -113,6 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const densityDropdown = newRow.querySelector('.density-dropdown');
         const phaseDropdown = newRow.querySelector('.phase-dropdown');
         const defaultSteps = parseInt(stepsDropdown.value, 10);
+        const container = document.querySelector('.savings');
+        const discardButtons = container.querySelectorAll('.discard-btn');
+        const slots = container.querySelectorAll('.slot');
+
         populateDropdowns(newRow, defaultSteps);
 
         let steps = 2;
@@ -120,6 +124,28 @@ document.addEventListener('DOMContentLoaded', () => {
         let density = 0;
         creaAnello(steps, color);
 
+        
+        discardButtons.forEach((discardButton, buttonIndex) => {
+            discardButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                try {
+                    // Reset del testo dello slot e rimozione del segmento audio
+                    slots[buttonIndex].textContent = ''; // Libera il testo dello slot
+
+                    players[buttonIndex].stop(); // Ferma la riproduzione (se in corso)
+                    players[buttonIndex] = null; // Rimuovi il player dalla lista
+                    slotStatus[buttonIndex] = false;
+                } catch (e) {
+
+                }
+            });
+        });
+        slots.forEach((slot, slotIndex) => {
+            slot.addEventListener('dragStart', (event) => {
+                event.stopPropagation();
+                
+            });
+        });
         stepsDropdown.addEventListener('change', event => {
             var steps = parseInt(event.target.value, 10);
             if (!isNaN(steps)) {
@@ -127,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             modello.modifyRingSteps(parseInt(stepsDropdown.parentNode.parentNode.id) - 1, steps);
             anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].steps = steps;
-            anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].bool_list=new Array(steps).fill(false);
+            anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].bool_list = new Array(steps).fill(false);
         });
 
         // gestione del cambiamento della densità
@@ -224,10 +250,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('.add-row-btn').addEventListener('click', addRow);
     addRow();  // riga di default al caricamento della pagina
-    
+
     const randomButton = document.createElement('button');
     randomButton.className = 'randomize-btn';
-    randomButton.innerHTML = '<i class="fa-solid fa-dice"></i>'; 
+    randomButton.innerHTML = '<i class="fa-solid fa-dice"></i>';
     randomButton.style.display = 'none';
     document.body.appendChild(randomButton);
 
@@ -236,15 +262,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function randomizeRows() {
         const tableBody = document.querySelector('#matrixTable tbody');
         const rows = tableBody.querySelectorAll('tr');
-    
+
         rows.forEach((row) => {
             const stepsDropdown = row.querySelector('.steps-dropdown');
             const densityDropdown = row.querySelector('.density-dropdown');
             const phaseDropdown = row.querySelector('.phase-dropdown');
-    
-            
-            const steps = Math.floor(Math.random() * 15) + 2; 
-    
+
+
+            const steps = Math.floor(Math.random() * 15) + 2;
+
             const possibleDensities = [];
             for (let i = 1 / steps; i <= 1; i += 1 / steps) { // Inizia da 1/steps per evitare 0%
                 const density = Math.round(i * 100);
@@ -253,33 +279,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             const density = possibleDensities[Math.floor(Math.random() * possibleDensities.length)];
-    
+
 
             const phase = Math.floor(Math.random() * steps);
-    
-            
+
+
             stepsDropdown.value = steps;
-            populateDropdowns(row, steps); 
+            populateDropdowns(row, steps);
             densityDropdown.value = density;
             phaseDropdown.value = phase;
-            
-            const rowIndex = parseInt(row.id, 10) - 1; 
+
+            const rowIndex = parseInt(row.id, 10) - 1;
             modello.modifyRingSteps(rowIndex, steps);
             modello.modifyRingDensity(rowIndex, density);
             modello.modifyRingPhase(rowIndex, phase);
-    
+
             const booleanList = calculateBooleanList(steps, density, phase);
             modello.modifyRingBooleanList(rowIndex, booleanList);
-    
+
             anelli[rowIndex].steps = steps;
             anelli[rowIndex].density = density;
             anelli[rowIndex].phase = phase;
             anelli[rowIndex].bool_list = booleanList;
         });
-    
+
         logState();
     }
-    
+
 });
 
 function logState() {

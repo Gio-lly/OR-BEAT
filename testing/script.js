@@ -393,26 +393,15 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
         playSlot(freeSlotIndex);
     });
 
-    // Aggiungi l'event listener per il pulsante "DISCARD"
-    const discardButtons = container.querySelectorAll('.discard-btn');
-    discardButtons.forEach((discardButton, buttonIndex) => {
-        discardButton.addEventListener('click', (event) => {
-            event.stopPropagation();
-            try {
-                // Reset del testo dello slot e rimozione del segmento audio
-                slots[buttonIndex].textContent = ''; // Libera il testo dello slot
-
-                players[buttonIndex].stop(); // Ferma la riproduzione (se in corso)
-                players[buttonIndex] = null; // Rimuovi il player dalla lista
-                slotStatus[buttonIndex] = false;
-            } catch (e) {
-
-            }
-        });
-    });
+    
+    
 }
 
-// Funzione per riprodurre un segmento audio in un determinato slot
+/**
+ * Funzione per riprodurre un segmento audio in un determinato slot, chiama il metodo start() del player
+ * @param {*} slotIndex 
+ * 
+ */
 function playSlot(slotIndex) {
     if (players[slotIndex]) {
         players[slotIndex].start();  // Avvia la riproduzione per il player specificato
