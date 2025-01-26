@@ -334,8 +334,8 @@ button#preset-btn:hover span {
     position: relative; 
     box-sizing: border-box;
     box-shadow: rgb(40, 40, 40) 0px 2px 1px, 
-                rgb(80, 80, 80) 0px 2px 8px -3px, 
-                rgb(105, 105, 105) 0px -3px 0px inset;
+                rgb(80, 80, 80) 0px 2px 4px -3px, 
+                rgb(105, 105, 105) 0px -2px 0px inset;
     outline: 1px solid;
     outline-color: rgb(105, 105, 105);
     outline-offset: 0px;
@@ -352,20 +352,6 @@ button#preset-btn:hover span {
     bottom: 0;
     border-radius: 8px;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-#preset-list > button:hover::after {
-    transform: translateY(2px); 
-    box-shadow: rgb(40, 40, 40) 0px 1px 2px, 
-                rgb(80, 80, 80) 0px 1px 1px -2px, 
-                rgb(105, 105, 105) 0px -2px 0px inset;
-}
-
-#preset-list > button:active::after {
-    transform: translateY(2px); 
-    box-shadow: rgb(40, 40, 40) 0px 1px -2px, 
-                rgb(80, 80, 80) 0px -4.5px -2px -1px, 
-                rgb(105, 105, 105) 0px 0px 0px inset;
 }
 /*-----------------------------------------------*/
 button#record-btn {
@@ -580,40 +566,122 @@ button#record-btn:active {
     color: #DDDDDD;
     display: flex;
     margin-left: 20%;
-    
 }
 
+#sliderOrbit-btn {
+    appearance: none;
+    width: 300px;
+    height: 40px;
+    padding: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: -2px -2px 6px white, 
+                6px 6px 14px rgba(0, 0, 0, 0.5);
+}
+/*-----------------------------------------------*/
 table#matrixTable {
-    background: #28282d;
-    font-size: 12px;
-    border-radius: 20px;
+    background: #e0e0e0;
+    font-size: 13px;
+    border-radius: 30px;
     position: relative;
     width: 550px;
     height: 200px;
     right: 280;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
-    color: #DDDDDD;
+    color: #28282d;
     text-align: center;
     border-collapse: separate;
-    border-spacing: 0 16px;
+    border-spacing: 4px 16px;
     z-index: 1;
-    box-shadow:
-        rgba(22, 31, 39, 0.42) 0px 60px 123px -25px,
-        rgba(19, 26, 32, 0.08) 0px 35px 75px -35px;
+    box-shadow: -4px -2px 12px white, 
+                6px 6px 10px rgba(0, 0, 0, 0.5);
 }
 
 table#matrixTable th, table#matrixTable td {
     padding: 10px;
     text-align: center;
 }
-
+/*-----------------------------------------------*/
+select {
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
+    font-weight: bold;
+    text-align: center;
+}
+.steps-dropdown {
+    background-color: #28282d !important; 
+    color: #fff; /* Colore del testo */
+    border: 3px outset #010101; 
+    padding: 5px 0px; 
+    font-size: 12px; 
+    border-radius: 8px; 
+    cursor: pointer;
+    width: 100%;
+    margin-right: 10px;
+    box-shadow: -2px -2px 6px white, 
+                1px 1px 8px rgba(0, 0, 0, 0.5);
+}
+.steps-dropdown:focus {
+    outline: none; 
+    border-color: #010101;
+}
+.steps-dropdown option {
+    background-color: #28282d;
+    color: #fff; 
+}
+/*-----------------------------------------------*/
+.density-dropdown {
+    background-color: #28282d !important; 
+    color: #fff; /* Colore del testo */
+    border: 3px outset #010101; 
+    padding: 5px 0px; 
+    font-size: 12px; 
+    border-radius: 8px; 
+    cursor: pointer;
+    width: 75%;
+    margin-right: 10px;
+    box-shadow: -2px -2px 6px white, 
+                1px 1px 8px rgba(0, 0, 0, 0.5);
+}
+.density-dropdown:focus {
+    outline: none; 
+    border-color: #010101;
+}
+.density-dropdown option {
+    background-color: #28282d;
+    color: #fff; 
+}
+/*-----------------------------------------------*/
+.phase-dropdown {
+    background-color: #28282d !important; 
+    color: #fff; /* Colore del testo */
+    border: 3px outset #010101; 
+    padding: 5px 6px; 
+    font-size: 12px; 
+    border-radius: 8px; 
+    cursor: pointer;
+    width: 85%;
+    margin-right: 10px;
+    box-shadow: -2px -2px 6px white, 
+                1px 1px 8px rgba(0, 0, 0, 0.5);
+}
+.phase-dropdown:focus {
+    outline: none; 
+    border-color: #010101;
+}
+.phase-dropdown option {
+    background-color: #28282d;
+    color: #fff; 
+}
+/*-----------------------------------------------*/
 table#matrixTable tr td:nth-child(2){
     align-items: center;
-    background-color: #DDDDDD;
-    background-image: #DDDDDD;
+    background-color: #e0e0e0;
+    background-image: #e0e0e0;
     border-radius: 40px 40px 40px 40px;
     border-width: 0;
-    box-shadow: inset 4px -6px 8px rgba(0, 0, 0, 0.3), inset -6px -10px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 1px -6px 2px rgba(0, 0, 0, 0.3), inset -6px -10px 10px rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
     color: #000;
     cursor: pointer;
@@ -646,9 +714,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(211, 45, 45, 1); 
-    box-shadow: 0 0 15px rgba(211, 45, 45, 1); 
+    /*border: 2px groove rgba(211, 45, 45, 1); 
+    box-shadow: 0 0 15px rgba(211, 45, 45, 1);*/
 }
 #matrixTable tr:nth-child(2) .color-box {
     width: 20px;
@@ -656,9 +723,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(3, 137, 48, 1);
-    box-shadow: 0 0 15px rgba(3, 137, 48, 1);
+    /*border: 2px groove rgba(3, 137, 48, 1);
+    box-shadow: 0 0 15px rgba(3, 137, 48, 1);*/
 }
 #matrixTable tr:nth-child(3) .color-box {
     width: 20px;
@@ -666,9 +732,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(0, 0, 255, 1); 
-    box-shadow: 0 0 15px rgba(0, 0, 255, 1);
+    /*border: 2px groove rgba(0, 0, 255, 1); 
+    box-shadow: 0 0 15px rgba(0, 0, 255, 1);*/
 }
 #matrixTable tr:nth-child(4) .color-box {
     width: 20px;
@@ -676,9 +741,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(241, 196, 15, 1); 
-    box-shadow: 0 0 15px rgba(241, 196, 15, 1);  
+    /*border: 1px groove rgb(241, 151, 15); 
+    box-shadow: 0 0 15px rgba(241, 196, 15, 1);*/ 
 }
 #matrixTable tr:nth-child(5) .color-box {
     width: 20px;
@@ -686,9 +750,8 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(142, 68, 173, 1); 
-    box-shadow: 0 0 15px rgba(142, 68, 173, 1); 
+    /*border: 2px groove rgba(142, 68, 173, 1); 
+    box-shadow: 0 0 15px rgba(142, 68, 173, 1);*/
 }
 #matrixTable tr:nth-child(6) .color-box {
     width: 20px;
@@ -696,41 +759,29 @@ table#matrixTable tr td:nth-child(2){
     border-radius: 50%;
     margin: 0 auto;
 
-    background-color:#fff !important;
-    border: 1px solid rgba(81, 203, 238, 1);
-    box-shadow: 0 0 15px rgba(81, 203, 238, 1);
+    /*border: 2px groove rgb(206, 95, 154);
+    box-shadow: 0 0 15px rgb(206, 95, 154);*/
 }
 /*-----------------------------------------------*/
-select {
-    font-weight: bold;
-    color: #DDDDDD;
-    border: 1px solid #333;
-    text-shadow: -1px -1px 0 #000, 1px 1px 0 #000;
-    border-radius: 5px;
-}
-
-select option {
-    background-color: #333;
-}
-
 button.add-row-btn {
-    background-color: #DDDDDD;
-    color: #28282d;
-    border: 2px solid #666;
+    background-color: #28282d;
+    color: #fff;
+    border: 2px outset #010101;
     padding: 5px 10px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 15px;
     text-align: center;
+    box-shadow: -4px -6px 10px white, 
+                1px 1px 10px rgba(0, 0, 0, 0.5);
 }
 
 button.remove-btn {
-    background-color: #e74c3c;
-    color: #DDDDDD;
-    border: 3px solid #c0392b;
-    padding: 5px 10px;
+    background-color: #e0e0e0;
+    color: #d12d2d;
+    border: none;
     cursor: pointer;
-    border-radius: 50%;
     text-align: center;
+    font-size: 18px;
 }
 
 #canvas-container {
@@ -754,15 +805,14 @@ button.remove-btn {
 }
 
 #bpm-value {
-    font-size: 10px; /* Dimensione del font */
-    font-family: Arial, sans-serif; /* Font del testo */
-    color: #ffffff; /* Colore del testo */
-    background-color: rgba(0, 0, 0, 0.8); /* Sfondo trasparente */
-    padding: 5px 10px; /* Spaziatura interna */
-    border-radius: 5px; /* Angoli arrotondati */
-    box-shadow: -2px -2px 6px white, 6px 6px 14px rgba(0, 0, 0, 0.5);
+    font-size: 10px;
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 5px 10px; 
+    border-radius: 5px; 
+    box-shadow: -2px -2px 10px white, 6px 2px 16px rgba(40, 40, 45, 0.5);
 }
-
 
 #sliderOrbit-btn {
     appearance: none;
@@ -814,88 +864,85 @@ button.remove-btn {
     background: #ccc;
 }
 
-#startOrbit-btn {
-    display: block;
+#startOrbit-btn, #pauseOrbit-btn, #resetOrbit-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-decoration: none;
-    background-color: #e0e0e0;
-    background-image: -webkit-linear-gradient(top, #f7f7f7, #e7e7e7); 
-    background-image: -moz-linear-gradient(top, #f7f7f7, #e7e7e7);
-    color: #28282d;
-    width: 144px;
-    height: 144px;
-    font-size: 14px;
-    text-transform: uppercase;
-    position: relative;
-    text-align: center;
-    line-height: 144px;
+    background-color: #f0f0f0; /* Colore di sfondo neutro */
+    background-image: linear-gradient(to top, #ffffff, #e0e0e0);
+    color: #000; 
+    width: 80px; 
+    height: 80px; 
+    font-family: Arial, sans-serif;
+    font-size: 30px; 
+    font-weight: bold; /* Grassetto per un aspetto più marcato */
+    border-radius: 50%; /* Forma circolare */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2), 0px 6px 12px rgba(0, 0, 0, 0.1);
+    border: solid 2px #b8b8b8; /* Bordo sottile */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Transizione fluida per gli stati hover/active */
+  }
+  
+  /* Hover per i pulsanti */
+  #startOrbit-btn:hover {
+    color: #4caf50; 
+    background-color: #e8f5e9; 
+    border-color: #4caf50;
+  }
+  
+  #pauseOrbit-btn:hover {
+    color: #f44336;
+    background-color: #ffebee; 
+    border-color: #f44336;
+  }
+  
+  #resetOrbit-btn:hover {
+    color: #ff9800; 
+    background-color: #fff3e0; 
+    border-color: #ff9800;
+  }
+  
+  /* Stati attivi per i pulsanti */
+  #startOrbit-btn:active, #pauseOrbit-btn:active, #resetOrbit-btn:active {
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.3); 
+    transform: scale(0.95); 
+  }
+
+  .randomize-btn {
+    display: none; /* Nascondi inizialmente il pulsante */
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    box-shadow: 0px 3px 8px #555, 0 6px 10px #ccc;
-    border: solid 1px transparent;
+    background-color: #000000;
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-#startOrbit-btn:hover {
-    text-decoration: none;
-    color: #038930;
+.randomize-btn:hover {
+    background-color: #000000;
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
-#startOrbit-btn:active {
-    box-shadow: 0px 4px 6px #ccc inset, 0px 2px 3px #555;
+.randomize-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
-#pauseOrbit-btn {
-    display: block;
-    text-decoration: none;
-    background-color: #e0e0e0;
-    background-image: -webkit-linear-gradient(top, #f7f7f7, #e7e7e7); 
-    background-image: -moz-linear-gradient(top, #f7f7f7, #e7e7e7);
-    color: #28282d;
-    width: 144px;
-    height: 144px;
-    font-size: 14px;
-    text-transform: uppercase;
-    position: relative;
-    text-align: center;
-    line-height: 144px;
-    border-radius: 50%;
-    box-shadow: 0px 3px 8px #555, 0 6px 10px #ccc;
-    border: solid 1px transparent;
-}
-
-#pauseOrbit-btn:hover {
-    text-decoration: none;
-    color: #d12d2d;
-}
-
-#pauseOrbit-btn:active {
-    box-shadow: 0px 4px 6px #ccc inset, 0px 2px 3px #555;
-}
-
-#resetOrbit-btn {
-    display: block;
-    text-decoration: none;
-    background-color: #e0e0e0;
-    background-image: -webkit-linear-gradient(top, #f7f7f7, #e7e7e7); 
-    background-image: -moz-linear-gradient(top, #f7f7f7, #e7e7e7);
-    color: #28282d;
-    width: 144px;
-    height: 144px;
-    font-size: 14px;
-    text-transform: uppercase;
-    position: relative;
-    text-align: center;
-    line-height: 144px;
-    border-radius: 50%;
-    box-shadow: 0px 3px 8px #555, 0 6px 10px #ccc;
-    border: solid 1px transparent;
-}
-
-#resetOrbit-btn:hover {
-    text-decoration: none;
-    color: #B8860B;
-}
-
-#resetOrbit-btn:active {
-    box-shadow: 0px 4px 6px #ccc inset, 0px 2px 3px #555;
+.randomize-btn i {
+    margin: 0;
 }
 /*#####################################################################################################*/
 /*#################################### SEZIONE WAVEFORM ###############################################*/
@@ -1094,4 +1141,3 @@ datalist > option:before {
 
 /*#####################################################################################################*/
 /*#################################### SEZIONE ########################################################*/
-

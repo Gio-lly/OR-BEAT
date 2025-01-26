@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const colors = ["#d12d2d", "#038930", "#2d3dd1", "#F1C40F", "#8E44AD", "#1ABC9C", "#E74C3C", "#2C3E50"];
+    const colors = ["#D64646", "#23A74F", "#5353E7", "#F5C661", "#914FAD", "#F267B1"];
     let usedColors = new Set();
 
     const matrixContainer = document.getElementById('matrix-container');
@@ -17,8 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </thead>
             <tbody></tbody>
             <tfoot>
+                
                 <tr id="addRowButtonRow">
-                    <td colspan="6"><button class="add-row-btn">+</button></td>
+                
+                    <td colspan="6">
+                    <button class="add-row-btn">+</button></td>
                 </tr>
             </tfoot>
         </table>
@@ -103,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <td>
                 <select class="phase-dropdown" style="background-color: ${color};"></select>
             </td>
-            <td><button class="remove-btn">x</button></td>
+            <td><button class="remove-btn"><i class="fa-solid fa-trash"></i></button></td>
         `;
 
         const stepsDropdown = newRow.querySelector('.steps-dropdown');
@@ -221,9 +224,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('.add-row-btn').addEventListener('click', addRow);
     addRow();  // riga di default al caricamento della pagina
+    
+    const randomButton = document.createElement('button');
+    randomButton.className = 'randomize-btn';
+    randomButton.innerHTML = '<i class="fa-solid fa-dice"></i>'; 
+    randomButton.style.display = 'none';
+    document.body.appendChild(randomButton);
+
+    document.querySelector('.randomize-btn').addEventListener('click', randomizeRows);
+
+    function randomizeRows() {
+        const tableBody = document.querySelector('#matrixTable tbody');
+        const rows = tableBody.querySelectorAll('tr');
+    
+        rows.forEach((row) => {
+            const stepsDropdown = row.querySelector('.steps-dropdown');
+            const densityDropdown = row.querySelector('.density-dropdown');
+            const phaseDropdown = row.querySelector('.phase-dropdown');
+    
+            
+            const steps = Math.floor(Math.random() * 15) + 2; 
+    
+            const possibleDensities = [];
+            for (let i = 1 / steps; i <= 1; i += 1 / steps) { // Inizia da 1/steps per evitare 0%
+                const density = Math.round(i * 100);
+                if (density <= 50) {
+                    possibleDensities.push(density);
+                }
+            }
+            const density = possibleDensities[Math.floor(Math.random() * possibleDensities.length)];
+    
+
+            const phase = Math.floor(Math.random() * steps);
+    
+            
+            stepsDropdown.value = steps;
+            populateDropdowns(row, steps); 
+            densityDropdown.value = density;
+            phaseDropdown.value = phase;
+            
+            const rowIndex = parseInt(row.id, 10) - 1; 
+            modello.modifyRingSteps(rowIndex, steps);
+            modello.modifyRingDensity(rowIndex, density);
+            modello.modifyRingPhase(rowIndex, phase);
+    
+            const booleanList = calculateBooleanList(steps, density, phase);
+            modello.modifyRingBooleanList(rowIndex, booleanList);
+    
+            anelli[rowIndex].steps = steps;
+            anelli[rowIndex].density = density;
+            anelli[rowIndex].phase = phase;
+            anelli[rowIndex].bool_list = booleanList;
+        });
+    
+        logState();
+    }
+    
 });
 
 function logState() {
     console.log("Anelli: ", anelli);
     console.log("Representation Matrix: ", modello.representation_matrix);
 }
+
+
