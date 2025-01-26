@@ -560,6 +560,7 @@ button#record-btn:active {
 /*#################################### SEZIONE MATRIX #################################################*/
 
 #matrix-container {
+    width: 33%;  
     float: left;
     background-color: #DDDDDD;
     border-radius: 8px;
@@ -785,7 +786,7 @@ button.remove-btn {
 }
 
 #canvas-container {
-    position: fixed;
+    position: absolute;
     top: 70%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -973,7 +974,7 @@ button.remove-btn {
     padding-bottom: 20px;
     box-sizing: border-box; 
     box-shadow: 0px 0px 2px white, 0px 2px 14px rgba(0, 0, 0, 0.5);
-    position: fixed; 
+    position: relative;
     z-index: 1; 
     height: 15%; /* L'altezza è il 10% dell'altezza della finestra */
 }
