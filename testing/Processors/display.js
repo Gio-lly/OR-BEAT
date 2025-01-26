@@ -304,7 +304,7 @@ function setup(p5on) {
 
   if (!p5on) { return }
 
-  const canvas = createCanvas(400, 400);
+  const canvas = createCanvas(450, 450);
   canvas.parent('canvas-container'); // Collegalo al contenitore della forma d'onda
 
   angleMode(DEGREES);
@@ -328,7 +328,7 @@ function setup(p5on) {
 }
 
 function draw() {
-  background(30);
+  background('#DDDDDD');
 
   
 
@@ -352,7 +352,7 @@ function draw() {
   if (anelli.length > 0) {
     push();
     rotate(angle); // Ruota secondo l'angolo
-    stroke(255); // Colore della barra
+    stroke(30); // Colore della barra
     strokeWeight(5); // Spessore della barra
     let lunghezzabarra = anelli[anelli.length - 1].diametro / 2 + 10 // è in funzione di quanti anelli ci sono
     line(0, 0, lunghezzabarra, 0); // Disegna la barra
@@ -433,7 +433,7 @@ class Anello {
 
       // Imposta il colore del segmento
       if (highlight & isRunning) {
-        stroke(this.bool_list[i] ? this.color : 100); // Colore evidenziato
+        stroke(this.bool_list[i] ? this.color : 180); // Colore evidenziato
         strokeWeight(spessoreAnello + 5)
         
         // Se il segmento è attivo, chiama la funzione per suonare il sample
@@ -444,7 +444,7 @@ class Anello {
           this.lastHighlightedIndex = i; // Aggiorna l'indice dell'ultima sezione evidenziata
         }
       } else {
-        stroke(this.bool_list[i] ? this.color : 100); // colore che ho scelto per l'anello
+        stroke(this.bool_list[i] ? this.color : 180); // colore che ho scelto per l'anello
         strokeWeight(spessoreAnello)
       }
 
@@ -491,24 +491,18 @@ function mousePressed() {
     }
   }
 }
-
+let playPauseButton
 function createControls() {
   const baseX = 1130; 
   const baseY = height - 120;
 
-  let startButton = createDiv('<i class="fas fa-play-circle"></i>');
-  startButton.id('startOrbit-btn');
-  startButton.position(baseX + 100, baseY - 5); // Posizionato sotto la barra
-  startButton.size(45, 45);
-  startButton.style('border-radius', '50%');
-  startButton.mousePressed(startRotation);
-
-  let pauseButton = createDiv('<i class="fas fa-pause-circle"></i>'); // Simbolo "Pausa"
-  pauseButton.id('pauseOrbit-btn');
-  pauseButton.position(baseX + 180, baseY - 5); // Posizionato sotto il primo pulsante
-  pauseButton.size(45, 45);
-  pauseButton.style('border-radius', '50%');
-  pauseButton.mousePressed(pauseRotation);
+  // Crea un unico pulsante Play/Pause
+  playPauseButton = createDiv('<i class="fas fa-play-circle"></i>');
+  playPauseButton.id('playPauseOrbit-btn');
+  playPauseButton.position(baseX + 100, baseY - 5); // Posizionato nel layout originale
+  playPauseButton.size(45, 45);
+  playPauseButton.style('border-radius', '50%');
+  playPauseButton.mousePressed(toggleRotation);
 
   let stopButton = createDiv('<i class="fas fa-stop-circle"></i>'); // Simbolo "Stop"
   stopButton.id('resetOrbit-btn');
@@ -533,18 +527,34 @@ function createControls() {
 
 }
 
+
+// Funzione che alterna Play/Pause
+function toggleRotation() {
+  isRunning = !isRunning; // Cambia stato
+  if (isRunning) {
+    playPauseButton.html('<i class="fas fa-pause-circle"></i>'); // Cambia icona a "Pause"
+    playPauseButton.removeClass('play-hover'); // Rimuove il colore hover verde
+    playPauseButton.addClass('pause-hover');  // Aggiunge il colore hover rosso
+    startRotation(); // Avvia la rotazione
+  } else {
+    playPauseButton.html('<i class="fas fa-play-circle"></i>'); // Cambia icona a "Play"
+    playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
+    playPauseButton.addClass('play-hover');  // Aggiunge il colore hover verde
+    pauseRotation(); // Metti in pausa la rotazione
+  }
+}
+
 // Funzione per avviare la rotazione
 function startRotation() {
-  isRunning = true;
+  console.log("Rotazione avviata"); // Puoi aggiungere la logica qui
 }
 
 // Funzione per mettere in pausa la rotazione
 function pauseRotation() {
-  isRunning = false;
+  console.log("Rotazione in pausa"); // Puoi aggiungere la logica qui
 }
 
 // Funzione per fermare e resettare la rotazione
 function stopRotation() {
-  isRunning = false;
   angle = rotationOffset; // Resetta l'angolo
 }

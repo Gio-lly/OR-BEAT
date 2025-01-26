@@ -560,6 +560,7 @@ button#record-btn:active {
 /*#################################### SEZIONE MATRIX #################################################*/
 
 #matrix-container {
+    width: 33%;  
     float: left;
     background-color: #DDDDDD;
     border-radius: 8px;
@@ -785,12 +786,13 @@ button.remove-btn {
 }
 
 #canvas-container {
-    position: fixed;
-    top: 64%;
-    left: 55%;
+    position: absolute;
+    top: 70%;
+    left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
     background-color: #DDDDDD;
+    z-index: 0;
 }
 /*#####################################################################################################*/
 /*#################################### SEZIONE WORKSTATION ############################################*/
@@ -863,7 +865,7 @@ button.remove-btn {
     background: #ccc;
 }
 
-#startOrbit-btn, #pauseOrbit-btn, #resetOrbit-btn {
+ #playPauseOrbit-btn, #resetOrbit-btn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -881,17 +883,18 @@ button.remove-btn {
     transition: all 0.1s ease;
   }
   
-  #startOrbit-btn:hover {
+  #playPauseOrbit-btn:hover.play-hover {
     color: #038930; 
     background-color: #e0e0e0; 
     border-color: #038930;
   }
   
-  #pauseOrbit-btn:hover {
-    color: #d12d2d;
+  #playPauseOrbit-btn:hover.pause-hover {
+    color: #d12d2d;  /* Rosso per "Pause" */
     background-color: #e0e0e0; 
-    border-color: #d12d2d;
+    border-color: #d12d2d;  /* Bordo rosso per "Pause" */
   }
+  
   
   #resetOrbit-btn:hover {
     color: #dca13b; 
@@ -899,7 +902,7 @@ button.remove-btn {
     border-color: #dca13b;
   }
   
-  #startOrbit-btn:active, #pauseOrbit-btn:active, #resetOrbit-btn:active {
+  #playPauseOrbit-btn:active, #resetOrbit-btn:active {
     box-shadow: outset 0px 2px 8px rgba(40, 40, 45, 0.5); 
     transform: scale(0.95); 
   }
@@ -923,6 +926,7 @@ button.remove-btn {
     border: none;
     outline: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    z-index: 9999;
 }
 
 .randomize-btn:hover {
@@ -970,6 +974,9 @@ button.remove-btn {
     padding-bottom: 20px;
     box-sizing: border-box; 
     box-shadow: 0px 0px 2px white, 0px 2px 14px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1; 
+    height: 15%; /* L'altezza è il 10% dell'altezza della finestra */
 }
 
 .discard-btn {
