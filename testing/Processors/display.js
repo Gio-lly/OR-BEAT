@@ -304,7 +304,7 @@ function setup(p5on) {
 
   if (!p5on) { return }
 
-  const canvas = createCanvas(400, 400);
+  const canvas = createCanvas(450, 450);
   canvas.parent('canvas-container'); // Collegalo al contenitore della forma d'onda
 
   angleMode(DEGREES);
