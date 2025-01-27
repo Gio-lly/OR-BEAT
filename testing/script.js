@@ -393,9 +393,6 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
     slots[freeSlotIndex].addEventListener('click', () => {
         playSlot(freeSlotIndex);
     });
-
-    
-    
 }
 
 /**

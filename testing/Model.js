@@ -45,7 +45,6 @@ class Model {
   getRing(i) {
     return this.representation_matrix[i];
   }
-
   removeRing(i) {
     this.representation_matrix.splice(i, 1);
     // Ora, aggiorna tutti gli iRing successivi
@@ -54,8 +53,7 @@ class Model {
       this.representation_matrix[j][1] = j + 1;  // j+1 per mantenere la numerazione corretta (1-based index)
     }
   }
-
-  setRingPlayer(segmentBuffer,startTime,endTime, i_ring) {
+  setRingPlayer(segmentBuffer, startTime, endTime, i_ring) {
     const player = new Tone.Player(segmentBuffer).toDestination();
     player.autostart = false;  // Impedisce la riproduzione automatica
     if(!this.representation_matrix[i_ring].push(player)==8){

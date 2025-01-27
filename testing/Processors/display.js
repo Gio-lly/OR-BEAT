@@ -503,16 +503,19 @@ function createControls() {
   playPauseButton.position(baseX + 80, baseY - 30); // Posizionato nel layout originale
   // Assicuriamo che il div .savings sia visibile all'inizio
   document.querySelector('.savings').classList.add('open'); // Questa riga rende .savings visibile
+  document.getElementById('waveform').classList.add('open'); // Questa riga rende .savings visibile
 
   // Aggiungiamo l'evento di click sul bottone
   document.getElementById('toggle-savings').addEventListener('click', function() {
     var savings = document.querySelector('.savings');
+    var waveform = document.getElementById('waveform');
     savings.classList.toggle('open'); // Toggle per alternare tra visibile e nascosto
+    waveform.classList.toggle('open'); // Toggle per alternare tra visibile e nascosto
 
     var button = document.getElementById('toggle-savings');
     var icon = button.querySelector('i'); // Otteniamo l'icona dentro il bottone
 
-    if (savings.classList.contains('open')) {
+    if (savings.classList.contains('open') && waveform.classList.contains('open')) {
       icon.classList.remove('fa-arrow-down-short-wide'); // Rimuove la freccia giù
       icon.classList.add('fa-arrow-up-short-wide'); // Aggiunge la freccia su
       button.textContent = ''; // Rimuove il testo precedente
@@ -555,9 +558,7 @@ function createControls() {
     bpm = bpmSlider.value();
     bpmText.html(`${bpm} BPM`); // Aggiorna il testo del BPM
   });
-
 }
-
 
 // Funzione che alterna Play/Pause
 function toggleRotation() {
@@ -577,15 +578,17 @@ function toggleRotation() {
 
 // Funzione per avviare la rotazione
 function startRotation() {
-  console.log("Rotazione avviata"); // Puoi aggiungere la logica qui
+  //console.log("Rotazione avviata");
 }
 
 // Funzione per mettere in pausa la rotazione
 function pauseRotation() {
-  console.log("Rotazione in pausa"); // Puoi aggiungere la logica qui
+  //console.log("Rotazione in pausa");
 }
 
 // Funzione per fermare e resettare la rotazione
 function stopRotation() {
   angle = rotationOffset; // Resetta l'angolo
+  pauseRotation();
+  isRunning = false;
 }
