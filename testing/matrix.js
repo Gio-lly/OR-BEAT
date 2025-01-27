@@ -336,24 +336,24 @@ function initializeDragAndDrop() {
 
     secondCells.forEach(secondCell => {
         secondCell.addEventListener('dragover', (event) => {
-            // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
-            if (secondCell.innerHTML.includes('-')) {
-                return;
-            }
-
             event.preventDefault();
-            secondCell.innerHTML = `DROP HERE!`;
-            secondCell.classList.add('dragover');
+            // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
+            if (!secondCell.innerHTML.includes('-')) {
+                secondCell.innerHTML = `DROP HERE!`;
+                secondCell.classList.add('dragover');
+            } else {
+                secondCell.classList.add('dragover');
+            }
         });
 
         secondCell.addEventListener('dragleave', (event) => {
             // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
-            if (secondCell.innerHTML.includes('-')) {
-                return;
+            if (!secondCell.innerHTML.includes('-')) {
+                secondCell.classList.remove('dragover');
+                secondCell.innerHTML = `Drop the sample`;
+            } else {
+                secondCell.classList.remove('dragover');
             }
-
-            secondCell.classList.remove('dragover');
-            secondCell.innerHTML = `Drop the sample`;
         });
 
         secondCell.addEventListener('drop', (event) => {

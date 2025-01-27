@@ -496,6 +496,35 @@ function createControls() {
   const baseX = 1130; 
   const baseY = height - 120;
 
+  // CREAZIONE DEL PULSANTE TENDINA HIDE/SHOW
+  playPauseButton = createDiv('<button id="toggle-savings">Hide  <i class="fa-solid fa-arrow-up-short-wide"></i></button>');
+  playPauseButton.position(baseX + 80, baseY - 30); // Posizionato nel layout originale
+  // Assicuriamo che il div .savings sia visibile all'inizio
+  document.querySelector('.savings').classList.add('open'); // Questa riga rende .savings visibile
+
+  // Aggiungiamo l'evento di click sul bottone
+  document.getElementById('toggle-savings').addEventListener('click', function() {
+    var savings = document.querySelector('.savings');
+    savings.classList.toggle('open'); // Toggle per alternare tra visibile e nascosto
+
+    var button = document.getElementById('toggle-savings');
+    var icon = button.querySelector('i'); // Otteniamo l'icona dentro il bottone
+
+    if (savings.classList.contains('open')) {
+      icon.classList.remove('fa-arrow-down-short-wide'); // Rimuove la freccia giù
+      icon.classList.add('fa-arrow-up-short-wide'); // Aggiunge la freccia su
+      button.textContent = ''; // Rimuove il testo precedente
+      button.append('Hide  '); // Aggiungi il testo "Hide"
+      button.append(icon); // Riaggiungi l'icona
+    } else {
+        icon.classList.remove('fa-arrow-up-short-wide'); // Rimuove la freccia su
+        icon.classList.add('fa-arrow-down-short-wide'); // Aggiunge la freccia giù
+        button.textContent = ''; // Rimuove il testo precedente
+        button.append('Show  '); // Aggiungi il testo "Show"
+        button.append(icon); // Riaggiungi l'icona
+    }
+  });
+
   // Crea un unico pulsante Play/Pause
   playPauseButton = createDiv('<i class="fas fa-play-circle"></i>');
   playPauseButton.id('playPauseOrbit-btn');
