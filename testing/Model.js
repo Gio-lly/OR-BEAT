@@ -55,18 +55,15 @@ class Model {
     }
   }
 
-  setRingPlayer(segmentBuffer,startTime,endTime, i_ring) {
+  setRingPlayer(segmentBuffer, startTime, endTime, i_ring) {
     const player = new Tone.Player(segmentBuffer).toDestination();
     player.autostart = false;  // Impedisce la riproduzione automatica
-    if(!this.representation_matrix[i_ring].push(player)==8){
-      alert("error");
-    }  
-    this.representation_matrix[i_ring][0]= new Array(startTime,endTime);
-
+    this.representation_matrix[i_ring].push(player);
+    this.representation_matrix[i_ring][0] = new Array(startTime, endTime);
   }
+
   playSound(i_ring){
     if(this.representation_matrix[i_ring][7]){
-
       this.representation_matrix[i_ring][7].start();
     }
   }

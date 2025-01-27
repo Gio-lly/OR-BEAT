@@ -1,7 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     const colors = ["#D64646", "#23A74F", "#5353E7", "#F5C661", "#914FAD", "#F267B1"];
     let usedColors = new Set();
+    const container = document.querySelector('.savings');
+    const discardButtons = container.querySelectorAll('.discard-btn');
+    const slots = container.querySelectorAll('.slot');
 
+    discardButtons.forEach((discardButton, buttonIndex) => {
+        discardButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            try {
+                // Reset del testo dello slot e rimozione del segmento audio
+                slots[buttonIndex].textContent = ''; // Libera il testo dello slot
+                slots[buttonIndex].setAttribute('draggable', 'false');
+
+                players[buttonIndex].stop(); // Ferma la riproduzione (se in corso)
+                players[buttonIndex] = null; // Rimuovi il player dalla lista
+                slotStatus[buttonIndex] = false;
+            } catch (e) {
+
+            }
+        });
+    });
     const matrixContainer = document.getElementById('matrix-container');
     matrixContainer.innerHTML = `
         <table id="matrixTable">
@@ -116,9 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const densityDropdown = newRow.querySelector('.density-dropdown');
         const phaseDropdown = newRow.querySelector('.phase-dropdown');
         const defaultSteps = parseInt(stepsDropdown.value, 10);
-        const container = document.querySelector('.savings');
-        const discardButtons = container.querySelectorAll('.discard-btn');
-        const slots = container.querySelectorAll('.slot');
 
         populateDropdowns(newRow, defaultSteps);
 
@@ -128,22 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
         creaAnello(steps, color);
 
 
-        discardButtons.forEach((discardButton, buttonIndex) => {
-            discardButton.addEventListener('click', (event) => {
-                event.stopPropagation();
-                try {
-                    // Reset del testo dello slot e rimozione del segmento audio
-                    slots[buttonIndex].textContent = ''; // Libera il testo dello slot
-                    slots[buttonIndex].setAttribute('draggable', 'false');
-
-                    players[buttonIndex].stop(); // Ferma la riproduzione (se in corso)
-                    players[buttonIndex] = null; // Rimuovi il player dalla lista
-                    slotStatus[buttonIndex] = false;
-                } catch (e) {
-
-                }
-            });
-        });
         stepsDropdown.addEventListener('change', event => {
             var steps = parseInt(event.target.value, 10);
             if (!isNaN(steps)) {
@@ -236,11 +236,69 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Stato degli anelli dopo la rimozione:", anelli);
         });
 
-        tableBody.appendChild(newRow);
+
+
+        // Inizializza il drag and drop per le nuove celle solo una volta per cella
+        const destinationCell = newRow.querySelector('.second-cell');
+        destinationCell.addEventListener('dragover', (event) => {
+            // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
+            if (destinationCell.innerHTML.includes('-')) {
+                return;
+            }
+
+            event.preventDefault();
+            destinationCell.innerHTML = `DROP HERE!`;
+            destinationCell.classList.add('dragover');
+        });
+
+        destinationCell.addEventListener('dragleave', (event) => {
+            // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
+            if (destinationCell.innerHTML.includes('-')) {
+                return;
+            }
+
+            destinationCell.classList.remove('dragover');
+            destinationCell.innerHTML = `Drop the sample`;
+        });
+
+        destinationCell.addEventListener('drop', (event) => {
+            event.preventDefault();
+            const data = JSON.parse(event.dataTransfer.getData('application/json'));
+            destinationCell.classList.remove('dragover');
+            destinationCell.innerHTML = ''; // Pulisce il contenuto precedente
+            destinationCell.innerHTML = `Sample ${data.index} <br> ${data.htmlContent}`; // Mostra il contenuto del drop
+            const startTime = data.startTime;
+            const endTime = data.endTime;
+
+
+
+            const startSample = Math.floor(startTime * audioBuffer.sampleRate);
+            const endSample = Math.floor(endTime * audioBuffer.sampleRate);
+            var segmentBuffer = null;
+
+            // Estraiamo la porzione dei dati audio dal buffer
+            const leftChannel = audioBuffer.getChannelData(0).slice(startSample, endSample); // Canale sinistro
+            if (audioBuffer.numberOfChannels > 1) {
+                const rightChannel = audioBuffer.getChannelData(1).slice(startSample, endSample); // Canale destro
+                segmentBuffer = audioContext.createBuffer(2, leftChannel.length, audioBuffer.sampleRate);
+                segmentBuffer.getChannelData(0).set(leftChannel);
+                segmentBuffer.getChannelData(1).set(rightChannel);
+            } else { // Le registrazioni sono MONO
+                segmentBuffer = audioContext.createBuffer(1, leftChannel.length, audioBuffer.sampleRate);
+                segmentBuffer.getChannelData(0).set(leftChannel);
+            }
+
+            //const player = new Tone.Player(segmentBuffer).toDestination();
+            //console.log("id dell'anello destinatione:" + parseInt(destinationCell.parentNode.id));
+            modello.setRingPlayer(segmentBuffer, startTime, endTime, i_ring = parseInt(destinationCell.parentNode.id) - 1);
+            // Colorazione della cella 
+            colorize();
+        });
         toggleAddButtonVisibility();
 
+        tableBody.appendChild(newRow);
         // Inizializza il drag and drop per le nuove celle
-        initializeDragAndDrop();
+        //initializeDragAndDrop();
     }
 
     function toggleAddButtonVisibility() {
@@ -335,67 +393,7 @@ slots.forEach((slot, index) => {
     });
 });
 
-function initializeDragAndDrop() {
-    // Seleziona tutte le celle con la classe 'second-cell'
-    const destinationCell = document.querySelectorAll('.second-cell');
 
-    destinationCell.forEach(destinationCell => {
-        destinationCell.addEventListener('dragover', (event) => {
-            // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
-            if (destinationCell.innerHTML.includes('-')) {
-                return;
-            }
-
-            event.preventDefault();
-            destinationCell.innerHTML = `DROP HERE!`;
-            destinationCell.classList.add('dragover');
-        });
-
-        destinationCell.addEventListener('dragleave', (event) => {
-            // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
-            if (destinationCell.innerHTML.includes('-')) {
-                return;
-            }
-
-            destinationCell.classList.remove('dragover');
-            destinationCell.innerHTML = `Drop the sample`;
-        });
-
-        destinationCell.addEventListener('drop', (event) => {
-            event.preventDefault();
-            const data = JSON.parse(event.dataTransfer.getData('application/json'));
-            destinationCell.classList.remove('dragover');
-            destinationCell.innerHTML = ''; // Pulisce il contenuto precedente
-            destinationCell.innerHTML = `Sample ${data.index} <br> ${data.htmlContent}`; // Mostra il contenuto del drop
-            const startTime = data.startTime;
-            const endTime = data.endTime;
-
-
-
-            const startSample = Math.floor(startTime * audioBuffer.sampleRate);
-            const endSample = Math.floor(endTime * audioBuffer.sampleRate);
-            var segmentBuffer = null;
-
-            // Estraiamo la porzione dei dati audio dal buffer
-            const leftChannel = audioBuffer.getChannelData(0).slice(startSample, endSample); // Canale sinistro
-            if (audioBuffer.numberOfChannels > 1) {
-                const rightChannel = audioBuffer.getChannelData(1).slice(startSample, endSample); // Canale destro
-                segmentBuffer = audioContext.createBuffer(2, leftChannel.length, audioBuffer.sampleRate);
-                segmentBuffer.getChannelData(0).set(leftChannel);
-                segmentBuffer.getChannelData(1).set(rightChannel);
-            } else { // Le registrazioni sono MONO
-                segmentBuffer = audioContext.createBuffer(1, leftChannel.length, audioBuffer.sampleRate);
-                segmentBuffer.getChannelData(0).set(leftChannel);
-            }
-
-            const player = new Tone.Player(segmentBuffer).toDestination();
-            console.log("id dell'anello destinatione:" + parseInt(destinationCell.parentNode.id));
-            modello.setRingPlayer(segmentBuffer, startTime, endTime, i_ring=parseInt(destinationCell.parentNode.id) -1);
-            // Colorazione della cella 
-            colorize();
-        });
-    });
-}
 
 // Funzione per colorare gli slot con il colore assegnato
 function colorize() {
