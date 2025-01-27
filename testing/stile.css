@@ -875,7 +875,7 @@ button.remove-btn {
     color: #28282d; 
     width: 80px; 
     height: 80px; 
-    font-family: Arial, sans-serif;
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
     font-size: 38px;
     border-radius: 50%; 
     box-shadow: -2px -2px 4px white, 1px 1px 4px rgba(40, 40, 45, 0.5);
@@ -964,22 +964,67 @@ button.remove-btn {
 
 /*#####################################################################################################*/
 /*#################################### SEZIONE SLOT/ZOOM ##############################################*/
+#toggle-savings {
+    padding: 10px 20px;
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #28282d;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    outline: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#toggle-savings:hover {
+    background-color: #010101;
+    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+#toggle-savings:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+#toggle-savings i {
+    margin: 0;
+}
+
 .savings {
-    display: flex;
     gap: 6px;
     width: 100%;
+    height: 15%;
     justify-content: center; 
     background-color: #DDDDDD;
     box-sizing: border-box; 
     box-shadow: 0px 0px 2px white, 0px 2px 14px rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 1; 
-    height: 15%; /* L'altezza è il 10% dell'altezza della finestra */
+
+    display: block;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.savings.open {
+    max-height: 15%;
+}
+
+.savings:not(.open) {
+    max-height: 0; /* Se non è "open", la max-height è 0 e diventa invisibile */
+    display: none; /* Nasconde completamente il div quando è chiuso */
 }
 
 .discard-btn {
     height: 14%;
-    width: 46%;
+    width: 40%;
     justify-content: center;
     border-radius: 40px 40px 0px 0px;
     color: #010101;
