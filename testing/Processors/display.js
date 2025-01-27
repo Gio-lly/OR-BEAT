@@ -285,10 +285,10 @@ p5on = false // se imposta su false setup non runna, quindi tutto il codice p5 n
 let anelli = []; // Array per memorizzare gli anelli creati
 let maxAnelli = 6; // Numero massimo di anelli consentiti
 let diametroBase = 150; // Diametro base del primo anello
-let spessoreAnello = 10; // Spessore degli anelli
+let spessoreAnello = 9; // Spessore degli anelli
 let bottoneCreaAnello;
 let bottoneRimuoviAnello;
-let gap = 15 // spazio tra le sezioni dell'anello
+let gap = 12 // spazio tra le sezioni dell'anello
 let rotationOffset = -90 // perché l'angolo definito da p5 inizia "alle ore 3"
 
 // Variabili per la barra che ruota
@@ -422,10 +422,12 @@ class Anello {
   disegna() {
     strokeWeight(spessoreAnello);
     noFill()
-    let angoloStep = 360 / this.steps - gap;
+    
+    let gap2 = gap - anelli.indexOf(this) * 1.4; // gap che decrementa più l'anello è grande, in modo da avere lo stesso gap per ogni anello
+    let angoloStep = 360 / this.steps - gap2;
 
     for (let i = 0; i < this.steps; i++) {
-      let startAngolo = i * (angoloStep + gap) + rotationOffset;
+      let startAngolo = i * (angoloStep + gap2) + rotationOffset;
       let endAngolo = startAngolo + angoloStep;
 
       // Controlla se la barra si trova sopra questo segmento
@@ -434,7 +436,7 @@ class Anello {
       // Imposta il colore del segmento
       if (highlight & isRunning) {
         stroke(this.bool_list[i] ? this.color : 180); // Colore evidenziato
-        strokeWeight(spessoreAnello + 5)
+        strokeWeight(spessoreAnello + 4)
         
         // Se il segmento è attivo, chiama la funzione per suonare il sample
         if (this.bool_list[i] && this.lastHighlightedIndex !== i) {
