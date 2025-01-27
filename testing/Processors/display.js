@@ -417,8 +417,18 @@ class Anello {
     this.bool_list = Array(steps).fill(false); // Inizialmente tutte le sezioni sono disattivate
     this.lastHighlightedIndex = null; // Indice dell'ultima sezione evidenziata, 
     // serve per suoanre il sample solo nel momento in cui la barra incontra la parte di anello attiva
+    this.player = null; // Player per il suono
   }
-
+  setRingPlayer(segmentBuffer, startTime, endTime) {
+    const player = new Tone.Player(segmentBuffer).toDestination();
+    player.autostart = false;  // Impedisce la riproduzione automatica
+    this.player = player;
+  }
+  playSound(){
+    if(this.player){
+      this.player.start();
+    }
+  }
   disegna() {
     strokeWeight(spessoreAnello);
     noFill()
@@ -441,8 +451,7 @@ class Anello {
         // Se il segmento è attivo, chiama la funzione per suonare il sample
         if (this.bool_list[i] && this.lastHighlightedIndex !== i) {
           // Chiamata alla funzione
-          modello.playSound(anelli.indexOf(this));
-          
+          this.playSound();
           this.lastHighlightedIndex = i; // Aggiorna l'indice dell'ultima sezione evidenziata
         }
       } else {

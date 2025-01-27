@@ -54,7 +54,7 @@ class Model {
     }
   }
 
-  setRingPlayer(segmentBuffer, startTime, endTime, i_ring) {
+  /* setRingPlayer(segmentBuffer, startTime, endTime, i_ring) {
     const player = new Tone.Player(segmentBuffer).toDestination();
     player.autostart = false;  // Impedisce la riproduzione automatica
     this.representation_matrix[i_ring].push(player);
@@ -65,7 +65,7 @@ class Model {
     if(this.representation_matrix[i_ring][7]){
       this.representation_matrix[i_ring][7].start();
     }
-  }
+  } */
   //[ [[0,1],iring,steps,density,phase,[booleans]],  ]
 
 

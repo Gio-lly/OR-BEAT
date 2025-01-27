@@ -290,13 +290,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             //const player = new Tone.Player(segmentBuffer).toDestination();
             //console.log("id dell'anello destinatione:" + parseInt(destinationCell.parentNode.id));
-            modello.setRingPlayer(segmentBuffer, startTime, endTime, i_ring = parseInt(destinationCell.parentNode.id) - 1);
+            //modello.setRingPlayer(segmentBuffer, startTime, endTime, i_ring = parseInt(destinationCell.parentNode.id) - 1);
+            anelli[parseInt(destinationCell.parentNode.id) - 1].setRingPlayer(segmentBuffer, startTime, endTime);
             // Colorazione della cella 
             colorize();
         });
+        tableBody.appendChild(newRow);
         toggleAddButtonVisibility();
 
-        tableBody.appendChild(newRow);
+ 
         // Inizializza il drag and drop per le nuove celle
         //initializeDragAndDrop();
     }
