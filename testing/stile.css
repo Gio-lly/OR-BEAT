@@ -589,7 +589,8 @@ table#matrixTable {
     position: relative;
     width: 550px;
     height: 200px;
-    right: 280;
+    right: 290px;
+    bottom: 10px;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     color: #28282d;
     text-align: center;
@@ -810,7 +811,7 @@ button.remove-btn {
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.8);
-    padding: 5px 10px; 
+    padding: 5px 10px;
     border-radius: 5px; 
     box-shadow: -2px -2px 10px white, 6px 2px 16px rgba(40, 40, 45, 0.5);
 }
@@ -895,7 +896,6 @@ button.remove-btn {
     border-color: #d12d2d;  /* Bordo rosso per "Pause" */
   }
   
-  
   #resetOrbit-btn:hover {
     color: #dca13b; 
     background-color: #e0e0e0; 
@@ -910,8 +910,8 @@ button.remove-btn {
   .randomize-btn {
     display: none;
     position: fixed;
-    bottom: 50px;
-    left: 50px;
+    bottom: 30px;
+    right: 50px;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -930,7 +930,7 @@ button.remove-btn {
 }
 
 .randomize-btn:hover {
-    background-color: #000000;
+    background-color: #010101;
     transform: scale(1.1);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
@@ -966,12 +966,10 @@ button.remove-btn {
 /*#################################### SEZIONE SLOT/ZOOM ##############################################*/
 .savings {
     display: flex;
-    gap: 12px;
+    gap: 6px;
     width: 100%;
     justify-content: center; 
-    background-color: #DDDDDD; 
-    padding-top: 15px; 
-    padding-bottom: 20px;
+    background-color: #DDDDDD;
     box-sizing: border-box; 
     box-shadow: 0px 0px 2px white, 0px 2px 14px rgba(0, 0, 0, 0.5);
     position: relative;
@@ -980,13 +978,14 @@ button.remove-btn {
 }
 
 .discard-btn {
-    height: 25%;
+    height: 14%;
     width: 46%;
     justify-content: center;
     border-radius: 40px 40px 0px 0px;
     color: #010101;
     font-size: 10px;
     border: none;
+    margin-top: 20px;
     text-align: center;
     cursor: pointer;
     z-index: 1;
@@ -1019,6 +1018,7 @@ button.remove-btn {
   outline: none;
   overflow: hidden;
   padding: 0 32px;
+  margin-bottom: 20px;
   text-align: center;
   text-decoration: none;
   transform: translate3d(0, 0, 0);
@@ -1056,7 +1056,7 @@ button.remove-btn {
     width: 300px;
     height: 40px;
     padding: 20px;
-    margin-top: 5px;
+    margin-top: 32px;
     margin-bottom: 5px;
     background: #e0e0e0;
     border-radius: 10px;

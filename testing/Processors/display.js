@@ -499,14 +499,14 @@ function createControls() {
   // Crea un unico pulsante Play/Pause
   playPauseButton = createDiv('<i class="fas fa-play-circle"></i>');
   playPauseButton.id('playPauseOrbit-btn');
-  playPauseButton.position(baseX + 100, baseY - 5); // Posizionato nel layout originale
+  playPauseButton.position(baseX + 200, baseY - 35); // Posizionato nel layout originale
   playPauseButton.size(45, 45);
   playPauseButton.style('border-radius', '50%');
   playPauseButton.mousePressed(toggleRotation);
 
   let stopButton = createDiv('<i class="fas fa-stop-circle"></i>'); // Simbolo "Stop"
   stopButton.id('resetOrbit-btn');
-  stopButton.position(baseX + 260, baseY - 5); // Posizionato sotto il secondo pulsante
+  stopButton.position(baseX + 260, baseY - 35); // Posizionato sotto il secondo pulsante
   stopButton.size(45, 45);
   stopButton.style('border-radius', '50%');
   stopButton.mousePressed(stopRotation);
@@ -514,12 +514,12 @@ function createControls() {
   // Crea l'elemento testo per visualizzare il valore del BPM
   let bpmText = createDiv(`${bpm} BPM`);
   bpmText.id('bpm-value'); // Aggiungi l'ID per personalizzare tramite CSS
-  bpmText.position(1130 + 324, height - 112); // Posiziona accanto allo slider
+  bpmText.position(1130 + 324, height - 140); // Posiziona accanto allo slider
 
   // Crea la barra di controllo dei bpm
   let bpmSlider = createSlider(40, 180, 80, 1);
   bpmSlider.id('sliderOrbit-btn');
-  bpmSlider.position(1212, height - 70); // Posizionato sopra i pulsanti
+  bpmSlider.position(1212, height - 100); // Posizionato sopra i pulsanti
   bpmSlider.input(() => { 
     bpm = bpmSlider.value();
     bpmText.html(`${bpm} BPM`); // Aggiorna il testo del BPM
