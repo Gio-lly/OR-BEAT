@@ -207,7 +207,7 @@ async function createOnsetDetectorNode() {
 // Funzione per gestire il caricamento del file audio solo quando si clicca 'CONTINUA'
 let sampleRate = null;
 let file = null;
-let audioBuffer = null;
+let audioBuffer = null; //audio buffer globale per la traccia da samplare
 let onsetDetect = null;
 var onsetTimestamps = [];
 

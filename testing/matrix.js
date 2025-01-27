@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let density = 0;
         creaAnello(steps, color);
 
-        
+
         discardButtons.forEach((discardButton, buttonIndex) => {
             discardButton.addEventListener('click', (event) => {
                 event.stopPropagation();
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Reset del testo dello slot e rimozione del segmento audio
                     slots[buttonIndex].textContent = ''; // Libera il testo dello slot
                     slots[buttonIndex].setAttribute('draggable', 'false');
-                    
+
                     players[buttonIndex].stop(); // Ferma la riproduzione (se in corso)
                     players[buttonIndex] = null; // Rimuovi il player dalla lista
                     slotStatus[buttonIndex] = false;
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tableBody = document.querySelector('#matrixTable tbody');
         const addRowButtonRow = document.querySelector('#addRowButtonRow');
         addRowButtonRow.style.display = tableBody.children.length >= 6 ? 'none' : '';
-    }   
+    }
 
     document.querySelector('.add-row-btn').addEventListener('click', addRow);
     addRow();  // riga di default al caricamento della pagina
@@ -320,8 +320,13 @@ const slots = document.querySelectorAll('.slot');
 slots.forEach((slot, index) => {
     slot.addEventListener('dragstart', (event) => {
         // Memorizza il numero dello slot che stai trascinando
-        event.dataTransfer.setData('text/plain', index);
-        event.dataTransfer.setData('text/html', slot.innerHTML);
+        const data = {
+            index: index,
+            htmlContent: slot.innerHTML,
+            startTime: parseFloat(slot.innerHTML.split('-')[0].trim(), 10), // Assegna il primo intero
+            endTime: parseFloat(slot.innerHTML.split('-')[1].trim(), 10) // Assegna il secondo intero
+        }
+        event.dataTransfer.setData('application/json', JSON.stringify(data));
         slot.classList.add('dragging');
     });
 
@@ -332,38 +337,60 @@ slots.forEach((slot, index) => {
 
 function initializeDragAndDrop() {
     // Seleziona tutte le celle con la classe 'second-cell'
-    const secondCells = document.querySelectorAll('.second-cell');
+    const destinationCell = document.querySelectorAll('.second-cell');
 
-    secondCells.forEach(secondCell => {
-        secondCell.addEventListener('dragover', (event) => {
+    destinationCell.forEach(destinationCell => {
+        destinationCell.addEventListener('dragover', (event) => {
             // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
-            if (secondCell.innerHTML.includes('-')) {
+            if (destinationCell.innerHTML.includes('-')) {
                 return;
             }
 
             event.preventDefault();
-            secondCell.innerHTML = `DROP HERE!`;
-            secondCell.classList.add('dragover');
+            destinationCell.innerHTML = `DROP HERE!`;
+            destinationCell.classList.add('dragover');
         });
 
-        secondCell.addEventListener('dragleave', (event) => {
+        destinationCell.addEventListener('dragleave', (event) => {
             // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
-            if (secondCell.innerHTML.includes('-')) {
+            if (destinationCell.innerHTML.includes('-')) {
                 return;
             }
 
-            secondCell.classList.remove('dragover');
-            secondCell.innerHTML = `Drop the sample`;
+            destinationCell.classList.remove('dragover');
+            destinationCell.innerHTML = `Drop the sample`;
         });
 
-        secondCell.addEventListener('drop', (event) => {
+        destinationCell.addEventListener('drop', (event) => {
             event.preventDefault();
-            secondCell.classList.remove('dragover');
-            const slotIndex = event.dataTransfer.getData('text/plain');
-            const slotContent = event.dataTransfer.getData('text/html');
-            secondCell.innerHTML = ''; // Pulisce il contenuto precedente
-            secondCell.innerHTML = `Sample ${slotIndex} <br> ${slotContent}`; // Mostra il contenuto del drop
+            const data = JSON.parse(event.dataTransfer.getData('application/json'));
+            destinationCell.classList.remove('dragover');
+            destinationCell.innerHTML = ''; // Pulisce il contenuto precedente
+            destinationCell.innerHTML = `Sample ${data.index} <br> ${data.htmlContent}`; // Mostra il contenuto del drop
+            const startTime = data.startTime;
+            const endTime = data.endTime;
 
+
+
+            const startSample = Math.floor(startTime * audioBuffer.sampleRate);
+            const endSample = Math.floor(endTime * audioBuffer.sampleRate);
+            var segmentBuffer = null;
+
+            // Estraiamo la porzione dei dati audio dal buffer
+            const leftChannel = audioBuffer.getChannelData(0).slice(startSample, endSample); // Canale sinistro
+            if (audioBuffer.numberOfChannels > 1) {
+                const rightChannel = audioBuffer.getChannelData(1).slice(startSample, endSample); // Canale destro
+                segmentBuffer = audioContext.createBuffer(2, leftChannel.length, audioBuffer.sampleRate);
+                segmentBuffer.getChannelData(0).set(leftChannel);
+                segmentBuffer.getChannelData(1).set(rightChannel);
+            } else { // Le registrazioni sono MONO
+                segmentBuffer = audioContext.createBuffer(1, leftChannel.length, audioBuffer.sampleRate);
+                segmentBuffer.getChannelData(0).set(leftChannel);
+            }
+
+            const player = new Tone.Player(segmentBuffer).toDestination();
+            console.log("id dell'anello destinatione:" + parseInt(destinationCell.parentNode.id));
+            modello.setRingPlayer(segmentBuffer, startTime, endTime, i_ring=parseInt(destinationCell.parentNode.id) -1);
             // Colorazione della cella 
             colorize();
         });
@@ -372,19 +399,18 @@ function initializeDragAndDrop() {
 
 // Funzione per colorare gli slot con il colore assegnato
 function colorize() {
-    const secondCells = document.querySelectorAll('.second-cell');
+    const destinationCell = document.querySelectorAll('.second-cell');
 
-    secondCells.forEach((secondCell, index) => {
+    destinationCell.forEach((destinationCell, index) => {
         // Controlliamo se l'innerHTML della cella contiene il segno '-'
-        if (secondCell.innerHTML.includes('-')) {
+        if (destinationCell.innerHTML.includes('-')) {
             // Ottieni il colore memorizzato nel data-color della riga
-            const row = secondCell.closest('tr');
+            const row = destinationCell.closest('tr');
             const color = row.getAttribute('data-color');
 
             // Assegna il colore alla cella
-            secondCell.style.backgroundColor = color;
-            secondCell.style.color = "#fff";
+            destinationCell.style.backgroundColor = color;
+            destinationCell.style.color = "#fff";
         }
     });
 }
-

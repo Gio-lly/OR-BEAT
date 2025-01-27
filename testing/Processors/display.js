@@ -439,7 +439,7 @@ class Anello {
         // Se il segmento è attivo, chiama la funzione per suonare il sample
         if (this.bool_list[i] && this.lastHighlightedIndex !== i) {
           // Chiamata alla funzione
-          playSlot(anelli.indexOf(this))
+          modello.playSound(anelli.indexOf(this));
           
           this.lastHighlightedIndex = i; // Aggiorna l'indice dell'ultima sezione evidenziata
         }
