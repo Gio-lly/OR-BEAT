@@ -45,7 +45,6 @@ class Model {
   getRing(i) {
     return this.representation_matrix[i];
   }
-
   removeRing(i) {
     this.representation_matrix.splice(i, 1);
     // Ora, aggiorna tutti gli iRing successivi
