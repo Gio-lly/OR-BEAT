@@ -507,14 +507,11 @@ function createControls() {
   playPauseButton.position(baseX + 80, baseY - 30); // Posizionato nel layout originale
   // Assicuriamo che il div .savings sia visibile all'inizio
   document.querySelector('.savings').classList.add('open'); // Questa riga rende .savings visibile
-  document.getElementById('waveform').classList.add('open'); // Questa riga rende .savings visibile
 
   // Aggiungiamo l'evento di click sul bottone
   document.getElementById('toggle-savings').addEventListener('click', function() {
     var savings = document.querySelector('.savings');
-    var waveform = document.getElementById('waveform');
     savings.classList.toggle('open'); // Toggle per alternare tra visibile e nascosto
-    waveform.classList.toggle('open'); // Toggle per alternare tra visibile e nascosto
 
     var button = document.getElementById('toggle-savings');
     var icon = button.querySelector('i'); // Otteniamo l'icona dentro il bottone
