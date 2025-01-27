@@ -237,7 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
 
-
         // Inizializza il drag and drop per le nuove celle solo una volta per cella
         const destinationCell = newRow.querySelector('.second-cell');
         destinationCell.addEventListener('dragover', (event) => {
@@ -294,9 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Colorazione della cella 
             colorize();
         });
-        toggleAddButtonVisibility();
+        
 
         tableBody.appendChild(newRow);
+        toggleAddButtonVisibility();
         // Inizializza il drag and drop per le nuove celle
         //initializeDragAndDrop();
     }
