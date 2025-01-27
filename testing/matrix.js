@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const startSample = Math.floor(startTime * audioBuffer.sampleRate);
             const endSample = Math.floor(endTime * audioBuffer.sampleRate);
-            var segmentBuffer = null;
+            let segmentBuffer;
 
             // Estraiamo la porzione dei dati audio dal buffer
             const leftChannel = audioBuffer.getChannelData(0).slice(startSample, endSample); // Canale sinistro
@@ -290,7 +290,9 @@ document.addEventListener('DOMContentLoaded', () => {
             //const player = new Tone.Player(segmentBuffer).toDestination();
             //console.log("id dell'anello destinatione:" + parseInt(destinationCell.parentNode.id));
             //modello.setRingPlayer(segmentBuffer, startTime, endTime, i_ring = parseInt(destinationCell.parentNode.id) - 1);
-            anelli[parseInt(destinationCell.parentNode.id) - 1].setRingPlayer(segmentBuffer, startTime, endTime);
+            const player = new Tone.Player(segmentBuffer).toDestination();
+            player.autostart = false; 
+            anelli[parseInt(destinationCell.parentNode.id) - 1].player = player;
             // Colorazione della cella 
             colorize();
         });

@@ -419,11 +419,6 @@ class Anello {
     // serve per suoanre il sample solo nel momento in cui la barra incontra la parte di anello attiva
     this.player = null; // Player per il suono
   }
-  setRingPlayer(segmentBuffer, startTime, endTime) {
-    const player = new Tone.Player(segmentBuffer).toDestination();
-    player.autostart = false;  // Impedisce la riproduzione automatica
-    this.player = player;
-  }
   playSound(){
     if(this.player){
       this.player.start();
