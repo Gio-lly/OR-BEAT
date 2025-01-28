@@ -1270,4 +1270,40 @@ datalist > option:before {
 #ticks option:nth-child(5) { right: 10%; } /* 100% */
 
 /*#####################################################################################################*/
-/*####################################  ########################################################*/
+/*#####################################################################################################*/
+#back-to-start-btn {
+    display: none;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 110px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #010101;
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    z-index: 9999;
+}
+
+#back-to-start-btn:hover {
+    background-color: #010101;
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+#back-to-start-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+#back-to-start-btn i {
+    margin: 0;
+}
