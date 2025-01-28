@@ -788,6 +788,11 @@ button.remove-btn {
     width: 100%;
     background-color: #DDDDDD;
     z-index: 0;
+    transition: top 0.8s ease; 
+}
+
+#canvas-container.move-up {
+    top: 47%; /* posizione quando si nascondono i sample*/
 }
 /*#####################################################################################################*/
 /*#################################### SEZIONE WORKSTATION ############################################*/

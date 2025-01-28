@@ -510,28 +510,29 @@ document.querySelector('.savings').classList.add('open'); // Questa riga rende .
 
 // Aggiungiamo l'evento di click sul bottone
 document.getElementById('toggle-savings').addEventListener('click', function () {
-    var savings = document.querySelector('.savings');
-    savings.classList.toggle('open'); // Toggle per alternare tra visibile e nascosto
+  const canvasContainer = document.getElementById('canvas-container');
+  const savings = document.querySelector('.savings');
+  const button = document.getElementById('toggle-savings');
+  const icon = button.querySelector('i'); // Ottieni l'icona dentro il pulsante
 
-    var button = document.getElementById('toggle-savings');
-    var icon = button.querySelector('i'); // Otteniamo l'icona dentro il bottone
+  // Toggle per nascondere/mostrare
+  savings.classList.toggle('open');
+  canvasContainer.classList.toggle('move-up'); // Sposta il canvas container
 
-    // Controlliamo solo lo stato di .savings
-    if (savings.classList.contains('open')) {
-        // Stato "aperto": Mostra "Hide" e freccia su
-        icon.classList.remove('fa-arrow-down-short-wide'); // Rimuove la freccia giù
-        icon.classList.add('fa-arrow-up-short-wide'); // Aggiunge la freccia su
-        button.textContent = ''; // Rimuove il testo precedente
-        button.append('Hide  '); // Aggiungi il testo "Hide"
-        button.append(icon); // Riaggiungi l'icona
-    } else {
-        // Stato "chiuso": Mostra "Show" e freccia giù
-        icon.classList.remove('fa-arrow-up-short-wide'); // Rimuove la freccia su
-        icon.classList.add('fa-arrow-down-short-wide'); // Aggiunge la freccia giù
-        button.textContent = ''; // Rimuove il testo precedente
-        button.append('Show  '); // Aggiungi il testo "Show"
-        button.append(icon); // Riaggiungi l'icona
-    }
+  // Aggiorna il testo e l'icona del pulsante
+  if (savings.classList.contains('open')) {
+      icon.classList.remove('fa-arrow-down-short-wide');
+      icon.classList.add('fa-arrow-up-short-wide');
+      button.textContent = ''; // Resetta il contenuto del pulsante
+      button.append('Hide  '); // Aggiungi "Hide"
+      button.append(icon); // Riaggiungi l'icona
+  } else {
+      icon.classList.remove('fa-arrow-up-short-wide');
+      icon.classList.add('fa-arrow-down-short-wide');
+      button.textContent = ''; // Resetta il contenuto del pulsante
+      button.append('Show  '); // Aggiungi "Show"
+      button.append(icon); // Riaggiungi l'icona
+  }
 });
 
 
