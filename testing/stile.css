@@ -883,6 +883,9 @@ button.remove-btn {
     transition: all 0.1s ease;
   }
   
+  #playPauseOrbit-btn:hover{
+    color: #038930;
+  }
   #playPauseOrbit-btn:hover.play-hover {
     color: #038930; 
     background-color: #e0e0e0; 
