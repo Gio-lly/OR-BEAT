@@ -151,7 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             modello.modifyRingSteps(parseInt(stepsDropdown.parentNode.parentNode.id) - 1, steps);
             anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].steps = steps;
-            anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].bool_list = new Array(steps).fill(false);
+            const boolList=new Array(steps).fill(false);
+            anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].bool_list = boolList;
+            anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].hasToUpdate=true;
+            //anelli[parseInt(stepsDropdown.parentNode.parentNode.id) - 1].updateSequenceWithBoolList(boolList,globalDuration);
         });
 
         // gestione del cambiamento della densità
@@ -261,12 +264,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         destinationCell.addEventListener('drop', (event) => {
-            event.preventDefault();
+             event.preventDefault();
             const data = JSON.parse(event.dataTransfer.getData('application/json'));
             destinationCell.classList.remove('dragover');
             destinationCell.innerHTML = ''; // Pulisce il contenuto precedente
             destinationCell.innerHTML = `Sample ${data.index} <br> ${data.htmlContent}`; // Mostra il contenuto del drop
-            const startTime = data.startTime;
+            /*const startTime = data.startTime;
             const endTime = data.endTime;
 
 
@@ -287,12 +290,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 segmentBuffer.getChannelData(0).set(leftChannel);
             }
 
-            //const player = new Tone.Player(segmentBuffer).toDestination();
-            //console.log("id dell'anello destinatione:" + parseInt(destinationCell.parentNode.id));
-            //modello.setRingPlayer(segmentBuffer, startTime, endTime, i_ring = parseInt(destinationCell.parentNode.id) - 1);
             const player = new Tone.Player(segmentBuffer).toDestination();
-            player.autostart = false; 
-            anelli[parseInt(destinationCell.parentNode.id) - 1].player = player;
+            player.autostart = false; */ 
+            anelli[parseInt(destinationCell.parentNode.id) - 1].createSequence(players[data.index]);
             // Colorazione della cella 
             colorize();
         });
@@ -363,6 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
             anelli[rowIndex].density = density;
             anelli[rowIndex].phase = phase;
             anelli[rowIndex].bool_list = booleanList;
+            anelli[rowIndex].hasToUpdate=true;
         });
 
         logState();

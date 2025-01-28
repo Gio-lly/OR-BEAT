@@ -263,7 +263,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
             }
             await audioContext.resume();
             updateProgressBar(50); // AGGIORNO PROGRESS BAR...
-
+            await Tone.start();
             // decodeAudio si occupa di decodificare un buffer di dati audio (ad esempio, un file audio caricato) 
             // in un formato che può essere utilizzato dall'API Audio di JavaScript per l'elaborazione e la riproduzione
             const arrayBuffer = await file.arrayBuffer();

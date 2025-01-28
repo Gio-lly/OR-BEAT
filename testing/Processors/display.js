@@ -377,6 +377,8 @@ function rimuoviAnello(i) {
   console.log("Rimuovo anello con indice:", i);
   
   // rimuovo l'anello dall'array degli anelli
+  anelli[i].sequence.stop();
+  anelli[i].sequence.dispose();
   anelli.splice(i, 1);
 
   // rimuovo l'anello dalla matrice di rappresentazione
@@ -409,7 +411,9 @@ function creaAnello(steps, colorInput) {
   modello.addRing([], steps, 0, 0, colorInput); //todo linkare alla matrice
 }
 
-class Anello {
+
+let globalDuration = (60/bpm )*4; // Durata di un beat completo della barra in secondi
+class Anello {  
   constructor(steps, color, diametro) {
     this.steps = steps;
     this.color = color;
@@ -418,12 +422,53 @@ class Anello {
     this.lastHighlightedIndex = null; // Indice dell'ultima sezione evidenziata, 
     // serve per suoanre il sample solo nel momento in cui la barra incontra la parte di anello attiva
     this.player = null; // Player per il suono
+    this.sequence = null;
+    this.hasToUpdate=false;
   }
-  playSound(){
+  calculateNoteDivision(boolList){
+    const x = globalDuration/boolList.length;
+    return x.toString() + 's';
+    /* const durationbeat = globalDuration/boolList.length;
+    return (totalDuration/boolList.length).toString() + 'n'; */  
+  }
+  createSequence(player,totalDuration){ 
+    this.player = player;
+    const noteDivision = this.calculateNoteDivision(this.bool_list);
+    this.sequence= new Tone.Sequence((time, value) => {
+      if (value) {
+        console.log("SUONO");
+        this.player.start(time); // Suona solo per i valori true
+      }
+    }, this.bool_list, noteDivision);
+    this.sequence.loop=true;
+  }
+  
+  updateSequenceWithBoolList() {
+    console.log("bool list della sequenza cambia");
+     if (this.sequence) {
+      this.sequence.stop(); // Ferma la sequenza corrente
+      this.sequence.dispose(); // Libera risorse dalla sequenza precedente
+    }
+    
+    // Aggiorna la sequenza con la nuova lista
+    
+     // Aggiorna la lista dell'anello
+    const noteDivision = this.calculateNoteDivision(this.bool_list);
+    this.sequence = new Tone.Sequence((time, value) => {
+      if (value) {
+        this.player.start(time); // Suona solo se il valore è true
+      }
+    }, this.bool_list, noteDivision);
+    const offset = (angle - rotationOffset) / 360 * (globalDuration / this.steps);
+    this.sequence.loop=true;
+    this.sequence.start(0);
+  }
+  /* playSound(){
     if(this.player){
+
       this.player.start();
     }
-  }
+  } */
   disegna() {
     strokeWeight(spessoreAnello);
     noFill()
@@ -438,6 +483,12 @@ class Anello {
       // Controlla se la barra si trova sopra questo segmento
       let highlight = angle >= startAngolo && angle < endAngolo;
 
+      if (highlight && isRunning && angle === rotationOffset && this.hasToUpdate) {
+        Tone.Transport.pause();
+        this.updateSequenceWithBoolList();
+        Tone.Transport.start();
+        this.hasToUpdate=false;
+      }
       // Imposta il colore del segmento
       if (highlight & isRunning) {
         stroke(this.bool_list[i] ? this.color : 180); // Colore evidenziato
@@ -446,7 +497,7 @@ class Anello {
         // Se il segmento è attivo, chiama la funzione per suonare il sample
         if (this.bool_list[i] && this.lastHighlightedIndex !== i) {
           // Chiamata alla funzione
-          this.playSound();
+          
           this.lastHighlightedIndex = i; // Aggiorna l'indice dell'ultima sezione evidenziata
         }
       } else {
@@ -471,6 +522,7 @@ class Anello {
   toggleStep(indice) {
     if (indice >= 0 && indice < this.steps) {
       this.bool_list[indice] = !this.bool_list[indice];
+      this.hasToUpdate=true;
     }
   }
 }
@@ -497,7 +549,7 @@ function mousePressed() {
     }
   }
 }
-let playPauseButton
+let playPauseButton;
 function createControls() {
   const baseX = 1130; 
   const baseY = height - 120;
@@ -558,10 +610,13 @@ function createControls() {
   let bpmSlider = createSlider(40, 180, 80, 1);
   bpmSlider.id('sliderOrbit-btn');
   bpmSlider.position(1212, height - 100); // Posizionato sopra i pulsanti
-  bpmSlider.input(() => { 
+  bpmSlider.input(() => {
+    globalDuration = (60/bpm )*4; // Update globalDuration when bpm changes
     bpm = bpmSlider.value();
+    Tone.Transport.bpm.value = bpm; // Aggiorna il valore del BPM globale di tone
     bpmText.html(`${bpm} BPM`); // Aggiorna il testo del BPM
   });
+
 }
 
 // Funzione che alterna Play/Pause
@@ -571,11 +626,18 @@ function toggleRotation() {
     playPauseButton.html('<i class="fas fa-pause-circle"></i>'); // Cambia icona a "Pause"
     playPauseButton.removeClass('play-hover'); // Rimuove il colore hover verde
     playPauseButton.addClass('pause-hover');  // Aggiunge il colore hover rosso
+    
+    Tone.Transport.bpm.value = bpm; // Imposta il BPM globale di Tone
+    
+    
+    Tone.Transport.start(); // Avvia il trasporto di Tone
+    console.log("tone transport started");
     startRotation(); // Avvia la rotazione
   } else {
     playPauseButton.html('<i class="fas fa-play-circle"></i>'); // Cambia icona a "Play"
     playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
-    playPauseButton.addClass('play-hover');  // Aggiunge il colore hover verde
+    playPauseButton.addClass('play-hover');
+    Tone.Transport.pause();  // Aggiunge il colore hover verde
     pauseRotation(); // Metti in pausa la rotazione
   }
 }
