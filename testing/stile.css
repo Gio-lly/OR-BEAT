@@ -782,8 +782,8 @@ button.remove-btn {
 
 #canvas-container {
     position: absolute;
-    top: 70%;
-    left: 50%;
+    top: 63%;
+    left: 55%;
     transform: translate(-50%, -50%);
     width: 100%;
     background-color: #DDDDDD;
