@@ -1,12 +1,3 @@
-<!-- RICORDA:
- STEP 1: PULLA PER SINCRONIZZARE, non si può pullare se non tutto è committato.
- STEP 2: FAI LE TUE MODIFICHE
- STEP 3: COMMITTA LE TUE MODIFICHE(quindi fai add sul coso a sinistra e committa)
- STEP 4: PULLA (di nuovo, se qualcuno ha pushato nel frattempo, dovrai fare il merge tra i codici,
-  e committare il merge)
- STEP 5: PUSHA
- -->
- 
 <html>
 
 <head>
@@ -199,6 +190,15 @@
         <div id="matrix-container"></div>
         <div id="canvas-container"></div>
 
+        <!-- Bottone per tornare all'inizio -->
+        <button id="back-to-start-btn">Back to Start</button>
+        <script>
+            // Aggiungi un listener per l'evento di clic
+            document.getElementById('back-to-start-btn').addEventListener('click', function() {
+                // Ricarica la pagina quando clicchi sul bottone
+                location.reload();
+            });
+        </script>
     </div>
 
 </body>
