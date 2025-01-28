@@ -595,7 +595,14 @@ function pauseRotation() {
 
 // Funzione per fermare e resettare la rotazione
 function stopRotation() {
+  if (isRunning) {
+    playPauseButton.html('<i class="fas fa-play-circle"></i>'); // Cambia icona a "Play"
+    playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
+    playPauseButton.addClass('play-hover');  // Aggiunge il colore hover verde
+    pauseRotation(); // Metti in pausa la rotazione
+  } 
+  isRunning = false;
   angle = rotationOffset; // Resetta l'angolo
   pauseRotation();
-  isRunning = false;
+  
 }
