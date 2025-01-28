@@ -377,8 +377,11 @@ function rimuoviAnello(i) {
   console.log("Rimuovo anello con indice:", i);
   
   // rimuovo l'anello dall'array degli anelli
-  anelli[i].sequence.stop();
-  anelli[i].sequence.dispose();
+  if(anelli[i].player)anelli[i].player.stop();
+  if(anelli[i].sequence){
+    anelli[i].sequence.stop();
+    anelli[i].sequence.dispose();
+  }
   anelli.splice(i, 1);
 
   // rimuovo l'anello dalla matrice di rappresentazione

@@ -175,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 modello.modifyRingBooleanList(ringId, booleanList);
                 anelli[ringId].bool_list = booleanList;
+                anelli[ringId].hasToUpdate=true;
             }
             logState();
         });
@@ -296,6 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Colorazione della cella 
             colorize();
         });
+
         tableBody.appendChild(newRow);
         toggleAddButtonVisibility();
 
