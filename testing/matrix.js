@@ -194,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 modello.modifyRingBooleanList(ringId, booleanList);
                 anelli[ringId].bool_list = booleanList;
+                anelli[ringId].hasToUpdate=true;
             }
             logState();
         });
@@ -221,6 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 logState();
                 toggleAddButtonVisibility();
                 console.log("Stato degli anelli dopo la rimozione dell'ultimo:", anelli);
+                anelli.forEach((anello, index) => {
+                    anello.hasToUpdate=true;
+                });
                 return;
             }
 
@@ -230,6 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
             comprimiAnelli(rowIndex);
             rimuoviAnello(rowIndex);
             toggleAddButtonVisibility();
+            anelli.forEach((anello, index) => {
+                anello.hasToUpdate=true;
+            });
             // ora aggiorniamo gli ID delle righe
             const allRows = document.querySelectorAll('#matrixTable tbody tr');
             allRows.forEach((row, index) => {

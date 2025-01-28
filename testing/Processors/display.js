@@ -450,6 +450,9 @@ class Anello {
   updateSequenceWithBoolList() {
     console.log("bool list della sequenza cambia");
      if (this.sequence) {
+      if(this.player){
+        this.player.stop();
+      }
       this.sequence.stop(); // Ferma la sequenza corrente
       this.sequence.dispose(); // Libera risorse dalla sequenza precedente
     }
@@ -488,6 +491,7 @@ class Anello {
       // Controlla se la barra si trova sopra questo segmento
       let highlight = angle >= startAngolo && angle < endAngolo;
 
+      //QUANDO PASSA DALL'INIZIO, CHIAMA TONE.TRANSPORT.pause() 
       if (highlight && isRunning && angle === rotationOffset && this.hasToUpdate) {
         Tone.Transport.pause();
         this.updateSequenceWithBoolList();
