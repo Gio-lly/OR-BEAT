@@ -435,8 +435,9 @@ class Anello {
     this.player = player;
     const noteDivision = this.calculateNoteDivision(this.bool_list);
     this.sequence= new Tone.Sequence((time, value) => {
-      if (value) {
+      if (value && this.player) {
         console.log("SUONO");
+        if( this.player.state ==="started" ) this.player.stop();
         this.player.start(time); // Suona solo per i valori true
       }
     }, this.bool_list, noteDivision);
@@ -455,11 +456,12 @@ class Anello {
      // Aggiorna la lista dell'anello
     const noteDivision = this.calculateNoteDivision(this.bool_list);
     this.sequence = new Tone.Sequence((time, value) => {
-      if (value) {
+      if (this.player && value) {
+        if(this.player.state ==="started") this.player.stop();
         this.player.start(time); // Suona solo se il valore è true
       }
     }, this.bool_list, noteDivision);
-    const offset = (angle - rotationOffset) / 360 * (globalDuration / this.steps);
+    //const offset = (angle - rotationOffset) / 360 * (globalDuration / this.steps);
     this.sequence.loop=true;
     this.sequence.start(0);
   }
