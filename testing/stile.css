@@ -854,12 +854,17 @@ button.remove-btn {
 
 #canvas-container {
     position: absolute;
-    top: 70%;
-    left: 50%;
+    top: 63%;
+    left: 55%;
     transform: translate(-50%, -50%);
     width: 100%;
     background-color: #DDDDDD;
     z-index: 0;
+    transition: top 0.8s ease; 
+}
+
+#canvas-container.move-up {
+    top: 47%; /* posizione quando si nascondono i sample*/
 }
 /*#####################################################################################################*/
 /*#################################### SEZIONE WORKSTATION ############################################*/
@@ -950,6 +955,9 @@ button.remove-btn {
     transition: all 0.1s ease;
   }
   
+  #playPauseOrbit-btn:hover{
+    color: #038930;
+  }
   #playPauseOrbit-btn:hover.play-hover {
     color: #038930; 
     background-color: #e0e0e0; 
@@ -976,8 +984,8 @@ button.remove-btn {
   .randomize-btn {
     display: none;
     position: fixed;
-    bottom: 30px;
-    right: 50px;
+    bottom: 420px;
+    right: 290px;
     width: 60px;
     height: 60px;
     border-radius: 50%;
