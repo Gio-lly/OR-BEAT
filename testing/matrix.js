@@ -397,8 +397,6 @@ slots.forEach((slot, index) => {
     });
 });
 
-
-
 // Funzione per colorare gli slot con il colore assegnato
 function colorize() {
     const destinationCell = document.querySelectorAll('.second-cell');

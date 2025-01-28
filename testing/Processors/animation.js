@@ -220,3 +220,58 @@ document.getElementById("close-btn").addEventListener("click", function() {
         }
     });
 });
+
+/*#####################################################################################################*/
+/*#################################### ANIMAZIONE MENU ################################################*/
+// Apri la modal "menu-page" con animazione
+document.getElementById("menu-btn").addEventListener("click", function() {
+    const modal = document.getElementById("menu-page");
+    
+    // Mostra la modal e applica l'animazione
+    modal.style.display = 'flex';
+
+    // Utilizza GSAP per l'animazione della modal
+    gsap.from(modal, {
+        duration: 1.4, // Durata dell'animazione
+        y: innerHeight,
+        opacity: 0, // Inizia con opacità 0
+        ease: "expo.inOut", // Tipo di easing
+        onStart: function() {
+            document.getElementById("menu-page").style.display = 'flex';
+            // Nascondi la pagina di benvenuto
+            document.getElementById("welcomePage").style.display = 'none';
+        }
+    });
+});
+
+// Chiudi la modal "credits-page" e torna alla pagina di benvenuto
+document.getElementById("closeMenu-btn").addEventListener("click", function() {
+    const modal = document.getElementById("menu-page");
+
+    // Esegui l'animazione di chiusura
+    gsap.to(modal, {
+        duration: 0.2, // Durata dell'animazione
+        opacity: innerHeight,
+        onComplete: function() {
+            // Una volta che la modal è invisibile e fuori schermo, nascondiamola
+            modal.style.display = 'none';
+
+            // Mostriamo la pagina di benvenuto con una nuova animazione
+            const welcomePage = document.getElementById("welcomePage");
+            welcomePage.style.display = 'flex';
+
+            gsap.from(welcomePage, {
+                duration: 1.6, // Durata dell'animazione
+                y: 80, // Distanza iniziale dall'alto
+                opacity: 0, // Inizia con opacità 0
+                ease: "expo.inOut", // Tipo di easing
+                onStart: function() {
+                    // Centra la pagina di benvenuto
+                    welcomePage.style.top = '50%';
+                    welcomePage.style.left = '50%';
+                    welcomePage.style.transform = 'translate(-50%, -50%)';
+                }
+            });
+        }
+    });
+});
