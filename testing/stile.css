@@ -863,8 +863,8 @@ button.remove-btn {
 
 #canvas-container {
     position: absolute;
-    top: 63%;
-    left: 55%;
+    top: 66%;
+    left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
     background-color: #DDDDDD;
@@ -873,7 +873,7 @@ button.remove-btn {
 }
 
 #canvas-container.move-up {
-    top: 47%; /* posizione quando si nascondono i sample*/
+    top: 50%; /* posizione quando si nascondono i sample*/
 }
 /*#####################################################################################################*/
 /*#################################### SEZIONE WORKSTATION ############################################*/
