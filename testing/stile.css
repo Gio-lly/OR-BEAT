@@ -909,8 +909,8 @@ button.remove-btn {
   .randomize-btn {
     display: none;
     position: fixed;
-    bottom: 30px;
-    right: 50px;
+    bottom: 420px;
+    right: 290px;
     width: 60px;
     height: 60px;
     border-radius: 50%;
