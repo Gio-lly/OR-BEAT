@@ -24,6 +24,7 @@
 .site-menu {
 	display: flex;
     z-index: 2;
+    height: 10px;
 }
 
 .credits {
@@ -167,6 +168,10 @@ body {
     z-index: 1000;
 }
 
+#credits-btn{
+    cursor:pointer;
+}
+
 #close-btn {
   background-color: #FFFFFF;
   border: 1px solid #222222;
@@ -230,6 +235,10 @@ body {
     text-align: center;
     flex-direction: column;
     z-index: 1000;
+}
+
+#menu-btn{
+    cursor:pointer;
 }
 
 .menu-content > p {
