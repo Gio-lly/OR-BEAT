@@ -177,7 +177,7 @@ document.getElementById("credits-btn").addEventListener("click", function() {
 
     // Utilizza GSAP per l'animazione della modal
     gsap.from(modal, {
-        duration: 1.4, // Durata dell'animazione
+        duration: 1.6, // Durata dell'animazione
         y: innerHeight,
         opacity: 0, // Inizia con opacità 0
         ease: "expo.inOut", // Tipo di easing
@@ -232,7 +232,7 @@ document.getElementById("menu-btn").addEventListener("click", function() {
 
     // Utilizza GSAP per l'animazione della modal
     gsap.from(modal, {
-        duration: 1.4, // Durata dell'animazione
+        duration: 1.6, // Durata dell'animazione
         y: innerHeight,
         opacity: 0, // Inizia con opacità 0
         ease: "expo.inOut", // Tipo di easing

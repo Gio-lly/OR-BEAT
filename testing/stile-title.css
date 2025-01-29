@@ -27,7 +27,7 @@
   font-size: 80px;
   font-weight: 800;
   padding: 10 50px;
-  border-radius: 50%;
+  border-radius: 48%;
   letter-spacing: var(--ls);
   position: relative;
   overflow: hidden;
