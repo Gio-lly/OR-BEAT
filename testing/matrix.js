@@ -277,29 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
             destinationCell.classList.remove('dragover');
             destinationCell.innerHTML = ''; // Pulisce il contenuto precedente
             destinationCell.innerHTML = `Sample <br> ${data.htmlContent}`; // Mostra il contenuto del drop
-            /*const startTime = data.startTime;
-            const endTime = data.endTime;
-
-
-
-            const startSample = Math.floor(startTime * audioBuffer.sampleRate);
-            const endSample = Math.floor(endTime * audioBuffer.sampleRate);
-            let segmentBuffer;
-
-            // Estraiamo la porzione dei dati audio dal buffer
-            const leftChannel = audioBuffer.getChannelData(0).slice(startSample, endSample); // Canale sinistro
-            if (audioBuffer.numberOfChannels > 1) {
-                const rightChannel = audioBuffer.getChannelData(1).slice(startSample, endSample); // Canale destro
-                segmentBuffer = audioContext.createBuffer(2, leftChannel.length, audioBuffer.sampleRate);
-                segmentBuffer.getChannelData(0).set(leftChannel);
-                segmentBuffer.getChannelData(1).set(rightChannel);
-            } else { // Le registrazioni sono MONO
-                segmentBuffer = audioContext.createBuffer(1, leftChannel.length, audioBuffer.sampleRate);
-                segmentBuffer.getChannelData(0).set(leftChannel);
-            }
-
-            const player = new Tone.Player(segmentBuffer).toDestination();
-            player.autostart = false; */ 
+            
             anelli[parseInt(destinationCell.parentNode.id) - 1].createSequence(players[data.index]);
             // Colorazione della cella 
             colorize();

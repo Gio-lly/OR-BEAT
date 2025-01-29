@@ -366,8 +366,10 @@ function rimuoviAnello(i) {
   // rimuovo l'anello dall'array degli anelli
   if (anelli[i].player) anelli[i].player.stop();
   if (anelli[i].sequence) {
+    Tone.Transport.pause();
     anelli[i].sequence.stop();
     anelli[i].sequence.dispose();
+    Tone.Transport.start();
   }
   anelli.splice(i, 1);
 
@@ -424,6 +426,7 @@ class Anello {
   createSequence(player, totalDuration) {
     this.player = player;
     const noteDivision = this.calculateNoteDivision(this.bool_list);
+
     this.sequence = new Tone.Sequence((time, value) => {
       if (value && this.player) {
         console.log("SUONO");
@@ -436,19 +439,13 @@ class Anello {
 
   updateSequenceWithBoolList() {
     console.log("bool list della sequenza cambia");
-
-
-
-
     if (this.sequence) {
       if (this.player) {
         this.player.stop();
         this.sequence.stop(); // Ferma la sequenza corrente
         this.sequence.dispose(); // Libera risorse dalla sequenza precedente
       }
-
     }
-
     // Aggiorna la sequenza con la nuova lista
 
     // Aggiorna la lista dell'anello
@@ -627,7 +624,6 @@ function toggleRotation() {
     playPauseButton.addClass('pause-hover');  // Aggiunge il colore hover rosso
 
     Tone.Transport.bpm.value = bpm; // Imposta il BPM globale di Tone
-
 
     Tone.Transport.start(); // Avvia il trasporto di Tone
     console.log("tone transport started");
