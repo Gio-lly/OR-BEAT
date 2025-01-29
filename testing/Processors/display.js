@@ -437,7 +437,7 @@ class Anello {
   updateSequenceWithBoolList() {
     console.log("bool list della sequenza cambia");
     Tone.Transport.pause();
-    Tone.Transport.position = "0:0:0"; // Resetta il tempo
+    
 
 
      if (this.sequence) {
@@ -476,6 +476,10 @@ class Anello {
     let gap2 = gap - anelli.indexOf(this) * 1.4; // gap che decrementa più l'anello è grande, in modo da avere lo stesso gap per ogni anello
     let angoloStep = 360 / this.steps - gap2;
 
+    if (angle=== rotationOffset && isRunning) {
+      Tone.Transport.position = "0:0:0"; // Resetta il tempo
+    }
+
     for (let i = 0; i < this.steps; i++) {
       let startAngolo = i * (angoloStep + gap2) + rotationOffset;
       let endAngolo = startAngolo + angoloStep;
@@ -483,10 +487,11 @@ class Anello {
       // Controlla se la barra si trova sopra questo segmento
       let highlight = angle >= startAngolo && angle < endAngolo;
 
+      
+
       //QUANDO PASSA DALL'INIZIO, CHIAMA TONE.TRANSPORT.pause() 
       if (highlight&&isRunning && angle === rotationOffset && this.hasToUpdate) {
         Tone.Transport.pause();
-        //Tone.Transport.position = "0:0:0"; // Resetta il tempo
         this.updateSequenceWithBoolList();
         Tone.Transport.start();
         this.hasToUpdate=false;
