@@ -340,13 +340,13 @@ button.remove-btn {
   .randomize-btn {
     display: none;
     position: fixed;
-    right: 24%;           
-    top: 38%;
+    right: 23.5%;           
+    top: 38.5%;
     padding: 10px 20px;
     width: 2.5em;
     height: 2.5em;
     border-radius: 50%;
-    background-color: #010101;
+    background-color: #28282d;
     color: #fff;
     font-size: 24px;
     display: flex;
