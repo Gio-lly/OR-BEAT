@@ -308,19 +308,6 @@ function setup(p5on) {
   canvas.parent('canvas-container'); // Collegalo al contenitore della forma d'onda
 
   angleMode(DEGREES);
-  // let nuovoAnello = new Anello(2, "#FF5733", diametroBase +  spessoreAnello* 5);
-  // anelli.push(nuovoAnello);
-
-  //modello.addRing([],2,0,0,"#FF5733"); //todo linkare alla matrice
-  // // Bottone per creare un nuovo anello
-  // bottoneCreaAnello = createButton('Crea un nuovo anello');
-  // bottoneCreaAnello.position(10, 400);
-  // bottoneCreaAnello.mousePressed(creaAnello);
-
-  // Bottone per creare un nuovo anello
-  // bottoneRimuoviAnello = createButton('Togli ultimo anello');
-  // bottoneRimuoviAnello.position(200, 400);
-  // bottoneRimuoviAnello.mousePressed(rimuoviUltimoAnello);
 
 
   // Creo i buttoni per controllare la barra
@@ -449,12 +436,17 @@ class Anello {
   
   updateSequenceWithBoolList() {
     console.log("bool list della sequenza cambia");
+    Tone.Transport.pause();
+    Tone.Transport.position = "0:0:0"; // Resetta il tempo
+
+
      if (this.sequence) {
       if(this.player){
         this.player.stop();
-      }
       this.sequence.stop(); // Ferma la sequenza corrente
       this.sequence.dispose(); // Libera risorse dalla sequenza precedente
+    }
+    
     }
     
     // Aggiorna la sequenza con la nuova lista
@@ -494,10 +486,12 @@ class Anello {
       //QUANDO PASSA DALL'INIZIO, CHIAMA TONE.TRANSPORT.pause() 
       if (highlight&&isRunning && angle === rotationOffset && this.hasToUpdate) {
         Tone.Transport.pause();
+        //Tone.Transport.position = "0:0:0"; // Resetta il tempo
         this.updateSequenceWithBoolList();
         Tone.Transport.start();
         this.hasToUpdate=false;
       }
+
       // Imposta il colore del segmento
       if (highlight & isRunning) {
         stroke(this.bool_list[i] ? this.color : 180); // Colore evidenziato
@@ -626,6 +620,7 @@ document.getElementById('toggle-savings').addEventListener('click', function () 
 function toggleRotation() {
   isRunning = !isRunning; // Cambia stato
   if (isRunning) {
+    // Se ho avviato la drum machine, fai:
     playPauseButton.html('<i class="fas fa-pause-circle"></i>'); // Cambia icona a "Pause"
     playPauseButton.removeClass('play-hover'); // Rimuove il colore hover verde
     playPauseButton.addClass('pause-hover');  // Aggiunge il colore hover rosso
@@ -635,25 +630,17 @@ function toggleRotation() {
     
     Tone.Transport.start(); // Avvia il trasporto di Tone
     console.log("tone transport started");
-    startRotation(); // Avvia la rotazione
+    console.log("Rotazione avviata");
   } else {
+    // Se ho messo in pausa la drum machine, fai:
     playPauseButton.html('<i class="fas fa-play-circle"></i>'); // Cambia icona a "Play"
     playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
     playPauseButton.addClass('play-hover');
-    Tone.Transport.pause();  // Aggiunge il colore hover verde
-    pauseRotation(); // Metti in pausa la rotazione
+    Tone.Transport.pause(); 
+    console.log("Rotazione in pausa");
   }
 }
 
-// Funzione per avviare la rotazione
-function startRotation() {
-  //console.log("Rotazione avviata");
-}
-
-// Funzione per mettere in pausa la rotazione
-function pauseRotation() {
-  //console.log("Rotazione in pausa");
-}
 
 // Funzione per fermare e resettare la rotazione
 function stopRotation() {
@@ -661,10 +648,12 @@ function stopRotation() {
     playPauseButton.html('<i class="fas fa-play-circle"></i>'); // Cambia icona a "Play"
     playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
     playPauseButton.addClass('play-hover');  // Aggiunge il colore hover verde
-    pauseRotation(); // Metti in pausa la rotazione
+    console.log("Rotazione in pausa");
+
   } 
   isRunning = false;
+  Tone.Transport.pause();
+  Tone.Transport.position = "0:0:0"; // Resetta il tempo
   angle = rotationOffset; // Resetta l'angolo
-  pauseRotation();
   
 }
