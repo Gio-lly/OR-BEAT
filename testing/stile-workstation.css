@@ -347,8 +347,8 @@ button.remove-btn {
     right: 24%;           
     top: 38%;
     padding: 10px 20px;
-    width: 4%;
-    height: 8%;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background-color: #010101;
     color: #fff;
