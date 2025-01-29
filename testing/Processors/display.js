@@ -1,6 +1,6 @@
 // ######################################## GESTIONE DELLA FORMA D'ONDA
 const MIN_THRESHOLD = 0.1; // Threshold minima per gli onset (diff. tra gli starting points): 
-                              // se ho due onset molto vicini il secondo lo ignoro!
+// se ho due onset molto vicini il secondo lo ignoro!
 const DOUBLE_CLICK_THRESHOLD = 250; // Tempo necessario per distinguere se l'utente fa 'click' o 'doppio-click'
 let clickTimer = null;
 
@@ -46,7 +46,7 @@ function displayWaveform(file) { // Viene chiamata dallo script.js  e disegna la
 
     p5on = true
     setup(p5on) // avvia setup (poi draw()) e quindi rendi visibile tutto il codice p5
-    
+
   });
 }
 
@@ -186,32 +186,32 @@ function checkStartTimesOrder() {
 
 // NO OVERLAPPING REGIONS
 regions.on('region-updated', (region) => {
-  try{
-  let draggedRegion = null;
-  const originalStartTime = regionStartTimes[region.id];
-  const newStartTime = region.start;
+  try {
+    let draggedRegion = null;
+    const originalStartTime = regionStartTimes[region.id];
+    const newStartTime = region.start;
 
-  // puliamo...
-  coloredRegions.clearRegions();
-  // Ottieni tutte le regioni esistenti
-  const regionsArray = regions.getRegions();
+    // puliamo...
+    coloredRegions.clearRegions();
+    // Ottieni tutte le regioni esistenti
+    const regionsArray = regions.getRegions();
 
-  // Controlla se c'è una sovrapposizione tra la regione corrente e un'altra
-  if (!checkStartTimesOrder()) {
-    alert("Non puoi spostare la regione su un altro marker!");
+    // Controlla se c'è una sovrapposizione tra la regione corrente e un'altra
+    if (!checkStartTimesOrder()) {
+      alert("Non puoi spostare la regione su un altro marker!");
 
-    // Ripristina la posizione originale
-    region.setOptions({ start: originalStartTime });
-    return;
-  }
-  
+      // Ripristina la posizione originale
+      region.setOptions({ start: originalStartTime });
+      return;
+    }
+
     // Aggiorna i tempi solo se non ci sono sovrapposizioni
-  draggedRegion = { id: region.id, start: newStartTime };
-  regionStartTimes[region.id] = newStartTime;
+    draggedRegion = { id: region.id, start: newStartTime };
+    regionStartTimes[region.id] = newStartTime;
 
-  //aggiorna la posizione dell'onset anche nel modello
-  modello.onsets[region.id-1] = newStartTime;
-  }catch(e){
+    //aggiorna la posizione dell'onset anche nel modello
+    modello.onsets[region.id - 1] = newStartTime;
+  } catch (e) {
     console.log("Errore nel muovere la regione");
     alert("Errore nel muovere la regione");
   }
@@ -237,7 +237,7 @@ function doubleclick() {
   // Cerca la regione più vicina al clic
   for (let i = 0; i < regionsArray.length; i++) {
     startTime = regionsArray[i].start;
-    
+
     if ((i + 1) < regionsArray.length) {
 
       nextStartTime = regionsArray[i + 1].start;
@@ -266,7 +266,7 @@ function doubleclick() {
         resize: false,       // Permette di ridimensionare la regione
       });
 
-      data = { startTime: startTime, nextStartTime: ws.getDuration()};
+      data = { startTime: startTime, nextStartTime: ws.getDuration() };
       break;
     }
   }
@@ -317,7 +317,7 @@ function setup(p5on) {
 function draw() {
   background('#DDDDDD');
 
-  
+
 
   // Calcola i BPM conoscendo rotation speed
   // let timeForOneRotation = 360 / (rotationSpeed * frameRate());
@@ -328,7 +328,7 @@ function draw() {
   rotationSpeed = (bpm * 360) / (240 * frameRate());
 
   translate(width / 2, height / 2);
-  
+
 
   // Disegna tutti gli anelli
   for (let anello of anelli) {
@@ -357,15 +357,15 @@ function draw() {
 
 function rimuoviUltimoAnello() {
   anelli.pop();
-  modello.removeRing(anelli.length-1);
+  modello.removeRing(anelli.length - 1);
 }
 
 function rimuoviAnello(i) {
   console.log("Rimuovo anello con indice:", i);
-  
+
   // rimuovo l'anello dall'array degli anelli
-  if(anelli[i].player)anelli[i].player.stop();
-  if(anelli[i].sequence){
+  if (anelli[i].player) anelli[i].player.stop();
+  if (anelli[i].sequence) {
     anelli[i].sequence.stop();
     anelli[i].sequence.dispose();
   }
@@ -402,8 +402,8 @@ function creaAnello(steps, colorInput) {
 }
 
 
-let globalDuration = (60/bpm )*4; // Durata di un beat completo della barra in secondi
-class Anello {  
+let globalDuration = (60 / bpm) * 4; // Durata di un beat completo della barra in secondi
+class Anello {
   constructor(steps, color, diametro) {
     this.steps = steps;
     this.color = color;
@@ -413,54 +413,54 @@ class Anello {
     // serve per suoanre il sample solo nel momento in cui la barra incontra la parte di anello attiva
     this.player = null; // Player per il suono
     this.sequence = null;
-    this.hasToUpdate=false;
+    this.hasToUpdate = false;
   }
-  calculateNoteDivision(boolList){
-    const x = globalDuration/boolList.length;
+  calculateNoteDivision(boolList) {
+    const x = globalDuration / boolList.length;
     return x.toString() + 's';
     /* const durationbeat = globalDuration/boolList.length;
-    return (totalDuration/boolList.length).toString() + 'n'; */  
+    return (totalDuration/boolList.length).toString() + 'n'; */
   }
-  createSequence(player,totalDuration){ 
+  createSequence(player, totalDuration) {
     this.player = player;
     const noteDivision = this.calculateNoteDivision(this.bool_list);
-    this.sequence= new Tone.Sequence((time, value) => {
+    this.sequence = new Tone.Sequence((time, value) => {
       if (value && this.player) {
         console.log("SUONO");
-        if( this.player.state ==="started" ) this.player.stop();
+        if (this.player.state === "started") this.player.stop();
         this.player.start(time); // Suona solo per i valori true
       }
     }, this.bool_list, noteDivision);
-    this.sequence.loop=true;
+    this.sequence.loop = true;
   }
-  
+
   updateSequenceWithBoolList() {
     console.log("bool list della sequenza cambia");
-    
-    
 
 
-     if (this.sequence) {
-      if(this.player){
+
+
+    if (this.sequence) {
+      if (this.player) {
         this.player.stop();
-      this.sequence.stop(); // Ferma la sequenza corrente
-      this.sequence.dispose(); // Libera risorse dalla sequenza precedente
+        this.sequence.stop(); // Ferma la sequenza corrente
+        this.sequence.dispose(); // Libera risorse dalla sequenza precedente
+      }
+
     }
-    
-    }
-    
+
     // Aggiorna la sequenza con la nuova lista
-    
-     // Aggiorna la lista dell'anello
+
+    // Aggiorna la lista dell'anello
     const noteDivision = this.calculateNoteDivision(this.bool_list);
     this.sequence = new Tone.Sequence((time, value) => {
       if (this.player && value) {
-        if(this.player.state ==="started") this.player.stop();
+        if (this.player.state === "started") this.player.stop();
         this.player.start(time); // Suona solo se il valore è true
       }
     }, this.bool_list, noteDivision);
     //const offset = (angle - rotationOffset) / 360 * (globalDuration / this.steps);
-    this.sequence.loop=true;
+    this.sequence.loop = true;
     this.sequence.start(0);
   }
   /* playSound(){
@@ -472,7 +472,7 @@ class Anello {
   disegna() {
     strokeWeight(spessoreAnello);
     noFill()
-    
+
     let gap2 = gap - anelli.indexOf(this) * 1.4; // gap che decrementa più l'anello è grande, in modo da avere lo stesso gap per ogni anello
     let angoloStep = 360 / this.steps - gap2;
 
@@ -483,25 +483,25 @@ class Anello {
       // Controlla se la barra si trova sopra questo segmento
       let highlight = angle >= startAngolo && angle < endAngolo;
 
-      
+
 
       //QUANDO PASSA DALL'INIZIO, CHIAMA TONE.TRANSPORT.pause() 
-      if (highlight&&isRunning && angle === rotationOffset && this.hasToUpdate) {
+      if (highlight && isRunning && angle === rotationOffset && this.hasToUpdate) {
         Tone.Transport.pause();
         this.updateSequenceWithBoolList();
         Tone.Transport.start();
-        this.hasToUpdate=false;
+        this.hasToUpdate = false;
       }
 
       // Imposta il colore del segmento
       if (highlight & isRunning) {
         stroke(this.bool_list[i] ? this.color : 180); // Colore evidenziato
         strokeWeight(spessoreAnello + 4)
-        
+
         // Se il segmento è attivo, chiama la funzione per suonare il sample
         if (this.bool_list[i] && this.lastHighlightedIndex !== i) {
           // Chiamata alla funzione
-          
+
           this.lastHighlightedIndex = i; // Aggiorna l'indice dell'ultima sezione evidenziata
         }
       } else {
@@ -518,7 +518,7 @@ class Anello {
         let endAngolo = startAngolo + angoloStep;
         return angle >= startAngolo && angle < endAngolo && isActive;
       })) {
-          this.lastHighlightedIndex = null;
+        this.lastHighlightedIndex = null;
       }
     }
   }
@@ -526,7 +526,7 @@ class Anello {
   toggleStep(indice) {
     if (indice >= 0 && indice < this.steps) {
       this.bool_list[indice] = !this.bool_list[indice];
-      this.hasToUpdate=true;
+      this.hasToUpdate = true;
     }
   }
 }
@@ -555,43 +555,43 @@ function mousePressed() {
 }
 let playPauseButton;
 function createControls() {
-  const baseX = 1130; 
+  const baseX = 1130;
   const baseY = height - 120;
 
- // CREAZIONE DEL PULSANTE TENDINA HIDE/SHOW
-playPauseButton = createDiv('<button id="toggle-savings">Hide  <i class="fa-solid fa-arrow-up-short-wide"></i></button>');
-// Assicuriamo che il div .savings sia visibile all'inizio
-document.querySelector('.savings').classList.add('open'); // Questa riga rende .savings visibile
+  // CREAZIONE DEL PULSANTE TENDINA HIDE/SHOW
+  playPauseButton = createDiv('<button id="toggle-savings">Hide  <i class="fa-solid fa-arrow-up-short-wide"></i></button>');
+  // Assicuriamo che il div .savings sia visibile all'inizio
+  document.querySelector('.savings').classList.add('open'); // Questa riga rende .savings visibile
 
-// Aggiungiamo l'evento di click sul bottone
-document.getElementById('toggle-savings').addEventListener('click', function () {
-  const canvasContainer = document.getElementById('canvas-container');
-  const savings = document.querySelector('.savings');
-  const button = document.getElementById('toggle-savings');
-  const icon = button.querySelector('i'); // Ottieni l'icona dentro il pulsante
+  // Aggiungiamo l'evento di click sul bottone
+  document.getElementById('toggle-savings').addEventListener('click', function () {
+    const canvasContainer = document.getElementById('canvas-container');
+    const savings = document.querySelector('.savings');
+    const button = document.getElementById('toggle-savings');
+    const icon = button.querySelector('i'); // Ottieni l'icona dentro il pulsante
 
-  // Toggle per nascondere/mostrare
-  savings.classList.toggle('open');
-  canvasContainer.classList.toggle('move-up'); // Sposta il canvas container
+    // Toggle per nascondere/mostrare
+    savings.classList.toggle('open');
+    canvasContainer.classList.toggle('move-up'); // Sposta il canvas container
 
-  // Aggiorna il testo e l'icona del pulsante
-  if (savings.classList.contains('open')) {
+    // Aggiorna il testo e l'icona del pulsante
+    if (savings.classList.contains('open')) {
       icon.classList.remove('fa-arrow-down-short-wide');
       icon.classList.add('fa-arrow-up-short-wide');
       button.textContent = ''; // Resetta il contenuto del pulsante
       button.append('Hide  '); // Aggiungi "Hide"
       button.append(icon); // Riaggiungi l'icona
-  } else {
+    } else {
       icon.classList.remove('fa-arrow-up-short-wide');
       icon.classList.add('fa-arrow-down-short-wide');
       button.textContent = ''; // Resetta il contenuto del pulsante
       button.append('Show  '); // Aggiungi "Show"
       button.append(icon); // Riaggiungi l'icona
-  }
-});
+    }
+  });
 
 
-  
+
   // Crea un unico pulsante Play/Pause
   playPauseButton = createDiv('<i class="fas fa-play-circle"></i>');
   playPauseButton.id('playPauseOrbit-btn');
@@ -609,7 +609,7 @@ document.getElementById('toggle-savings').addEventListener('click', function () 
   let bpmSlider = createSlider(40, 180, 80, 1);
   bpmSlider.id('sliderOrbit-btn');
   bpmSlider.input(() => {
-    globalDuration = (60/bpm )*4; // Update globalDuration when bpm changes
+    globalDuration = (60 / bpm) * 4; // Update globalDuration when bpm changes
     bpm = bpmSlider.value();
     Tone.Transport.bpm.value = bpm; // Aggiorna il valore del BPM globale di tone
     bpmText.html(`${bpm} BPM`); // Aggiorna il testo del BPM
@@ -625,10 +625,10 @@ function toggleRotation() {
     playPauseButton.html('<i class="fas fa-pause-circle"></i>'); // Cambia icona a "Pause"
     playPauseButton.removeClass('play-hover'); // Rimuove il colore hover verde
     playPauseButton.addClass('pause-hover');  // Aggiunge il colore hover rosso
-    
+
     Tone.Transport.bpm.value = bpm; // Imposta il BPM globale di Tone
-    
-    
+
+
     Tone.Transport.start(); // Avvia il trasporto di Tone
     console.log("tone transport started");
     startRotation(); // Avvia la rotazione
@@ -638,7 +638,7 @@ function toggleRotation() {
     playPauseButton.html('<i class="fas fa-play-circle"></i>'); // Cambia icona a "Play"
     playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
     playPauseButton.addClass('play-hover');
-    Tone.Transport.pause(); 
+    Tone.Transport.pause();
     pauseRotation(); // Metti in pausa la rot
     console.log("Rotazione in pausa");
   }
@@ -654,7 +654,7 @@ function stopRotation() {
     pauseRotation(); // Metti in pausa la rotazione
     console.log("Rotazione in pausa");
 
-  } 
+  }
   isRunning = false;
   angle = rotationOffset; // Resetta l'angolo
   pauseRotation(); // Metti in pausa la rotazione
