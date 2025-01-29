@@ -251,24 +251,24 @@ document.addEventListener('DOMContentLoaded', () => {
         // Inizializza il drag and drop per le nuove celle solo una volta per cella
         const destinationCell = newRow.querySelector('.second-cell');
         destinationCell.addEventListener('dragover', (event) => {
-            // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
-            if (destinationCell.innerHTML.includes('-')) {
-                return;
-            }
-
             event.preventDefault();
-            destinationCell.innerHTML = `DROP HERE!`;
-            destinationCell.classList.add('dragover');
+            // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
+            if (!destinationCell.innerHTML.includes('-')) {
+                destinationCell.innerHTML = `DROP HERE!`;
+                destinationCell.classList.add('dragover');
+            } else {
+                destinationCell.classList.add('dragover');
+            }
         });
 
         destinationCell.addEventListener('dragleave', (event) => {
             // Se la cella ha già il segno '-' nell'innerHTML, non fare nulla (Ha avuto almeno 1 drop)
-            if (destinationCell.innerHTML.includes('-')) {
-                return;
+            if (!destinationCell.innerHTML.includes('-')) {
+                destinationCell.classList.remove('dragover');
+                destinationCell.innerHTML = `Drop the sample`;
+            } else {
+                destinationCell.classList.remove('dragover');
             }
-
-            destinationCell.classList.remove('dragover');
-            destinationCell.innerHTML = `Drop the sample`;
         });
 
         destinationCell.addEventListener('drop', (event) => {
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = JSON.parse(event.dataTransfer.getData('application/json'));
             destinationCell.classList.remove('dragover');
             destinationCell.innerHTML = ''; // Pulisce il contenuto precedente
-            destinationCell.innerHTML = `Sample ${data.index} <br> ${data.htmlContent}`; // Mostra il contenuto del drop
+            destinationCell.innerHTML = `Sample <br> ${data.htmlContent}`; // Mostra il contenuto del drop
             /*const startTime = data.startTime;
             const endTime = data.endTime;
 

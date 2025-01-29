@@ -218,7 +218,7 @@ button.remove-btn {
 }
 
 #canvas-container.move-up {
-    top: 50%; /* posizione quando si nascondono i sample*/
+    top: 60%; /* posizione quando si nascondono i sample*/
 }
 /*#####################################################################################################*/
 /*#################################### SEZIONE WORKSTATION ############################################*/
@@ -397,6 +397,7 @@ button.remove-btn {
     box-sizing: border-box;
     width: 100%; 
     height: auto;
+    z-index: 99999;
 }
 
 #waveform ::part(marker) {
