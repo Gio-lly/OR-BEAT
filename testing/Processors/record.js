@@ -158,3 +158,103 @@ recButton.onclick = (event) => {
     pauseButton.style.display = 'inline'
   })
 }
+
+// ######################################## GESTIONE DELLA REGISTRAZIONE AUDIO FINALE (CON MIC ESTERNO!!)
+let finalWsurf, finalWave
+//const toneContext = Tone.context;
+// Utilizziamo il Plugin Record di Wavesurfer
+let finalRecord = WaveSurfer.Record.create({
+  // Configura il plugin di registrazione
+  //audioContext: toneContext, 
+  audioMimeType: 'audio/wav',  // Tipo di file audio da generare (puoi anche usare mp3, ogg, etc.)
+  bufferSize: 1024,
+  sampleRate: 48000
+});
+
+// Quando il record-button viene cliccato, si visualizza la finestra di registrazione
+document.getElementById("start-recording-btn").addEventListener("click", function (event) {
+  event.stopPropagation(); //opzionale qui
+  document.getElementById("start-recording-btn").style.display = "none";
+  document.getElementById("stop-recording-btn").style.display = "block";
+  createFinalWaveSurfer(); // Creaimo la session
+  
+  const deviceId = micSelect2.value
+  record.startRecording({ deviceId });
+  //console.log("started")
+});
+
+document.getElementById("stop-recording-btn").addEventListener("click", function (event) {
+  event.stopPropagation(); //opzionale qui
+  record.stopRecording();
+});
+
+const createFinalWaveSurfer = () => {
+  // Creiamo una nuova istanza di wavesurfer
+  finalWsurf = WaveSurfer.create({
+    container: '#mic2',
+    //audioContext: toneContext, 
+    backend: 'WebAudio',
+    plugins: [record] // aggiungiamo il plugin Record
+  })
+}
+
+//-------------------------------------------------------------------------------- GESTIONE INIZIO REC FINALE: 
+const micSelect2 = document.querySelector('#mic-select2')
+
+micSelect2.addEventListener('click', function(event) {
+  event.stopPropagation(); // Impedisce la propagazione dell'evento
+});
+
+// Mic selection
+WaveSurfer.Record.getAvailableAudioDevices().then((devices) => {
+  devices.forEach((device) => {
+  const option = document.createElement('option')
+  option.value = device.deviceId
+  option.text = device.label || device.deviceId
+  micSelect2.appendChild(option)
+  })
+})
+
+record.on('record-start', () => {
+  if (finalWave) {
+    finalWave.destroy()
+  }
+
+  // Rimozione del pulsante di play e del link di download dalla sezione precedente
+  const container = document.querySelector('#recordings2');
+  container.innerHTML = '';
+})  
+
+//-------------------------------------------------------------------------------- GESTIONE FINE REC FINALE: 
+// salvataggio della registrazione
+record.on('record-end', (blob) => {
+  const container = document.querySelector('#recordings2')
+  const recordedUrl = URL.createObjectURL(blob)
+  
+  document.getElementById("stop-recording-btn").style.display = "none";
+  document.getElementById("start-recording-btn").style.display = "block";
+
+  // rendiamo disponibile un Download link
+  const link = container.appendChild(document.createElement('a'))
+  Object.assign(link, {
+    href: recordedUrl,
+    download: 'Orbeat-rec.' + blob.type.split(';')[0].split('/')[1] || 'webm',
+    textContent: 'Download recording',
+  })
+  link.id = 'download-link';
+  
+  // Aggiungi l'event listener al link per il click
+  link.addEventListener('click', function(event) {
+    event.stopPropagation(); // Questo impedisce la propagazione dell'evento
+  });
+
+  // Aggiungi il file Webm alla lista di selectedFiles in script.js
+  const blobFile = new File([blob], 'recorded_audio.webm', { type: 'audio/webm' });
+
+  // Emissione dell'evento personalizzato per passare il file Webm, così che possiamo processarlo
+  const event = new CustomEvent('recording-completed', { detail: { file: blobFile } });
+  window.dispatchEvent(event);
+
+  // Simula il click sul link per avviare il download automaticamente
+  link.click();
+});

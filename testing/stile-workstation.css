@@ -322,9 +322,9 @@ button.remove-btn {
   }
   
   #playPauseOrbit-btn:hover.pause-hover {
-    color: #d12d2d;  /* Rosso per "Pause" */
+    color: #d12d2d; 
     background-color: #e0e0e0; 
-    border-color: #d12d2d;  /* Bordo rosso per "Pause" */
+    border-color: #d12d2d; 
   }
   
   #resetOrbit-btn:hover {
@@ -334,11 +334,7 @@ button.remove-btn {
   }
   
   #playPauseOrbit-btn:active, #resetOrbit-btn:active {
-    box-shadow: outset 0px 2px 8px rgba(40, 40, 45, 0.5); 
-    transform: scale(0.95); 
-        -webkit-transform: scale(0.95); 
-        -moz-transform: scale(0.95); 
-        -ms-transform: scale(0.95); 
+    box-shadow: outset 0px 2px 8px rgba(40, 40, 45, 0.5);
   }
 
   .randomize-btn {
@@ -347,8 +343,8 @@ button.remove-btn {
     right: 24%;           
     top: 38%;
     padding: 10px 20px;
-    width: 4%;
-    height: 8%;
+    width: 2.5em;
+    height: 2.5em;
     border-radius: 50%;
     background-color: #010101;
     color: #fff;
@@ -519,7 +515,6 @@ button.remove-btn {
 .discard-btn:hover {
     background-color: #d12d2d;
     color: #fff;
-    transform: scale(1.05);
 }
 
 /* Slot */
@@ -560,6 +555,9 @@ button.remove-btn {
 .slot:hover {
     box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
     transform: translate3d(0, -1px, 0);
+        -webkit-transform: translate3d(0, -1px, 0);
+        -moz-transform: translate3d(0, -1px, 0);
+        -ms-transform: translate3d(0, -1px, 0);
     opacity: .90;
     border: 1px solid #fff;
 }
@@ -568,6 +566,9 @@ button.remove-btn {
 .slot:active {
     outline: 0;
     transform: translate3d(0, 1px, 0); 
+        -webkit-transform: translate3d(0, 1px, 0);
+        -moz-transform: translate3d(0, 1px, 0);
+        -ms-transform: translate3d(0, 1px, 0);
 }
 
 /* Focus effect per lo slot */
@@ -589,15 +590,19 @@ button.remove-btn {
 
 #zoom {
     appearance: none;
-    width: 300px; 
-    height: 40px;
-    padding: 20px;
-    margin-top: 32px;
-    margin-bottom: 5px;
+    width: 23em; 
+    height: 2em;
+    padding: 1.5em;
+    margin-top: 2.2em;
+    margin-bottom: 0.4em;
     background: #e0e0e0;
     border-radius: 10px;
     box-shadow: -2px -2px 6px white, 6px 6px 14px rgba(0, 0, 0, 0.5);
     transition: width 0.3s ease;
+        -webkit-transition: width 0.3s ease;
+        -moz-transition: width 0.3s ease;
+        -ms-transition: width 0.3s ease; 
+    
 }
 
 #zoom::-webkit-slider-thumb {
@@ -670,6 +675,9 @@ datalist > option:before {
     width: 0.8px;
     background: #28282d;
     transform: translateY(-80%);
+        -webkit-transform: translateY(-80%);
+        -moz-transform: translateY(-80%);
+        -ms-transform: translateY(-80%);
 }
 
 #ticks option:nth-child(1) { left: 24%; }  /* 0% */
@@ -734,13 +742,13 @@ datalist > option:before {
     z-index: 9999;
 }
 
-#back-to-start-btn {
+#start-recording-btn, #stop-recording-btn {
     display: none;
     position: fixed;
-    bottom: 40px;
-    right: 40px;
-    width: 110px;
-    height: 50px;
+    bottom: 14em;
+    right: 4em;
+    width: 9em;
+    height: 4em;
     border-radius: 10px;
     background-color: #010101;
     color: #fff;
@@ -753,6 +761,49 @@ datalist > option:before {
     border: none;
     outline: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+        -webkit-transition: transform 0.2s ease, box-shadow 0.2s ease;
+        -moz-transition: transform 0.2s ease, box-shadow 0.2s ease;
+        -ms-transition: transform 0.2s ease, box-shadow 0.2s ease; 
+    z-index: 99999;
+}
+
+#start-recording-btn:hover, #stop-recording-btn:hover {
+    background-color: #010101;
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+#start-recording-btn:active, #stop-recording-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+#start-recording-btn i, #stop-recording-btn i {
+    margin: 0;
+}
+
+#back-to-start-btn {
+    display: none;
+    position: fixed;
+    bottom: 4em;
+    right: 4em;
+    width: 9em;
+    height: 4em;
+    border-radius: 10px;
+    background-color: #010101;
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+        -webkit-transition: transform 0.2s ease, box-shadow 0.2s ease;
+        -moz-transition: transform 0.2s ease, box-shadow 0.2s ease;
+        -ms-transition: transform 0.2s ease, box-shadow 0.2s ease; 
     z-index: 9999;
 }
 
@@ -769,4 +820,43 @@ datalist > option:before {
 
 #back-to-start-btn i {
     margin: 0;
+}
+
+#mic-select2 {
+    bottom: 17em;
+    right: 3.5em;
+    width: 24%;
+    background-color: initial;
+    background-image: linear-gradient(-180deg, #DDDDDD, #8b8888dd);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+    color: #010101;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Inter", "DM Sans", Arial, sans-serif;
+    text-align: center;
+    text-shadow: 1px 2px 2px #DDDDDD;
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    outline: 0;
+    overflow: hidden;
+    pointer-events: auto;
+    position: fixed;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: top;
+    white-space: nowrap;
+    z-index: 9;
+    border: 0;
+    transition: box-shadow .2s;
+        -webkit-transition: box-shadow .2s;
+        -moz-transition: box-shadow .2s;
+        -ms-transition: box-shadow .2s;
+    
+}
+
+#mic-select2:hover {
+    box-shadow: #DDDDDD 0 2px 8px;
 }
