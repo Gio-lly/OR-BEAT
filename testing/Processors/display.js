@@ -436,7 +436,7 @@ class Anello {
   
   updateSequenceWithBoolList() {
     console.log("bool list della sequenza cambia");
-    Tone.Transport.pause();
+    
     
 
 
@@ -475,10 +475,6 @@ class Anello {
     
     let gap2 = gap - anelli.indexOf(this) * 1.4; // gap che decrementa più l'anello è grande, in modo da avere lo stesso gap per ogni anello
     let angoloStep = 360 / this.steps - gap2;
-
-    if (angle=== rotationOffset && isRunning) {
-      Tone.Transport.position = "0:0:0"; // Resetta il tempo
-    }
 
     for (let i = 0; i < this.steps; i++) {
       let startAngolo = i * (angoloStep + gap2) + rotationOffset;
@@ -635,6 +631,7 @@ function toggleRotation() {
     
     Tone.Transport.start(); // Avvia il trasporto di Tone
     console.log("tone transport started");
+    startRotation(); // Avvia la rotazione
     console.log("Rotazione avviata");
   } else {
     // Se ho messo in pausa la drum machine, fai:
@@ -642,6 +639,7 @@ function toggleRotation() {
     playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
     playPauseButton.addClass('play-hover');
     Tone.Transport.pause(); 
+    pauseRotation(); // Metti in pausa la rot
     console.log("Rotazione in pausa");
   }
 }
@@ -653,12 +651,11 @@ function stopRotation() {
     playPauseButton.html('<i class="fas fa-play-circle"></i>'); // Cambia icona a "Play"
     playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
     playPauseButton.addClass('play-hover');  // Aggiunge il colore hover verde
+    pauseRotation(); // Metti in pausa la rotazione
     console.log("Rotazione in pausa");
 
   } 
   isRunning = false;
-  Tone.Transport.pause();
-  Tone.Transport.position = "0:0:0"; // Resetta il tempo
   angle = rotationOffset; // Resetta l'angolo
-  
+  pauseRotation(); // Metti in pausa la rotazione
 }
