@@ -466,13 +466,7 @@ class Anello {
       console.log(e);
     }
   }
-  resetSequence(){
-    if(this.sequence){
-      if(this.player) this.player.stop();
-      this.sequence.stop();
-      this.sequence.start(0);
-    }
-  }
+
   disegna() {
     strokeWeight(spessoreAnello);
     noFill()
@@ -670,9 +664,5 @@ async function stopRotation() {
   });
   isRunning = false;
   angle = rotationOffset; // Resetta l'angolo
-  Tone.Transport.pause();
-  Tone.Transport.position="0:0:0";
-  anelli.forEach(anello => {
-    anello.resetSequence();
-  });
+ 
 }
