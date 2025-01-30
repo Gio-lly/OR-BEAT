@@ -440,27 +440,31 @@ class Anello {
   }
 
   updateSequenceWithBoolList() {
-    console.log("bool list della sequenza cambia");
-    if (this.sequence) {
-      if (this.player) {
-        this.player.stop();
-        this.sequence.stop(); // Ferma la sequenza corrente
-        this.sequence.dispose(); // Libera risorse dalla sequenza precedente
+    try{
+      console.log("bool list della sequenza cambia");
+      if (this.sequence) {
+        if (this.player) {
+          this.player.stop();
+          this.sequence.stop(); // Ferma la sequenza corrente
+          this.sequence.dispose(); // Libera risorse dalla sequenza precedente
+        }
       }
-    }
-    // Aggiorna la sequenza con la nuova lista
+      // Aggiorna la sequenza con la nuova lista
 
-    // Aggiorna la lista dell'anello
-    const noteDivision = this.calculateNoteDivision(this.bool_list);
-    this.sequence = new Tone.Sequence((time, value) => {
-      if (this.player && value) {
-        if (this.player.state === "started") this.player.stop();
-        this.player.start(time); // Suona solo se il valore è true
-      }
-    }, this.bool_list, noteDivision);
-    //const offset = (angle - rotationOffset) / 360 * (globalDuration / this.steps);
-    this.sequence.loop = true;
-    this.sequence.start(0);
+      // Aggiorna la lista dell'anello
+      const noteDivision = this.calculateNoteDivision(this.bool_list);
+      this.sequence = new Tone.Sequence((time, value) => {
+        if (this.player && value) {
+          if (this.player.state === "started") this.player.stop();
+          this.player.start(time); // Suona solo se il valore è true
+        }
+      }, this.bool_list, noteDivision);
+      //const offset = (angle - rotationOffset) / 360 * (globalDuration / this.steps);
+      this.sequence.loop = true;
+      this.sequence.start(0);
+    }catch(e){  
+      console.log(e);
+    }
   }
   
   disegna() {
@@ -642,7 +646,7 @@ function toggleRotation() {
 
 
 // Funzione per fermare e resettare la rotazione
-function stopRotation() {
+async function stopRotation() {
   if (isRunning) {
     playPauseButton.html('<i class="fas fa-play-circle"></i>'); // Cambia icona a "Play"
     playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
@@ -651,6 +655,14 @@ function stopRotation() {
     console.log("Rotazione in pausa");    
 
   }
+  await Tone.Transport.pause();
+  Tone.Transport.position = "0:0:0";
+  anelli.forEach(anello=>{
+    if(anello.sequence){
+      anello.sequence.stop();
+      anello.sequence.start(0);
+    }
+  });
   isRunning = false;
   angle = rotationOffset; // Resetta l'angolo
 }
