@@ -23,6 +23,9 @@ gsap.from(".navbar > div", {
     y: 40,
     scale: 0.9,
     delay: 2.6,
+    onStart: function() {
+        document.getElementById("navbar").style.display = 'flex';
+    }
 });
 
 // Animazione della site-menu con effetto "stagger" migliorato
@@ -45,6 +48,9 @@ gsap.from(".credits", {
     y: 40,
     scale: 0.95,
     delay: 2.6,
+    onStart: function() {
+        document.getElementById("credits").style.display = 'flex';
+    }
 });
 
 /*#####################################################################################################*/

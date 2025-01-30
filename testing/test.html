@@ -29,7 +29,7 @@
 
 <body>
     <!-- Qui possiamo aggiungere tutorial o altro -->
-    <div class="navbar">
+    <div id="navbar" class="navbar" style="display: none;">
 		<div class="site-menu">
 			<div id="menu-btn" class="menu-item">How to use Or-Beat</div>
 		</div>
@@ -46,7 +46,7 @@
     </div>
 
     <!-- Qui abbiamo i credits -->
-    <div class="credits">
+    <div id="credits" class="credits" style="display: none;">
         <span id="credits-btn">Credits</span>
     </div>
 
@@ -204,10 +204,10 @@
         <!-- Bottone per tornare all'inizio -->
         <button id="back-to-start-btn">Back to Start</button>
         <script>
-            // Aggiungi un listener per l'evento di clic
             document.getElementById('back-to-start-btn').addEventListener('click', function() {
-                // Ricarica la pagina quando clicchi sul bottone
-                location.reload();
+                setTimeout(function() {
+                    location.reload();
+                }, 50);
             });
         </script>
     </div>

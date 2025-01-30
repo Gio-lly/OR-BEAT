@@ -787,10 +787,10 @@ datalist > option:before {
     position: fixed;
     bottom: 4em;
     right: 4em;
-    width: 9em;
+    width: 8em;
     height: 4em;
     border-radius: 10px;
-    background-color: #010101;
+    background-color: #28282d;
     color: #fff;
     font-size: 14px;
     display: flex;
@@ -810,11 +810,17 @@ datalist > option:before {
 #back-to-start-btn:hover {
     background-color: #010101;
     transform: scale(1.1);
+        -webkit-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -ms-transform: scale(1.1); 
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 #back-to-start-btn:active {
     transform: scale(0.95);
+        -webkit-transform: scale(0.95);
+        -moz-transform: scale(0.95);
+        -ms-transform: scale(0.95); 
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
