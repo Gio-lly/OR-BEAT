@@ -404,7 +404,7 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
  */
 function playSlot(slotIndex) {
     if (players[slotIndex]) {
-        players[slotIndex].start();  // Avvia la riproduzione per il player specificato
+        players[slotIndex].start(0.002);  // Avvia la riproduzione per il player specificato
     } else {
         console.log('[ITA]: Slot vuoto o non valido');
     }
