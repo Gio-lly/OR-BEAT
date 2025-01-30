@@ -387,6 +387,8 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
     // Crea un nuovo player e lo memorizza nell'array `players`
     const player = new Tone.Player(segmentBuffer).toDestination();
     player.autostart = false;  // Impedisce la riproduzione automatica
+    player.fadeIn = 0.005; // FADE IN
+    player.fadeOut = 0.02; // FADE OUT
     players[freeSlotIndex] = player;   // Memorizza il player nell'array `players`
 
     // Aggiungi un evento di click per riprodurre l'audio quando si clicca sullo slot

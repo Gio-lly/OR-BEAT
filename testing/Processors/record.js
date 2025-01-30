@@ -58,8 +58,9 @@ const createWaveSurfer = () => {
     Object.assign(link, {
       href: recordedUrl,
       download: 'recording.' + blob.type.split(';')[0].split('/')[1] || 'webm',
-      textContent: 'Download recording',
+      //textContent: 'Download recording',
     })
+    link.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> ';
     link.id = 'download-link';
     // Aggiungi l'event listener al link per il click
     link.addEventListener('click', function(event) {
@@ -194,7 +195,7 @@ const createFinalWaveSurfer = () => {
     container: '#mic2',
     //audioContext: toneContext, 
     backend: 'WebAudio',
-    plugins: [record] // aggiungiamo il plugin Record
+    plugins: [finalRecord] // aggiungiamo il plugin Record
   })
 }
 
@@ -215,7 +216,7 @@ WaveSurfer.Record.getAvailableAudioDevices().then((devices) => {
   })
 })
 
-record.on('record-start', () => {
+finalRecord.on('record-start', () => {
   if (finalWave) {
     finalWave.destroy()
   }
@@ -227,7 +228,7 @@ record.on('record-start', () => {
 
 //-------------------------------------------------------------------------------- GESTIONE FINE REC FINALE: 
 // salvataggio della registrazione
-record.on('record-end', (blob) => {
+finalRecord.on('record-end', (blob) => {
   const container = document.querySelector('#recordings2')
   const recordedUrl = URL.createObjectURL(blob)
   

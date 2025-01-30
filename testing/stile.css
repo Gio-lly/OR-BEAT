@@ -12,7 +12,6 @@
     width: 100%;
     height: 50vw; 
     padding: 0 2em;
-    display: flex;
     justify-content: space-between;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     font-size: 1.25em; 
@@ -451,13 +450,14 @@ button#record-btn:active {
  #record{
     background-color: initial;
     background-image: linear-gradient(-180deg, #ef0d0d, #c91403);
-    border-radius: 6px;
+    border-radius: 6%;
     box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
     color: #FFFFFF;
     cursor: pointer;
     display: inline-block;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     text-align: center;
+    margin: 0.1em;
     font-size: 16px;
     height: 40px;
     line-height: 40px;
@@ -480,13 +480,20 @@ button#record-btn:active {
 }
 
 #record:hover {
-    box-shadow: rgba(253, 10, 10, 0.774) 0 4px 8px;
+    box-shadow: rgba(253, 10, 10, 0.774) 0 1px 8px;
+}
+#record:active {
+    transform: scale(0.95);
+        -webkit-transform: scale(0.95);
+        -moz-transform: scale(0.95);
+        -ms-transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(253, 10, 10, 0.774);
 }
 /*-----------------------------------------------*/
 #pause {
     background-color: initial;
     background-image: linear-gradient(-180deg, #19e044, #038930);
-    border-radius: 6px;
+    border-radius: 6%;
     box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
     color: #FFFFFF;
     cursor: pointer;
@@ -499,6 +506,7 @@ button#record-btn:active {
     outline: 0;
     overflow: hidden;
     padding: 0 14px;
+    margin: 0.1em;
     pointer-events: auto;
     position: relative;
     touch-action: manipulation;
@@ -515,7 +523,15 @@ button#record-btn:active {
 }
 
 #pause:hover {
-    box-shadow: #33ff8c 0 3px 8px;
+    box-shadow: #33ff8c 0 1px 5px;
+}
+
+#pause:active {
+    transform: scale(0.95);
+        -webkit-transform: scale(0.95);
+        -moz-transform: scale(0.95);
+        -ms-transform: scale(0.95);
+    box-shadow: 0 2px 5px #33ff8c;
 }
 /*-----------------------------------------------*/
 #mic-select {
@@ -533,6 +549,7 @@ button#record-btn:active {
     height: 40px;
     line-height: 40px;
     outline: 0;
+    margin: 0.1em;
     overflow: hidden;
     pointer-events: auto;
     position: relative;
@@ -551,23 +568,22 @@ button#record-btn:active {
 }
 
 #mic-select:hover {
-    box-shadow: #DDDDDD 0 2px 8px;
+    box-shadow: #DDDDDD 0 1px 4px;
 }
 /*-----------------------------------------------*/
 #play-button {
     background-color: initial;
-    background-image: linear-gradient(-180deg, #DDDDDD, #8b8888dd);
-    border-radius: 6px;
+    background-image: linear-gradient(-180deg, #ccc, #8b8888dd);
+    border-radius: 10%;
     box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
     color: #010101;
     cursor: pointer;
     display: inline-block;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     text-align: center;
-    text-shadow: 1px 2px 2px #DDDDDD;
-    font-size: 16px;
+    font-size: 14px;
     height: 40px;
-    width: 50px;
+    width: 60px;
     line-height: 40px;
     outline: 0;
     overflow: hidden;
@@ -587,33 +603,35 @@ button#record-btn:active {
 }
 
 #play-button:hover {
-    box-shadow: #DDDDDD 0 1px 4px;
+    box-shadow: #ccc 0 1px 2px;
+}
+
+#play-button:active {
+    transform: scale(0.95);
+        -webkit-transform: scale(0.95);
+        -moz-transform: scale(0.95);
+        -ms-transform: scale(0.95);
 }
 /*-----------------------------------------------*/
 #download-link {
     background-color: initial;
-    background-image: linear-gradient(-180deg, #DDDDDD, #8b8888dd);
+    background-image: linear-gradient(-180deg, #ccc, #8b8888dd);
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
-    color: #0056b3;
+    color: #0052A3;
     cursor: pointer;
-    display: inline-block;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     text-align: center;
-    text-shadow: 1px 2px 2px #DDDDDD;
-    font-size: 16px;
-    height: 40px;
-    width: 180px;
-    line-height: 40px;
+    font-size: 2em;
+    align-items: center;
     outline: 0;
+    padding: 0.02em 0.2em;
     overflow: hidden;
     pointer-events: auto;
     position: relative;
     touch-action: manipulation;
     user-select: none;
     -webkit-user-select: none;
-    vertical-align: top;
-    white-space: nowrap;
     z-index: 9;
     border: 0;
     transition: box-shadow .2s;
@@ -623,7 +641,14 @@ button#record-btn:active {
 }
 
 #download-link:hover {
-    box-shadow: #DDDDDD 0 1px 4px;
+    box-shadow: #ccc 0 1px 2px;
+}
+
+#download-link:active {
+    transform: scale(0.95);
+        -webkit-transform: scale(0.95);
+        -moz-transform: scale(0.95);
+        -ms-transform: scale(0.95);
 }
 
 #progress-bar {
