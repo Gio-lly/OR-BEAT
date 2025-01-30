@@ -417,6 +417,8 @@ class Anello {
     this.sequence = null;
     this.hasToUpdate = false;
   }
+
+
   calculateNoteDivision(boolList) {
     const x = globalDuration / boolList.length;
     return x.toString() + 's';
@@ -460,12 +462,7 @@ class Anello {
     this.sequence.loop = true;
     this.sequence.start(0);
   }
-  /* playSound(){
-    if(this.player){
-
-      this.player.start();
-    }
-  } */
+  
   disegna() {
     strokeWeight(spessoreAnello);
     noFill()
@@ -614,6 +611,7 @@ function createControls() {
 
 }
 
+let resettaTransport = false
 // Funzione che alterna Play/Pause
 function toggleRotation() {
   isRunning = !isRunning; // Cambia stato
@@ -625,9 +623,11 @@ function toggleRotation() {
 
     Tone.Transport.bpm.value = bpm; // Imposta il BPM globale di Tone
 
-    Tone.Transport.start(); // Avvia il trasporto di Tone
+    Tone.Transport.start();
+
+    
+      
     console.log("tone transport started");
-    startRotation(); // Avvia la rotazione
     console.log("Rotazione avviata");
   } else {
     // Se ho messo in pausa la drum machine, fai:
@@ -635,7 +635,6 @@ function toggleRotation() {
     playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
     playPauseButton.addClass('play-hover');
     Tone.Transport.pause();
-    pauseRotation(); // Metti in pausa la rot
     console.log("Rotazione in pausa");
   }
 }
@@ -647,11 +646,10 @@ function stopRotation() {
     playPauseButton.html('<i class="fas fa-play-circle"></i>'); // Cambia icona a "Play"
     playPauseButton.removeClass('pause-hover'); // Rimuove il colore hover rosso
     playPauseButton.addClass('play-hover');  // Aggiunge il colore hover verde
-    pauseRotation(); // Metti in pausa la rotazione
-    console.log("Rotazione in pausa");
+    
+    console.log("Rotazione in pausa");    
 
   }
   isRunning = false;
   angle = rotationOffset; // Resetta l'angolo
-  pauseRotation(); // Metti in pausa la rotazione
 }
