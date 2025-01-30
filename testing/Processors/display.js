@@ -485,6 +485,7 @@ class Anello {
       //QUANDO PASSA DALL'INIZIO, CHIAMA TONE.TRANSPORT.pause() 
       if (highlight && isRunning && angle === rotationOffset && this.hasToUpdate) {
         Tone.Transport.pause();
+        Tone.Transport.position="0:0:0";
         this.updateSequenceWithBoolList();
         Tone.Transport.start();
         this.hasToUpdate = false;
