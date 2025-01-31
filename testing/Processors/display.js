@@ -297,6 +297,7 @@ let rotationSpeed; // Velocità di rotazione
 let isRunning = false; // Stato della rotazione della barra
 let bpm = 80;
 let truebpm=80;
+let bpmChanged = false;
 let x = 0
 
 function setup(p5on) {
@@ -421,10 +422,14 @@ class Anello {
 
   calculateNoteDivision(boolList) {
     const x = globalDuration / boolList.length;
+    console.log("globalDuration:" + globalDuration)
     return x.toString() + 's';
+    
     /* const durationbeat = globalDuration/boolList.length;
     return (totalDuration/boolList.length).toString() + 'n'; */
   }
+
+
   createSequence(player, totalDuration) {
     this.player = player;
     const noteDivision = this.calculateNoteDivision(this.bool_list);
@@ -441,11 +446,12 @@ class Anello {
 
   updateSequenceWithBoolList() {
     
-      console.log("bool list della sequenza cambia");
+      console.log("bool list della sequenza cambia oppure il bpm cambia");
+      
       if (this.sequence) {
         if (this.player) {
           this.player.stop();
-          this.sequence.stop(); // Ferma la sequenza corrente
+          this.sequence.stop(0.0001); // Ferma la sequenza corrente
           this.sequence.dispose(); // Libera risorse dalla sequenza precedente
         }
       }
@@ -453,10 +459,21 @@ class Anello {
 
       // Aggiorna la lista dell'anello
       const noteDivision = this.calculateNoteDivision(this.bool_list);
+      console.log("Note division:" + noteDivision)
+      
+
+      // Ricrea la sequence
+      let lastTime = 0; // Memorizza il tempo dell'ultimo step
       this.sequence = new Tone.Sequence((time, value) => {
         if (this.player && value) {
           if (this.player.state === "started") this.player.stop();
           this.player.start(time); // Suona solo se il valore è true
+
+          // Printa il time in cui la sequence suona il player e lo compara con quello precedente
+          console.log("time in cui viene suonato il player della sequence dell'annello #"+ anelli.indexOf(this)+":" + time)
+          const diff = time -lastTime;
+          console.log("Differenza con il tempo precedente:"+diff)
+          lastTime=time
         }
       }, this.bool_list, noteDivision);
       //const offset = (angle - rotationOffset) / 360 * (globalDuration / this.steps);
@@ -485,12 +502,13 @@ class Anello {
         Tone.Transport.bpm.value = truebpm; // Aggiorna il valore del BPM globale di tone
       }
       //QUANDO PASSA DALL'INIZIO, CHIAMA TONE.TRANSPORT.pause() 
-      if (highlight && isRunning && angle === rotationOffset && this.hasToUpdate) {
+      if (highlight && isRunning && angle === rotationOffset && this.hasToUpdate || highlight && isRunning && angle === rotationOffset && bpmChanged ) {
         Tone.Transport.pause();
         Tone.Transport.position="0:0:0";
         this.updateSequenceWithBoolList();
         Tone.Transport.start();
         this.hasToUpdate = false;
+        bpmChanged=false;
       }
 
       // Imposta il colore del segmento
@@ -611,6 +629,7 @@ function createControls() {
   bpmSlider.input(() => {
     globalDuration = (60 / bpm) * 4; // Update globalDuration when bpm changes
     bpm = bpmSlider.value();
+    bpmChanged = true;
     
     bpmText.html(`${bpm} BPM`); // Aggiorna il testo del BPM
   });
