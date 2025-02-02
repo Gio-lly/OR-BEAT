@@ -414,6 +414,39 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
     });
 }
 
+function createPlayerCopy(originalPlayer) {
+    if (!originalPlayer.buffer) {
+        console.error("Il player originale non ha un buffer valido.");
+        return null;
+    }
+
+    // Creiamo un nuovo AudioBuffer con i dati originali
+    const originalBuffer = originalPlayer.buffer;
+    let copiedBuffer = audioContext.createBuffer(
+        originalBuffer.numberOfChannels,
+        originalBuffer.length,
+        originalBuffer.sampleRate
+    );
+
+    // Copia i dati dei canali
+    for (let channel = 0; channel < originalBuffer.numberOfChannels; channel++) {
+        copiedBuffer.getChannelData(channel).set(originalBuffer.getChannelData(channel));
+    }
+
+    // Creiamo un nuovo Tone.Player con il buffer copiato
+    const copiedPlayer = new Tone.Player({
+        url: copiedBuffer,  // Usa il nuovo buffer copiato
+        loop: originalPlayer.loop, // Mantiene il loop originale
+        volume: originalPlayer.volume.value, // Mantiene il volume originale
+        fadeIn: originalPlayer.fadeIn, // Mantiene il fade-in
+        fadeOut: originalPlayer.fadeOut // Mantiene il fade-out
+    }).toDestination();
+
+    copiedPlayer.autostart = false;  // Evita riproduzione automatica
+
+    return copiedPlayer;
+}
+
 /**
  * Funzione per riprodurre un segmento audio in un determinato slot, chiama il metodo start() del player
  * @param {*} slotIndex 
