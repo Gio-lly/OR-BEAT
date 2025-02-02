@@ -168,8 +168,6 @@ let recorder = new Tone.Recorder();
 const stopRecording = document.querySelector("#stop-recording-btn");
 
 document.querySelector("#start-recording-btn").addEventListener('click',()=>{
-  
-
   recorder.start();
   stopRecording.style.display="";
 });
@@ -188,8 +186,6 @@ async function stopFinalRecording() {
   recordedSong.loadBlob(recording)
   document.querySelector("#recordings2").style.display="";
   
-
-
   document.getElementById("download-final-recording").style.display = "";
   document.getElementById("download-final-recording").onclick = function() {
     const link = document.createElement('a');

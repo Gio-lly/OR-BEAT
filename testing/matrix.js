@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
             destinationCell.innerHTML = `Sample <br> ${data.htmlContent}`; // Mostra il contenuto del drop
             
             const copiedPlayer = createPlayerCopy(players[data.index]);
-
+            copiedPlayer.connect(recorder);
             anelli[parseInt(destinationCell.parentNode.id) - 1].createSequence(copiedPlayer);
             // Colorazione della cella 
             colorize();
