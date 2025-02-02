@@ -364,17 +364,24 @@ function rimuoviUltimoAnello() {
 function rimuoviAnello(i) {
   console.log("Rimuovo anello con indice:", i);
 
-  // rimuovo l'anello dall'array degli anelli
-  if (anelli[i].player) anelli[i].player.stop();
-  if (anelli[i].sequence) {
-    anelli[i].sequence.stop();
-    //Tone.Transport.pause();
-    anelli[i].sequence.dispose();
-    //Tone.Transport.start();
+  // Stoppa e distrugge il player se esiste
+  if (anelli[i].player) {
+      anelli[i].player.stop();
+      anelli[i].player.dispose();  // Libera la memoria
+      anelli[i].player = null;  // Rimuove il riferimento
   }
+
+  // Stoppa e distrugge la sequence
+  if (anelli[i].sequence) {
+      anelli[i].sequence.stop();
+      anelli[i].sequence.dispose();
+      anelli[i].sequence = null;
+  }
+
+  // Rimuovi l'anello dall'array
   anelli.splice(i, 1);
 
-  // rimuovo l'anello dalla matrice di rappresentazione
+  // Rimuovi l'anello dalla matrice di rappresentazione
   modello.removeRing(i);
 
   console.log("Stato degli anelli dopo la rimozione:", anelli);
@@ -417,6 +424,7 @@ class Anello {
     this.player = null; // Player per il suono
     this.sequence = null;
     this.hasToUpdate = false;
+    this._updatingSequence = false;
   }
 
 
@@ -446,6 +454,14 @@ class Anello {
 
   updateSequenceWithBoolList() {
     
+    if (this._updatingSequence) return;
+  this._updatingSequence = true;
+  
+  // Dopo 50 ms, resetta il flag (puoi regolare questo valore)
+  setTimeout(() => {
+    this._updatingSequence = false;
+  }, 50);
+
       console.log("bool list della sequenza cambia oppure il bpm cambia");
       
       if (this.sequence) {
@@ -471,7 +487,7 @@ class Anello {
 
           // Printa il time in cui la sequence suona il player e lo compara con quello precedente
           console.log("time in cui viene suonato il player della sequence dell'annello #"+ anelli.indexOf(this)+":" + time)
-          const diff = time -lastTime;
+          const diff = time - lastTime;
           console.log("Differenza con il tempo precedente:"+diff)
           lastTime=time
         }
@@ -509,7 +525,24 @@ class Anello {
         Tone.Transport.start();
         this.hasToUpdate = false;
         bpmChanged = false;
+        if (!this._updatingSequence) {
+          this._updatingSequence = true;
+          Tone.Transport.pause();
+          Tone.Transport.position = "0:0:0";
+          Tone.Transport.bpm.value = bpm; // Aggiorna il BPM globale
+
+          this.updateSequenceWithBoolList();
+
+          Tone.Transport.start();
+          this.hasToUpdate = false;
+          bpmChanged = false;
+          // Resetta il flag dopo un breve intervallo (ad esempio 50 ms)
+          setTimeout(() => {
+            this._updatingSequence = false;
+          }, 50);
+        }
       }
+      
 
       // Imposta il colore del segmento
       if (highlight & isRunning) {

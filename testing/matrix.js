@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 slots[buttonIndex].setAttribute('draggable', 'false');
 
                 players[buttonIndex].stop(); // Ferma la riproduzione (se in corso)
+                players[buttonIndex].dispose();
                 players[buttonIndex] = null; // Rimuovi il player dalla lista
                 slotStatus[buttonIndex] = false;
             } catch (e) {
@@ -203,6 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
         newRow.querySelector('.remove-btn').addEventListener('click', () => {
             const rowIndex = Array.from(tableBody.children).indexOf(newRow);  // ottieni l'indice della riga
 
+            if (rowIndex === -1) {
+                console.error("Errore: riga non trovata!");
+                return;
+            }
+            
             // verifica se l'anello è l'ultimo, se sì, rimuovilo senza comprimere gli altri
             if (anelli.length === 1) {
                 alert("Non puoi rimuovere l'ultimo anello!");
@@ -278,7 +284,9 @@ document.addEventListener('DOMContentLoaded', () => {
             destinationCell.innerHTML = ''; // Pulisce il contenuto precedente
             destinationCell.innerHTML = `Sample <br> ${data.htmlContent}`; // Mostra il contenuto del drop
             
-            anelli[parseInt(destinationCell.parentNode.id) - 1].createSequence(players[data.index]);
+            const copiedPlayer = createPlayerCopy(players[data.index]);
+
+            anelli[parseInt(destinationCell.parentNode.id) - 1].createSequence(copiedPlayer);
             // Colorazione della cella 
             colorize();
         });
