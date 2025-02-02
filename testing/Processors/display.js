@@ -219,7 +219,7 @@ regions.on('region-updated', (region) => {
 
 // ZOOM LEVEL
 ws.once('decode', () => {
-  document.querySelector('input[type="range"]').oninput = (e) => {
+  document.getElementById('zoom').oninput = (e) => {
     const minPxPerSec = Number(e.target.value)
     ws.zoom(minPxPerSec)
   }
