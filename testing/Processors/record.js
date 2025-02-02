@@ -13,6 +13,8 @@ document.getElementById("record-btn").addEventListener("click", function (event)
   event.stopPropagation(); //opzionale qui
   document.getElementById("recording-section").style.display = "block"; // Mostra la sezione di registrazione
   document.getElementById("title").style.display = "none"; // Nasconde il welcome...
+  document.getElementById("preset-btn").style.display = "none"; // Nasconde il preset btn...
+  document.getElementById("preset-btn").click();
   document.getElementById("record-btn").style.display = "none"; // Nasconde il bottone "Registra"
   createWaveSurfer(); // Creaimo la session
 });

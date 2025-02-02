@@ -165,6 +165,20 @@ window.addEventListener('recording-completed', (event) => {
     isValidFileLoaded = true;
     document.getElementById('continue-btn').disabled = false;
 });
+// ---------------------------------------------------------------------------------
+// Gestione della sensitivity
+// Aggiorna il valore del range in tempo reale
+const sensitivityRange = document.getElementById('sensitivity');
+const sensitivityValue = document.getElementById('sensitivity-value');
+
+sensitivityRange.addEventListener('input', function(event) {
+    event.stopPropagation();
+    sensitivityValue.textContent = sensitivityRange.value;
+});
+// Evento 'mousedown' per gestire l'inizio del trascinamento
+sensitivityRange.addEventListener('click', (event) => {
+    event.stopPropagation();
+});
 // _________________________________________________________________________________
 // ---------------------------------------------------------------------------------
 // Funzione per creare un nodo in cui facciamo il rilevamento OnSets
@@ -278,7 +292,8 @@ document.getElementById('continue-btn').addEventListener('click', async function
             // ## FrameSize (valore ideale per transients di batteria): 512, 
             // ## Hopsize: framesize/2 oppure framesize/4, 
             // ## Sensitivity: 150 (abbassare se vuoi aumentare la densità)
-            const onsetTimestamps = detectOnsets(channelData, sampleRate, 512, 256, 150);
+            // console.log(sensitivityRange.value);
+            const onsetTimestamps = detectOnsets(channelData, sampleRate, 512, 256, sensitivityRange.value);
 
             modello.setonsets(onsetTimestamps);
             updateProgressBar(100); // AGGIORNO PROGRESS BAR...

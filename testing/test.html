@@ -90,7 +90,7 @@
         </h1>
         
         <!-- Qui verrà caricato il file dall'utente -->
-        <p>Drag and drop or Click here to upload a file</p>
+        <p id="subtitle" style="padding-top: 1em;">Drag and drop or Click here to upload a file</p>
         <input type="file" id="file-input" style="display: none;"
             accept=".mp3,.wav,.aac,audio/wav,audio/mpeg,audio/aac" />
 
@@ -123,8 +123,15 @@
         
         <!-- Qui abbiamo il bottone 'CONTINUA' e la visualizzazione del file che verrà processato -->
         <br>
-        <button id="continue-btn" type="submit">Continue</button>
-        <div id="file-list"></div>
+
+        <span style="position: relative;left: 15em;">Sampler sensitivity</span>
+        <div style="margin:0;display: flexbox;align-items: center;justify-content: space-between;"> 
+            <button id="continue-btn" type="submit">Continue</button>
+
+            <input id="sensitivity" type="range" min="50" max="200" value="150">
+            <span id="sensitivity-value" style="color:#fff">150</span>
+        </div>
+        <div id="file-list" style="padding-bottom: 1em;"></div>
     </div>
 
     <!-- Qui abbiamo la nostra workstation, abilitata una volta caricato il file -->

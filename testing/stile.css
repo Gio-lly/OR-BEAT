@@ -144,11 +144,13 @@ body {
     color: #DDDDDD;
     text-align: center;
     flex-direction: column;
+    padding-bottom: 1em;
+    padding-top: 1em;
     z-index: 1000;
 }
 
 .modal p {
-    font-size: 1.5em; 
+    font-size: 1.2em; 
     margin: 1em 0;
 }
 /*-----------------------------------------------*/
@@ -243,6 +245,7 @@ body {
 }
 /*-----------------------------------------------*/
 button#continue-btn {
+    margin: 0;
     font-family: "Inter", "DM Sans", Arial, sans-serif;
     text-align: center;
     border: 1px solid;
@@ -292,6 +295,88 @@ button#continue-btn:disabled:hover {
 .dragover {
     background-color: #108738;
     border: 5px dashed #0056b3
+}
+/*-----------------------------------------------*/
+#sensitivity {
+    display: block;
+    appearance: none;
+    position: relative;
+    left: 18em;
+    bottom: 4em;
+    width: 14em; 
+    height: 1.5em;
+    padding: 1.5em;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+    margin-top: 0.8em;
+    margin-bottom: 0.4em;
+    background: #28282d;
+    border-radius: 20px;
+    box-shadow: 0px -1px 2px #ccc, 6px 6px 14px rgba(0, 0, 0, 0.5);
+    transition: width 0.3s ease;
+        -webkit-transition: width 0.3s ease;
+        -moz-transition: width 0.3s ease;
+        -ms-transition: width 0.3s ease; 
+}
+
+#sensitivity-value {
+    text-align: center;
+    position: relative;
+    left: 23em;
+    bottom: 5.5em;
+    width: 3em; 
+    height: 2em;
+    padding: 0.4em;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+    margin-left: 0.8em;
+    margin-bottom: 1.8em;
+
+    background-color: #28282d;
+    border-radius: 20px;
+    box-shadow: 0px -1px 2px #ccc, 6px 6px 14px rgba(0, 0, 0, 0.5);
+    transition: width 0.3s ease;
+        -webkit-transition: width 0.3s ease;
+        -moz-transition: width 0.3s ease;
+        -ms-transition: width 0.3s ease; 
+}
+
+#sensitivity::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: #010101; 
+    border-radius: 50%;
+    border: 2px solid #010101;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: -4px;
+}
+
+#sensitivity::-moz-range-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px; 
+    background-color: #28282d; 
+    border-radius: 50%;
+    border: 2px solid #28282d;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: -4px;
+}
+
+#sensitivity::-webkit-slider-runnable-track {
+    height: 10px;
+    border-radius: 5px; 
+    background: #fff;
+}
+
+#sensitivity::-moz-range-track {
+    height: 10px;
+    border-radius: 5px; 
+    background: #fff;
 }
 /*-----------------------------------------------*/
 button#preset-btn {
