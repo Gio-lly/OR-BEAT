@@ -478,7 +478,7 @@ class Anello {
       }, this.bool_list, noteDivision);
       //const offset = (angle - rotationOffset) / 360 * (globalDuration / this.steps);
       this.sequence.loop = true;
-      this.sequence.start(0);
+      this.sequence.start(0.002);
     
   }
 
@@ -499,16 +499,16 @@ class Anello {
 
       if(highlight && isRunning && angle === rotationOffset){
         truebpm = bpm;
-        Tone.Transport.bpm.value = truebpm; // Aggiorna il valore del BPM globale di tone
       }
       //QUANDO PASSA DALL'INIZIO, CHIAMA TONE.TRANSPORT.pause() 
-      if (highlight && isRunning && angle === rotationOffset && this.hasToUpdate || highlight && isRunning && angle === rotationOffset && bpmChanged ) {
+      if (highlight && isRunning && angle === rotationOffset && (this.hasToUpdate || bpmChanged)) {
         Tone.Transport.pause();
-        Tone.Transport.position="0:0:0";
+        Tone.Transport.position = "0:0:0";
+        Tone.Transport.bpm.value = bpm;
         this.updateSequenceWithBoolList();
         Tone.Transport.start();
         this.hasToUpdate = false;
-        bpmChanged=false;
+        bpmChanged = false;
       }
 
       // Imposta il colore del segmento
@@ -627,11 +627,10 @@ function createControls() {
   let bpmSlider = createSlider(40, 180, 80, 1);
   bpmSlider.id('sliderOrbit-btn');
   bpmSlider.input(() => {
-    globalDuration = (60 / bpm) * 4; // Update globalDuration when bpm changes
     bpm = bpmSlider.value();
-    bpmChanged = true;
-    
-    bpmText.html(`${bpm} BPM`); // Aggiorna il testo del BPM
+  globalDuration = (60 / bpm) * 4;
+  bpmChanged = true;
+  bpmText.html(`${bpm} BPM`); // Aggiorna il testo del BPM
   });
 
 }
