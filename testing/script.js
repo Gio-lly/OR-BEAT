@@ -401,6 +401,8 @@ function handleSegmentExtraction(audioBuffer, startTime, nextStartTime, containe
 
     // Crea un nuovo player e lo memorizza nell'array `players`
     const player = new Tone.Player(segmentBuffer).toDestination();
+    console.log(recorder);
+    player.connect(recorder);
     player.autostart = false;  // Impedisce la riproduzione automatica
     player.fadeIn = 0.005; // FADE IN
     player.fadeOut = 0.02; // FADE OUT
