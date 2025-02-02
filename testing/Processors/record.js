@@ -177,23 +177,31 @@ document.querySelector("#stop-recording-btn").addEventListener('click',stopFinal
 
 async function stopFinalRecording() {
   const recording = await recorder.stop();
-  //const mp3Blob = await convertToMP3(recording);
+
+  // Assicura che il div rettangolare sia visibile
+  const waveformContainer = document.getElementById("custom-rectangle");
+  waveformContainer.innerHTML = ""; // Pulisce il contenuto precedente
+
+  // Inizializza WaveSurfer all'interno del div
   const recordedSong = WaveSurfer.create({
-    container: '#recordings2',  // Un div dove visualizzare la forma d'onda
-    waveColor: 'violet',
-    progressColor: 'purple',
+      container: '#custom-rectangle',  // Usa il nuovo div creato dentro il container
+      waveColor: 'violet',
+      progressColor: 'purple',
   });
-  recordedSong.loadBlob(recording)
-  document.querySelector("#recordings2").style.display="";
-  
+
+  recordedSong.loadBlob(recording);
+
+  // Rendi il container visibile
+  waveformContainer.style.display = "flex";
+
+  // Abilita il download
   document.getElementById("download-final-recording").style.display = "";
   document.getElementById("download-final-recording").onclick = function() {
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(recording);
-    link.download = 'audio.wav'; // MP3 richiede una conversione, quindi lo lasciamo WAV
-    link.click();
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(recording);
+      link.download = 'audio.wav'; 
+      link.click();
   };
-
 }
 
 async function convertToMP3(blob) {

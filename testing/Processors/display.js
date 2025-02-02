@@ -666,6 +666,11 @@ function createControls() {
   bpmText.html(`${bpm} BPM`); // Aggiorna il testo del BPM
   });
 
+  let customRectangle = createDiv("Info Box");
+  customRectangle.id('custom-rectangle');
+
+  // Posizioniamo il div tra il BPM slider e il bottone di registrazione
+  document.body.appendChild(customRectangle);
 }
 
 let resettaTransport = false

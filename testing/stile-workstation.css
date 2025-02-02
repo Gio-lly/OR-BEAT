@@ -741,6 +741,23 @@ datalist > option:before {
     font-size: 0.7em;
     z-index: 9999;
 }
+#custom-rectangle {
+    position: fixed;
+    right: 4%;
+    top: 58%; /* Lo posizioniamo tra lo slider e il pulsante */
+    width: 16em;
+    height: 5em;
+    background-color: rgba(0, 0, 0, 0.7); /* Sfondo scuro semi-trasparente */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1em;
+    text-align: center;
+    z-index: 9999;
+}
 
 #start-recording-btn, #stop-recording-btn,#download-final-recording {
     display: none;
