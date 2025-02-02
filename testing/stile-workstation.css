@@ -742,7 +742,7 @@ datalist > option:before {
     z-index: 9999;
 }
 
-#start-recording-btn, #stop-recording-btn {
+#start-recording-btn, #stop-recording-btn,#download-final-recording {
     display: none;
     position: fixed;
     bottom: 14em;

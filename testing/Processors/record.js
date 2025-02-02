@@ -163,101 +163,98 @@ recButton.onclick = (event) => {
 }
 
 // ######################################## GESTIONE DELLA REGISTRAZIONE AUDIO FINALE (CON MIC ESTERNO!!)
-let finalWsurf, finalWave
-//const toneContext = Tone.context;
-// Utilizziamo il Plugin Record di Wavesurfer
-let finalRecord = WaveSurfer.Record.create({
-  // Configura il plugin di registrazione
-  //audioContext: toneContext, 
-  audioMimeType: 'audio/wav',  // Tipo di file audio da generare (puoi anche usare mp3, ogg, etc.)
-  bufferSize: 1024,
-  sampleRate: 48000
-});
+let finalWsurf, finalWave;
+let recorder = new Tone.Recorder();
+const stopRecording = document.querySelector("#stop-recording-btn");
 
-// Quando il record-button viene cliccato, si visualizza la finestra di registrazione
-document.getElementById("start-recording-btn").addEventListener("click", function (event) {
-  event.stopPropagation(); //opzionale qui
-  document.getElementById("start-recording-btn").style.display = "none";
-  document.getElementById("stop-recording-btn").style.display = "block";
-  createFinalWaveSurfer(); // Creaimo la session
+document.querySelector("#start-recording-btn").addEventListener('click',()=>{
   
-  const deviceId = micSelect2.value
-  record.startRecording({ deviceId });
-  //console.log("started")
+
+  recorder.start();
+  stopRecording.style.display="";
 });
 
-document.getElementById("stop-recording-btn").addEventListener("click", function (event) {
-  event.stopPropagation(); //opzionale qui
-  record.stopRecording();
-});
+let finalRecordedAudioBuffer=null;
+document.querySelector("#stop-recording-btn").addEventListener('click',stopFinalRecording);
 
-const createFinalWaveSurfer = () => {
-  // Creiamo una nuova istanza di wavesurfer
-  finalWsurf = WaveSurfer.create({
-    container: '#mic2',
-    //audioContext: toneContext, 
-    backend: 'WebAudio',
-    plugins: [finalRecord] // aggiungiamo il plugin Record
-  })
+async function stopFinalRecording() {
+  const recording = await recorder.stop();
+  //const mp3Blob = await convertToMP3(recording);
+  const recordedSong = WaveSurfer.create({
+    container: '#recordings2',  // Un div dove visualizzare la forma d'onda
+    waveColor: 'violet',
+    progressColor: 'purple',
+  });
+  recordedSong.loadBlob(recording)
+  document.querySelector("#recordings2").style.display="";
+  
+
+
+  document.getElementById("download-final-recording").style.display = "";
+  document.getElementById("download-final-recording").onclick = function() {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(recording);
+    link.download = 'audio.wav'; // MP3 richiede una conversione, quindi lo lasciamo WAV
+    link.click();
+  };
+
 }
 
-//-------------------------------------------------------------------------------- GESTIONE INIZIO REC FINALE: 
-const micSelect2 = document.querySelector('#mic-select2')
+async function convertToMP3(blob) {
+  const arrayBuffer = await blob.arrayBuffer();
+  const wavData = new DataView(arrayBuffer);
 
-micSelect2.addEventListener('click', function(event) {
-  event.stopPropagation(); // Impedisce la propagazione dell'evento
-});
+  // Estrarre i dettagli del formato audio dal WAV
+  const numChannels = wavData.getUint16(22, true);
+  const sampleRate = wavData.getUint32(24, true);
 
-// Mic selection
-WaveSurfer.Record.getAvailableAudioDevices().then((devices) => {
-  devices.forEach((device) => {
-  const option = document.createElement('option')
-  option.value = device.deviceId
-  option.text = device.label || device.deviceId
-  micSelect2.appendChild(option)
-  })
-})
-
-finalRecord.on('record-start', () => {
-  if (finalWave) {
-    finalWave.destroy()
+  // Trovare l'inizio dei dati audio PCM
+  let audioStart = 44; // Standard WAV header size
+  for (let i = 12; i < arrayBuffer.byteLength - 8; i++) {
+    if (wavData.getUint32(i, true) === 0x61746164) { // "data" chunk
+      audioStart = i + 8;
+      break;
+    }
   }
 
-  // Rimozione del pulsante di play e del link di download dalla sezione precedente
-  const container = document.querySelector('#recordings2');
-  container.innerHTML = '';
-})  
+  // Estrarre solo i dati PCM e convertirli in Float32Array
+  const pcmData = new DataView(arrayBuffer, audioStart);
+  const samples = pcmData.byteLength / 2;
+  const pcm16 = new Int16Array(samples);
 
-//-------------------------------------------------------------------------------- GESTIONE FINE REC FINALE: 
-// salvataggio della registrazione
-finalRecord.on('record-end', (blob) => {
-  const container = document.querySelector('#recordings2')
-  const recordedUrl = URL.createObjectURL(blob)
-  
-  document.getElementById("stop-recording-btn").style.display = "none";
-  document.getElementById("start-recording-btn").style.display = "block";
+  for (let i = 0; i < samples; i++) {
+    pcm16[i] = pcmData.getInt16(i * 2, true); // Little-endian
+  }
 
-  // rendiamo disponibile un Download link
-  const link = container.appendChild(document.createElement('a'))
-  Object.assign(link, {
-    href: recordedUrl,
-    download: 'Orbeat-rec.' + blob.type.split(';')[0].split('/')[1] || 'webm',
-    textContent: 'Download recording',
-  })
-  link.id = 'download-link';
-  
-  // Aggiungi l'event listener al link per il click
-  link.addEventListener('click', function(event) {
-    event.stopPropagation(); // Questo impedisce la propagazione dell'evento
-  });
+  // Se il file è stereo, convertiamo in mono
+  let monoData = [];
+  if (numChannels === 2) {
+    for (let i = 0; i < pcm16.length; i += 2) {
+      monoData.push((pcm16[i] + pcm16[i + 1]) / 2); // Media tra i due canali
+    }
+  } else {
+    monoData = Array.from(pcm16);
+  }
 
-  // Aggiungi il file Webm alla lista di selectedFiles in script.js
-  const blobFile = new File([blob], 'recorded_audio.webm', { type: 'audio/webm' });
+  // Normalizzazione del segnale tra -1 e 1 (Float32)
+  const float32Array = monoData.map(sample => sample / 32768.0);
 
-  // Emissione dell'evento personalizzato per passare il file Webm, così che possiamo processarlo
-  const event = new CustomEvent('recording-completed', { detail: { file: blobFile } });
-  window.dispatchEvent(event);
+  // Inizializzare il codificatore MP3
+  const mp3Encoder = new lamejs.Mp3Encoder(1, sampleRate, 128); // Mono, 44.1kHz, 128kbps
+  const mp3Data = [];
+  const samplesPerFrame = 1152;
+  const int16Array = new Int16Array(float32Array.map(n => n * 32767)); // Convert back to Int16
 
-  // Simula il click sul link per avviare il download automaticamente
-  link.click();
-});
+  // Convertire i dati PCM in MP3 frame per frame
+  for (let i = 0; i < int16Array.length; i += samplesPerFrame) {
+    const sampleChunk = int16Array.subarray(i, i + samplesPerFrame);
+    const mp3buf = mp3Encoder.encodeBuffer(sampleChunk);
+    if (mp3buf.length > 0) mp3Data.push(mp3buf);
+  }
+
+  // Terminare la codifica
+  const mp3buf = mp3Encoder.flush();
+  if (mp3buf.length > 0) mp3Data.push(mp3buf);
+
+  return new Blob(mp3Data, { type: 'audio/mp3' });
+}
