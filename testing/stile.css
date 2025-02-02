@@ -310,9 +310,11 @@ button#continue-btn:disabled:hover {
     padding-right: 0.8em;
     margin-top: 0.8em;
     margin-bottom: 0.4em;
-    background: #28282d;
+    background: #010101;
     border-radius: 20px;
-    box-shadow: 0px -1px 2px #ccc, 6px 6px 14px rgba(0, 0, 0, 0.5);
+    border-style: inset;
+    border: 1%;
+    box-shadow: 0px 1px 2px white, 6px 6px 14px rgba(0, 0, 0, 0.5);
     transition: width 0.3s ease;
         -webkit-transition: width 0.3s ease;
         -moz-transition: width 0.3s ease;
@@ -331,10 +333,10 @@ button#continue-btn:disabled:hover {
     padding-right: 0.8em;
     margin-left: 0.8em;
     margin-bottom: 1.8em;
-
-    background-color: #28282d;
+    border-style: inset;
+    background-color: #010101;
     border-radius: 20px;
-    box-shadow: 0px -1px 2px #ccc, 6px 6px 14px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 1px white, 6px 6px 14px rgba(0, 0, 0, 0.5);
     transition: width 0.3s ease;
         -webkit-transition: width 0.3s ease;
         -moz-transition: width 0.3s ease;
@@ -345,9 +347,9 @@ button#continue-btn:disabled:hover {
     appearance: none;
     width: 20px;
     height: 20px;
-    background-color: #010101; 
+    background-color: #ccc; 
     border-radius: 50%;
-    border: 2px solid #010101;
+    border: 2px solid #28282d;
     cursor: pointer;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
     position: relative;
@@ -358,9 +360,9 @@ button#continue-btn:disabled:hover {
     appearance: none;
     width: 20px;
     height: 20px; 
-    background-color: #28282d; 
+    background-color: #ccc; 
     border-radius: 50%;
-    border: 2px solid #28282d;
+    border: 2px solid #28282d;;
     cursor: pointer;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
     position: relative;
