@@ -716,7 +716,7 @@ async function stopRotation() {
   anelli.forEach(anello=>{
     if(anello.sequence){
       anello.sequence.stop(0.001);
-      anello.sequence.start(0.001);
+      anello.sequence.start(0.0015);
     }
   });
   isRunning = false;
