@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Memorizza il colore direttamente nel 'data-color'
+        // Memorizziamo il colore direttamente nel 'data-color'
         newRow.setAttribute('data-color', color);
 
         newRow.innerHTML = `
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // gestione del click sul pulsante di rimozione
         newRow.querySelector('.remove-btn').addEventListener('click', () => {
-            const rowIndex = Array.from(tableBody.children).indexOf(newRow);  // ottieni l'indice della riga
+            const rowIndex = Array.from(tableBody.children).indexOf(newRow);  // ottieniamo l'indice della riga
 
             if (rowIndex === -1) {
                 console.error("Errore: riga non trovata!");
@@ -293,10 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         tableBody.appendChild(newRow);
         toggleAddButtonVisibility();
-
- 
-        // Inizializza il drag and drop per le nuove celle
-        //initializeDragAndDrop();
     }
 
     function toggleAddButtonVisibility() {

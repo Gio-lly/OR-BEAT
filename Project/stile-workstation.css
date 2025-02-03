@@ -8,13 +8,13 @@
 /*#################################### Div background #################################################*/
 
 #background-div {
-    position: fixed;  /* Fisso sulla pagina */
+    position: fixed;  
     top: 0;
     left: 0;
-    width: 100vw;  /* Occupa tutta la larghezza della finestra */
-    height: 100vh; /* Occupa tutta l'altezza della finestra */
-    background-color: #DDDDDD; /* Cambia questo colore con quello che vuoi */
-    z-index: -1;  /* Lo manda in background dietro gli altri elementi */
+    width: 100vw;  
+    height: 100vh; 
+    background-color: #DDDDDD; 
+    z-index: -1;  
 }
 
 /*#####################################################################################################*/
@@ -154,45 +154,30 @@ table#matrixTable tr td:nth-child(2) {
     height: 20px;
     border-radius: 50%;
     margin: 0 auto;
-
-    /*border: 2px groove rgba(3, 137, 48, 1);
-    box-shadow: 0 0 15px rgba(3, 137, 48, 1);*/
 }
 #matrixTable tr:nth-child(3) .color-box {
     width: 20px;
     height: 20px;
     border-radius: 50%;
     margin: 0 auto;
-
-    /*border: 2px groove rgba(0, 0, 255, 1); 
-    box-shadow: 0 0 15px rgba(0, 0, 255, 1);*/
 }
 #matrixTable tr:nth-child(4) .color-box {
     width: 20px;
     height: 20px;
     border-radius: 50%;
     margin: 0 auto;
-
-    /*border: 1px groove rgb(241, 151, 15); 
-    box-shadow: 0 0 15px rgba(241, 196, 15, 1);*/ 
 }
 #matrixTable tr:nth-child(5) .color-box {
     width: 20px;
     height: 20px;
     border-radius: 50%;
     margin: 0 auto;
-
-    /*border: 2px groove rgba(142, 68, 173, 1); 
-    box-shadow: 0 0 15px rgba(142, 68, 173, 1);*/
 }
 #matrixTable tr:nth-child(6) .color-box {
     width: 20px;
     height: 20px;
     border-radius: 50%;
     margin: 0 auto;
-
-    /*border: 2px groove rgb(206, 95, 154);
-    box-shadow: 0 0 15px rgb(206, 95, 154);*/
 }
 /*-----------------------------------------------*/
 button.add-row-btn {
@@ -232,7 +217,7 @@ button.remove-btn {
 }
 
 #canvas-container.move-up {
-    top: 60%; /* posizione quando si nascondono i sample*/
+    top: 60%; 
 }
 /*#####################################################################################################*/
 /*#################################### SEZIONE WORKSTATION ############################################*/
@@ -760,12 +745,11 @@ datalist > option:before {
     right: 4%;
     top: calc(50vh + ((100vh - 12em) - 50vh) / 2);
     width: 350px;
-    /* Se preferisci un'altezza fissa, impostala (es. 5em) oppure usa "auto" se il contenuto ne determina l'altezza */
     height: auto;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    display: none; /* Nascondi inizialmente */
+    display: none; 
     align-items: center;
     color: white;
     font-size: 1em;

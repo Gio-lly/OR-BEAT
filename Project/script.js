@@ -448,7 +448,7 @@ function createPlayerCopy(originalPlayer) {
         originalBuffer.sampleRate
     );
 
-    // Copia i dati dei canali
+    // Copiamo i dati dei canali
     for (let channel = 0; channel < originalBuffer.numberOfChannels; channel++) {
         copiedBuffer.getChannelData(channel).set(originalBuffer.getChannelData(channel));
     }

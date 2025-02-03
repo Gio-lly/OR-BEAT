@@ -53,20 +53,4 @@ class Model {
       this.representation_matrix[j][1] = j + 1;  // j+1 per mantenere la numerazione corretta (1-based index)
     }
   }
-
-  /* setRingPlayer(segmentBuffer, startTime, endTime, i_ring) {
-    const player = new Tone.Player(segmentBuffer).toDestination();
-    player.autostart = false;  // Impedisce la riproduzione automatica
-    this.representation_matrix[i_ring].push(player);
-    this.representation_matrix[i_ring][0] = new Array(startTime, endTime);
-  }
-
-  playSound(i_ring){
-    if(this.representation_matrix[i_ring][7]){
-      this.representation_matrix[i_ring][7].start();
-    }
-  } */
-  //[ [[0,1],iring,steps,density,phase,[booleans]],  ]
-
-
 }
