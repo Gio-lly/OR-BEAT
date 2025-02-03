@@ -758,10 +758,11 @@ datalist > option:before {
 #custom-rectangle {
     position: fixed;
     right: 4%;
-    top: 67%; /* Lo posizioniamo tra lo slider e il pulsante */
-    width: 350px;  /* Larghezza fissa in pixel */
-    height: auto;  /* Altezza fissa in pixel */
-    background-color: rgba(0, 0, 0, 0.7); /* Sfondo scuro semi-trasparente */
+    top: calc(50vh + ((100vh - 17em) - 50vh) / 2);
+    width: 350px;
+    /* Se preferisci un'altezza fissa, impostala (es. 5em) oppure usa "auto" se il contenuto ne determina l'altezza */
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     display: none; /* Nascondi inizialmente */
@@ -769,12 +770,13 @@ datalist > option:before {
     color: white;
     font-size: 1em;
     overflow-x: scroll;
+    z-index: 9999;
 }
 
 #start-recording-btn, #stop-recording-btn,#download-final-recording {
     display: none;
     position: fixed;
-    bottom: 17em;
+    bottom: 12em;
     right: 4em;
     width: 9em;
     height: 4em;
