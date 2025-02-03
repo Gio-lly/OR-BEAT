@@ -162,25 +162,26 @@ recButton.onclick = (event) => {
   })
 }
 
-// ######################################## GESTIONE DELLA REGISTRAZIONE AUDIO FINALE (CON MIC ESTERNO!!)
+// ######################################## GESTIONE DELLA REGISTRAZIONE AUDIO FINALE
 let finalWsurf, finalWave;
 let recorder = new Tone.Recorder();
+
+//creiamo un synth per il silenzio
 let alwaysOnGain = new Tone.Gain(0.0001);
 const synth = new Tone.Synth({
-  oscillator: { type: "sine" },  // Puoi cambiare tipo di oscillatore
+  oscillator: { type: "sine" },  
   envelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 0.8 }
-}).connect(alwaysOnGain); // Connetti il synth al GainNode
+}).connect(alwaysOnGain); 
 
-// Definisci una sequenza di note che verrà ripetuta
-const notes = ["C4", "E4", "G4", "B4"]; // Puoi personalizzare questa sequenza
+const notes = ["C4", "E4", "G4", "B4"]; 
 
 // Durata del loop (in secondi)
 const loopDuration = 4;
 
-// Crea un loop infinito che suona la sequenza
+// Creiamo un loop infinito che suona la sequenza
 const loop = new Tone.Loop((time) => {
-  const note = notes[Math.floor(Math.random() * notes.length)]; // Prendi una nota casuale
-  synth.triggerAttackRelease(note, "8n", time); // Suona la nota
+  const note = notes[Math.floor(Math.random() * notes.length)]; 
+  synth.triggerAttackRelease(note, "8n", time);
 }, "4n").start(0); // Ripeti ogni 1/4 di battito (quarter note)
 
 // Imposta la durata del loop
@@ -228,9 +229,6 @@ async function stopFinalRecording() {
   });
     
   recordedSong.loadBlob(recording);
-
-  // Rendi il container visibile
-  //waveformContainer.style.display = "flex";
 
   // Abilita il download
   document.getElementById("download-final-recording").style.display = "";

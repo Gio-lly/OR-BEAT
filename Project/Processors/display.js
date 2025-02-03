@@ -17,7 +17,6 @@ const timeline = WaveSurfer.Timeline.create({
 })
 const regionStartTimes = {}; // Qui mi salverò tutti i starting points
 
-// Give regions a random color when they are created
 const random = (min, max) => Math.random() * (max - min) + min
 const randomColor = () => `rgba(139, 28, 29, 0.5)`;
 
@@ -35,17 +34,17 @@ const ws = WaveSurfer.create({
 function displayWaveform(file) { // Viene chiamata dallo script.js  e disegna la waveform del file
   const fileURL = URL.createObjectURL(file);  // Crea un URL per il file (un oggetto URL.createObjectURL())
 
-  // Carica il file audio in WaveSurfer
+  // Carichiamo il file audio in WaveSurfer
   ws.load(fileURL);
 
-  // Mostra la sezione contenente la checkbox e lo zoom
+  // Mostriamo la sezione contenente la checkbox e lo zoom
   ws.on('ready', function () {
     document.getElementById('workstation').style.display = 'block';
     document.querySelector('.savings').style.display = 'flex';
     document.getElementById('waveform-controls').style.display = 'block';
 
     p5on = true
-    setup(p5on) // avvia setup (poi draw()) e quindi rendi visibile tutto il codice p5
+    setup(p5on) // avvia setup (poi draw()) e quindi rende visibile tutto il codice p5
 
   });
 }
@@ -61,7 +60,7 @@ function onsetsRegions(onsetTimestamps, duration) { // Viene chiamata dallo scri
   // Puliamo e resettiamo...
   regions.clearRegions();
 
-  // Crea la prima regione 'marker' dal punto 0 al primo onset, sulla forma d'onda
+  // Creiamo la prima regione 'marker' dal punto 0 al primo onset, sulla forma d'onda
   ws.on('decode', () => {
     const firstRegion = regions.addRegion({
       id: '0',
@@ -72,12 +71,12 @@ function onsetsRegions(onsetTimestamps, duration) { // Viene chiamata dallo scri
     regionStartTimes[firstRegion.id] = 0;
   });
 
-  // Crea una regione 'marker' per ogni onset rilevato
+  // Creiamo una regione 'marker' per ogni onset rilevato
   for (let i = 0; i < onsetTimestamps.length; i++) {
     const startTime = onsetTimestamps[i];
 
     if ((i + 1) < onsetTimestamps.length && (onsetTimestamps[i + 1] - startTime) >= MIN_THRESHOLD) {
-      // Crea una regione sulla forma d'onda
+      // Creiamo una regione sulla forma d'onda
       ws.on('decode', () => {
         const newRegion = regions.addRegion({
           id: i + 1,
@@ -165,13 +164,13 @@ ws.on('click', () => {
 //-------------------------------------------------------------------------------- GESTIONE OVERLAPPING MARKER
 // Funzione per capire se tutti i marker sono in ordine oppure no, se restituisce False ho sovrapposizione di due marker
 function checkStartTimesOrder() {
-  // Ottieni tutte le regioni
+  // Ottieniamo tutte le regioni
   const regionsArray = regions.getRegions();
 
-  // Estrai i startTimes delle regioni
+  // Estraiamo i startTimes delle regioni
   const startTimes = regionsArray.map(region => region.start);
 
-  // Verifica che gli startTimes siano in ordine crescente
+  // Verifichiamo che gli startTimes siano in ordine crescente
   for (let i = 1; i < startTimes.length; i++) {
     if (startTimes[i] < startTimes[i - 1]) {
       console.warn("Gli startTimes non sono in ordine crescente! Reset ...");
@@ -193,23 +192,23 @@ regions.on('region-updated', (region) => {
 
     // puliamo...
     coloredRegions.clearRegions();
-    // Ottieni tutte le regioni esistenti
+    // Ottieniamo tutte le regioni esistenti
     const regionsArray = regions.getRegions();
 
-    // Controlla se c'è una sovrapposizione tra la regione corrente e un'altra
+    // Controlliamo se c'è una sovrapposizione tra la regione corrente e un'altra
     if (!checkStartTimesOrder()) {
       alert("Non puoi spostare la regione su un altro marker!");
 
-      // Ripristina la posizione originale
+      // Ripristiniamo la posizione originale
       region.setOptions({ start: originalStartTime });
       return;
     }
 
-    // Aggiorna i tempi solo se non ci sono sovrapposizioni
+    // Aggiorniamo i tempi solo se non ci sono sovrapposizioni
     draggedRegion = { id: region.id, start: newStartTime };
     regionStartTimes[region.id] = newStartTime;
 
-    //aggiorna la posizione dell'onset anche nel modello
+    //aggiorniamo la posizione dell'onset anche nel modello
     modello.onsets[region.id - 1] = newStartTime;
   } catch (e) {
     console.log("Errore nel muovere la regione");
@@ -227,14 +226,14 @@ ws.once('decode', () => {
 
 //-------------------------------------------------------------------------------- GESTIONE EVENTO DOPPIO-CLICK
 function doubleclick() {
-  const clickTime = ws.getCurrentTime(); // Ottieni il tempo in cui è stato cliccato
+  const clickTime = ws.getCurrentTime(); // Ottieniamo il tempo in cui è stato cliccato
   const regionsArray = regions.getRegions();
   var data = null;
   let newRegion = null;
   let startTime = null;
   let nextStartTime = null;
 
-  // Cerca la regione più vicina al clic
+  // Cerchiamo la regione più vicina al clic
   for (let i = 0; i < regionsArray.length; i++) {
     startTime = regionsArray[i].start;
 
@@ -273,7 +272,7 @@ function doubleclick() {
 
   // LOGICA DI ESPORTAZIONE
   const event = new CustomEvent('waveDataReady');
-  // Memorizza i dati in una variabile globale (window)
+  // Memorizziamo i dati in una variabile globale (window)
   window.waveData = data;
   window.dispatchEvent(event);
 }
@@ -378,10 +377,10 @@ function rimuoviAnello(i) {
       anelli[i].sequence = null;
   }
 
-  // Rimuovi l'anello dall'array
+  // Rimuoviamo l'anello dall'array
   anelli.splice(i, 1);
 
-  // Rimuovi l'anello dalla matrice di rappresentazione
+  // Rimuoviamo l'anello dalla matrice di rappresentazione
   modello.removeRing(i);
 
   console.log("Stato degli anelli dopo la rimozione:", anelli);
@@ -471,21 +470,21 @@ class Anello {
           this.sequence.dispose(); // Libera risorse dalla sequenza precedente
         }
       }
-      // Aggiorna la sequenza con la nuova lista
+      // Aggiorniamo la sequenza con la nuova lista
 
-      // Aggiorna la lista dell'anello
+      // Aggiorniamo la lista dell'anello
       const noteDivision = this.calculateNoteDivision(this.bool_list);
       console.log("Note division:" + noteDivision)
       
 
-      // Ricrea la sequence
-      let lastTime = 0; // Memorizza il tempo dell'ultimo step
+      // Ricreaiamo la sequence
+      let lastTime = 0; // Memorizziamo il tempo dell'ultimo step
       this.sequence = new Tone.Sequence((time, value) => {
         if (this.player && value) {
           if (this.player.state === "started") this.player.stop();
           this.player.start(time); // Suona solo se il valore è true
 
-          // Printa il time in cui la sequence suona il player e lo compara con quello precedente
+          // Printiamo il time in cui la sequence suona il player e lo compara con quello precedente
           console.log("time in cui viene suonato il player della sequence dell'annello #"+ anelli.indexOf(this)+":" + time)
           const diff = time - lastTime;
           console.log("Differenza con il tempo precedente:"+diff)
@@ -509,7 +508,7 @@ class Anello {
       let startAngolo = i * (angoloStep + gap2) + rotationOffset;
       let endAngolo = startAngolo + angoloStep;
 
-      // Controlla se la barra si trova sopra questo segmento
+      // Controlliamo se la barra si trova sopra questo segmento
       let highlight = angle >= startAngolo && angle < endAngolo;
 
 
@@ -529,14 +528,14 @@ class Anello {
           this._updatingSequence = true;
           Tone.Transport.pause();
           Tone.Transport.position = "0:0:0";
-          Tone.Transport.bpm.value = bpm; // Aggiorna il BPM globale
+          Tone.Transport.bpm.value = bpm; // Aggiorniamo il BPM globale
 
           this.updateSequenceWithBoolList();
 
           Tone.Transport.start();
           this.hasToUpdate = false;
           bpmChanged = false;
-          // Resetta il flag dopo un breve intervallo (ad esempio 50 ms)
+          // Resettiamo il flag dopo un breve intervallo (ad esempio 50 ms)
           setTimeout(() => {
             this._updatingSequence = false;
           }, 50);
@@ -544,7 +543,7 @@ class Anello {
       }
       
 
-      // Imposta il colore del segmento
+      // Impostiamo il colore del segmento
       if (highlight & isRunning) {
         stroke(this.bool_list[i] ? this.color : 180); // Colore evidenziato
         strokeWeight(spessoreAnello + 4)
@@ -625,25 +624,25 @@ function createControls() {
     savings.classList.toggle('open');
     canvasContainer.classList.toggle('move-up'); // Sposta il canvas container
 
-    // Aggiorna il testo e l'icona del pulsante
+    // Aggiorniamo il testo e l'icona del pulsante
     if (savings.classList.contains('open')) {
       icon.classList.remove('fa-arrow-down-short-wide');
       icon.classList.add('fa-arrow-up-short-wide');
-      button.textContent = ''; // Resetta il contenuto del pulsante
-      button.append('Hide  '); // Aggiungi "Hide"
-      button.append(icon); // Riaggiungi l'icona
+      button.textContent = ''; // Resettiamo il contenuto del pulsante
+      button.append('Hide  '); // Aggiungiamo "Hide"
+      button.append(icon); // Riaggiungiamo l'icona
     } else {
       icon.classList.remove('fa-arrow-up-short-wide');
       icon.classList.add('fa-arrow-down-short-wide');
-      button.textContent = ''; // Resetta il contenuto del pulsante
-      button.append('Show  '); // Aggiungi "Show"
-      button.append(icon); // Riaggiungi l'icona
+      button.textContent = ''; // Resettiamo il contenuto del pulsante
+      button.append('Show  '); // Aggiungiamo "Show"
+      button.append(icon); // Riaggiungiamo l'icona
     }
   });
 
 
 
-  // Crea un unico pulsante Play/Pause
+  // Creiamo un unico pulsante Play/Pause
   playPauseButton = createDiv('<i class="fas fa-play-circle"></i>');
   playPauseButton.id('playPauseOrbit-btn');
   playPauseButton.mousePressed(toggleRotation);
@@ -652,11 +651,11 @@ function createControls() {
   stopButton.id('resetOrbit-btn');
   stopButton.mousePressed(stopRotation);
 
-  // Crea l'elemento testo per visualizzare il valore del BPM
+  // Creiamo l'elemento testo per visualizzare il valore del BPM
   let bpmText = createDiv(`${bpm} BPM`);
   bpmText.id('bpm-value'); // Aggiungi l'ID per personalizzare tramite CSS
 
-  // Crea la barra di controllo dei bpm
+  // Creiamo la barra di controllo dei bpm
   let bpmSlider = createSlider(40, 180, 80, 1);
   bpmSlider.id('sliderOrbit-btn');
   bpmSlider.input(() => {

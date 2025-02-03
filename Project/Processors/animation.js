@@ -174,14 +174,14 @@ window.addEventListener('resize', function() {
 
 /*#####################################################################################################*/
 /*#################################### ANIMAZIONE CREDITS #############################################*/
-// Apri la modal "credits-page" con animazione
+// Apriamo la modal "credits-page" con animazione
 document.getElementById("credits-btn").addEventListener("click", function() {
     const modal = document.getElementById("credits-page");
     
     // Mostra la modal e applica l'animazione
     modal.style.display = 'flex';
 
-    // Utilizza GSAP per l'animazione della modal
+    // Utilizziamo GSAP per l'animazione della modal
     gsap.from(modal, {
         duration: 1.6, // Durata dell'animazione
         y: innerHeight,
@@ -189,22 +189,22 @@ document.getElementById("credits-btn").addEventListener("click", function() {
         ease: "expo.inOut", // Tipo di easing
         onStart: function() {
             document.getElementById("credits-page").style.display = 'flex';
-            // Nascondi la pagina di benvenuto
+            // Nascondiamo la pagina di benvenuto
             document.getElementById("welcomePage").style.display = 'none';
         }
     });
 });
 
-// Chiudi la modal "credits-page" e torna alla pagina di benvenuto
+// Chiudiamo la modal "credits-page" e torna alla pagina di benvenuto
 document.getElementById("close-btn").addEventListener("click", function() {
     const modal = document.getElementById("credits-page");
 
-    // Esegui l'animazione di chiusura
+    // Eseguiamo l'animazione di chiusura
     gsap.to(modal, {
         duration: 0.2, // Durata dell'animazione
         opacity: innerHeight,
         onComplete: function() {
-            // Una volta che la modal è invisibile e fuori schermo, nascondiamola
+            // Una volta che la modal è invisibile e fuori schermo, la nascondiamo
             modal.style.display = 'none';
 
             // Mostriamo la pagina di benvenuto con una nuova animazione
@@ -217,7 +217,7 @@ document.getElementById("close-btn").addEventListener("click", function() {
                 opacity: 0, // Inizia con opacità 0
                 ease: "expo.inOut", // Tipo di easing
                 onStart: function() {
-                    // Centra la pagina di benvenuto
+                    // Centriamo la pagina di benvenuto
                     welcomePage.style.top = '50%';
                     welcomePage.style.left = '50%';
                     welcomePage.style.transform = 'translate(-50%, -50%)';
@@ -229,14 +229,14 @@ document.getElementById("close-btn").addEventListener("click", function() {
 
 /*#####################################################################################################*/
 /*#################################### ANIMAZIONE MENU ################################################*/
-// Apri la modal "menu-page" con animazione
+// Apriamo la modal "menu-page" con animazione
 document.getElementById("menu-btn").addEventListener("click", function() {
     const modal = document.getElementById("menu-page");
     
-    // Mostra la modal e applica l'animazione
+    // Mostriamo la modal e applica l'animazione
     modal.style.display = 'flex';
 
-    // Utilizza GSAP per l'animazione della modal
+    // Utilizziamo GSAP per l'animazione della modal
     gsap.from(modal, {
         duration: 1.6, // Durata dell'animazione
         y: innerHeight,
@@ -244,22 +244,22 @@ document.getElementById("menu-btn").addEventListener("click", function() {
         ease: "expo.inOut", // Tipo di easing
         onStart: function() {
             document.getElementById("menu-page").style.display = 'flex';
-            // Nascondi la pagina di benvenuto
+            // Nascondiamo la pagina di benvenuto
             document.getElementById("welcomePage").style.display = 'none';
         }
     });
 });
 
-// Chiudi la modal "credits-page" e torna alla pagina di benvenuto
+// Chiudiamo la modal "credits-page" e torna alla pagina di benvenuto
 document.getElementById("closeMenu-btn").addEventListener("click", function() {
     const modal = document.getElementById("menu-page");
 
-    // Esegui l'animazione di chiusura
+    // Eseguiamo l'animazione di chiusura
     gsap.to(modal, {
         duration: 0.2, // Durata dell'animazione
         opacity: innerHeight,
         onComplete: function() {
-            // Una volta che la modal è invisibile e fuori schermo, nascondiamola
+            // Una volta che la modal è invisibile e fuori schermo, la nascondiamo
             modal.style.display = 'none';
 
             // Mostriamo la pagina di benvenuto con una nuova animazione
