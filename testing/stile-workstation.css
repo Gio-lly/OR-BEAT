@@ -744,25 +744,23 @@ datalist > option:before {
 #custom-rectangle {
     position: fixed;
     right: 4%;
-    top: 58%; /* Lo posizioniamo tra lo slider e il pulsante */
-    width: 16em;
-    height: 5em;
+    top: 70%; /* Lo posizioniamo tra lo slider e il pulsante */
+    width: 350px;  /* Larghezza fissa in pixel */
+    height: auto;  /* Altezza fissa in pixel */
     background-color: rgba(0, 0, 0, 0.7); /* Sfondo scuro semi-trasparente */
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    display: flex;
+    display: none; /* Nascondi inizialmente */
     align-items: center;
-    justify-content: center;
     color: white;
     font-size: 1em;
-    text-align: center;
-    z-index: 9999;
+    overflow-x: scroll;
 }
 
 #start-recording-btn, #stop-recording-btn,#download-final-recording {
     display: none;
     position: fixed;
-    bottom: 14em;
+    bottom: 15em;
     right: 4em;
     width: 9em;
     height: 4em;
@@ -802,7 +800,7 @@ datalist > option:before {
 #back-to-start-btn {
     display: none;
     position: fixed;
-    bottom: 4em;
+    bottom: 2em;
     right: 4em;
     width: 8em;
     height: 4em;

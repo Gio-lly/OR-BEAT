@@ -177,27 +177,40 @@ document.querySelector("#stop-recording-btn").addEventListener('click',stopFinal
 
 async function stopFinalRecording() {
   const recording = await recorder.stop();
-
+  stopRotation();
   // Assicura che il div rettangolare sia visibile
   const waveformContainer = document.getElementById("custom-rectangle");
+  waveformContainer.style.display="block";
   waveformContainer.innerHTML = ""; // Pulisce il contenuto precedente
 
   // Inizializza WaveSurfer all'interno del div
   const recordedSong = WaveSurfer.create({
-      container: '#custom-rectangle',  // Usa il nuovo div creato dentro il container
-      waveColor: 'violet',
-      progressColor: 'purple',
-  });
+    container: '#custom-rectangle',  // Div con dimensioni fisse e visibile
+    waveColor: '#748DA6',             // Colore dell'onda
+    progressColor: '#EDD27C', 
+    cursorColor: '#ddd5e9',
+    cursorWidth: 2,        // Colore di avanzamento
+    responsive: true,
+    scrollParent: true,
+    minPxPerSec:50,
+    hideScrollbar:false,
+    backend: 'MediaElement'                      // Larghezza di ciascuna "barra" dell'onda
+  }); 
 
+  recordedSong.on('seek', (progress) => {
+    recordedSong.play(recordedSong.getDuration() * progress);
+  });
+    
   recordedSong.loadBlob(recording);
 
   // Rendi il container visibile
-  waveformContainer.style.display = "flex";
+  //waveformContainer.style.display = "flex";
 
   // Abilita il download
   document.getElementById("download-final-recording").style.display = "";
   document.getElementById("download-final-recording").onclick = function() {
-      const link = document.createElement('a');
+      
+    const link = document.createElement('a');
       link.href = URL.createObjectURL(recording);
       link.download = 'audio.wav'; 
       link.click();
