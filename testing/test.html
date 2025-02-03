@@ -38,11 +38,35 @@
 
     <!-- Modal di Menu -->
     <div id="menu-page">
-        <div class="menu-content">
-            <p>· Upload your track, record a new piece, or choose from our selection of preset options</p><br><br>
-            <p>· Use samples to create unique sounds, then drag and drop your favorites into the table</p><br><br>
-            <p>· Explore the circular orbit to refine your rhythm and save your creations</p><br><br>
-            <br><br><button id="closeMenu-btn">Back</button>
+        <div class="menu-content" style="margin:0; display: flex; flex-wrap: wrap; color: white;">
+            <h2 style="flex: 1; margin-bottom: 20px;">How to Use Or-Beat</h2>
+            <ol style="flex: 2; text-align: left;">
+                <li style="margin-bottom: 15px;"><strong style="color: #FFD1B3;">Choose an Audio File:</strong> Select an audio file by:
+                    <ul style="text-align: left; padding-left: 20px;">
+                        <li>Dragging and dropping it onto the black box.</li>
+                        <li>Clicking the black box and uploading a file from your PC.</li>
+                        <li>Selecting one of the presets.</li>
+                        <li>Recording audio using the <strong>Record</strong> button.</li>
+                    </ul>
+                </li>
+                <li style="margin-bottom: 15px;"><strong style="color: #A8E6CF;">Set Onset Density:</strong> Choose how many samples you want to extract from the audio file.</li>
+                <li style="margin-bottom: 15px;"><strong style="color: #D1C6E0;">Click Continue:</strong> Move forward to the drum machine.</li>
+                <li style="margin-bottom: 15px;"><strong style="color: #A2DFF7;">Explore the Drum Machine:</strong>
+                    <ul style="text-align: left; padding-left: 20px;">
+                        <li>You can listen to each sample extracted from the uploaded audio clicking on the waveform.</li>
+                        <li>Double-click a sample to add it to the first available slot below the waveform.</li>
+                        <li>Click on a slot to listen to it, discard it with the <strong>Discard</strong> button, or drag it into the matrix.</li>
+                        <li>Add rows to the matrix with the <strong>+</strong> button, or remove them with the red trash bin icon.</li>
+                        <li>Modify matrix parameters and/or click drum machine steps to create unique rhythmic patterns, including polyrhythms and polymeters.</li>
+                        <li>Click the <strong>Dice</strong> button to randomize parameters for inspiration.</li>
+                    </ul>
+                </li>
+                <li style="margin-bottom: 15px;"><strong style="color: #FF9A8B;">Play Your Creation:</strong> Press <strong>Play</strong> to hear your work and adjust the BPM as desired.</li>
+                <li style="margin-bottom: 15px;"><strong style="color: #C6A7D6;">Pause or Stop:</strong> Use the <strong>Pause</strong> button to temporarily stop or the <strong>Stop</strong> button to reset playback.</li>
+                <li style="margin-bottom: 15px;"><strong style="color: #e9a374;">Record Your Beat:</strong> Click <strong>Start Recording</strong> to save your masterpiece.</li>
+                <br><br><button id="closeMenu-btn">Back</button>
+            </ol>
+            
         </div>
     </div>
 
@@ -125,12 +149,12 @@
         <!-- Qui abbiamo il bottone 'CONTINUA' e la visualizzazione del file che verrà processato -->
         <br>
 
-        <span style="position: relative;left: 15em;">Sampler sensitivity</span>
-        <div style="margin:0;display: flexbox;align-items: center;justify-content: space-between;"> 
+        <span style="position: relative;left: 15em;">Density OnSets</span>
+        <div style="margin:0;display: flexbox;align-items: center;justify-content: space-between;">
             <button id="continue-btn" type="submit">Continue</button>
-
-            <input id="sensitivity" type="range" min="50" max="200" value="150">
-            <span id="sensitivity-value" style="color:#fff">150</span>
+        
+            <input id="density-onsets" type="range" min="50" max="200" value="150">
+            <span id="density-value" style="color:#fff">150</span>
         </div>
         <div id="file-list" style="padding-bottom: 1em;"></div>
     </div>
