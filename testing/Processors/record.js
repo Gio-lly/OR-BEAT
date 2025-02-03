@@ -165,6 +165,30 @@ recButton.onclick = (event) => {
 // ######################################## GESTIONE DELLA REGISTRAZIONE AUDIO FINALE (CON MIC ESTERNO!!)
 let finalWsurf, finalWave;
 let recorder = new Tone.Recorder();
+let alwaysOnGain = new Tone.Gain(0.0001);
+const synth = new Tone.Synth({
+  oscillator: { type: "sine" },  // Puoi cambiare tipo di oscillatore
+  envelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 0.8 }
+}).connect(alwaysOnGain); // Connetti il synth al GainNode
+
+// Definisci una sequenza di note che verrà ripetuta
+const notes = ["C4", "E4", "G4", "B4"]; // Puoi personalizzare questa sequenza
+
+// Durata del loop (in secondi)
+const loopDuration = 4;
+
+// Crea un loop infinito che suona la sequenza
+const loop = new Tone.Loop((time) => {
+  const note = notes[Math.floor(Math.random() * notes.length)]; // Prendi una nota casuale
+  synth.triggerAttackRelease(note, "8n", time); // Suona la nota
+}, "4n").start(0); // Ripeti ogni 1/4 di battito (quarter note)
+
+// Imposta la durata del loop
+loop.iterations = Infinity; // Loop infinito
+loop.interval = `${loopDuration}n`; // Ripete ogni 'loopDuration' battiti
+
+//connetto l'alwaysOnGain al recorder
+alwaysOnGain.connect(recorder);
 const stopRecording = document.querySelector("#stop-recording-btn");
 const startRecording = document.querySelector("#start-recording-btn");
 startRecording.addEventListener('click',()=>{

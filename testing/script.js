@@ -120,9 +120,9 @@ dropZone.addEventListener('drop', (event) => {
 const presetBtn = document.getElementById('preset-btn');
 const presetList = document.getElementById('preset-list');
 const presets = [
-    { name: "Preset 1", file: "Assets/X-intro.mp3", type: 'audio/wav' },
-    { name: "Preset 2", file: "Assets/Drum_Kit.mp3", type: 'audio/wav' },
-    { name: "Preset 3", file: "Assets/drum_loop.mp3", type: 'audio/mpeg' },
+    { name: "Song", file: "Assets/song_radiohead.mp3", type: 'audio/wav' },
+    { name: "Drum Kit", file: "Assets/Drum_Kit.mp3", type: 'audio/wav' },
+    { name: "Drum Loop", file: "Assets/drum_loop.mp3", type: 'audio/mpeg' },
 ];
 
 // Mostra l'elenco dei preset quando si clicca sul pulsante
