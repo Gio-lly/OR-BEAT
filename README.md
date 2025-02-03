@@ -241,13 +241,13 @@ The handleSegmentExtraction function extracts a specific audio segment from an a
 ## Visual Preview
 
 ### Welcome Page
-![Welcome Page](.\testing\Screenshots\welcomePage.png)
+![Welcome Page](testing\Screenshots\welcomePage.png)
 
 ### Record Page
-![Record Page](.\testing\Screenshots\recordPage.png)
+![Record Page](testing\Screenshots\recordPage.png)
 
 ### Workstation
-![Workstation](.\testing\Screenshots\workstation.png)
+![Workstation](testing\Screenshots\workstation.png)
 
 ## License & Usage Terms
 OR-BEAT © 2025 All Rights Reserved. 
