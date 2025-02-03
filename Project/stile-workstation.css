@@ -776,7 +776,7 @@ datalist > option:before {
 #start-recording-btn, #stop-recording-btn,#download-final-recording {
     display: none;
     position: fixed;
-    bottom: 8em;
+    bottom: 6em;
     right: 4em;
     width: 9em;
     height: 4em;
