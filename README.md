@@ -4,6 +4,8 @@
 
 >" Your music, your vision, your rhythm. "
 
+[TRY IT OUT HERE](https://gio-lly.github.io/ACTAM-Final-Project/)
+
 Or-Beat is a web-based application that allows users to extract audio samples from an uploaded or real-time recorded file, and use them to create a circular drum machine interface. Users are afforded the ability to interactively manipulate and refine the sounds, facilitating the creation of distinctive and intricate rhythms and beats.
 
 ## Table of Contents
