@@ -744,7 +744,7 @@ datalist > option:before {
 #custom-rectangle {
     position: fixed;
     right: 4%;
-    top: 70%; /* Lo posizioniamo tra lo slider e il pulsante */
+    top: 67%; /* Lo posizioniamo tra lo slider e il pulsante */
     width: 350px;  /* Larghezza fissa in pixel */
     height: auto;  /* Altezza fissa in pixel */
     background-color: rgba(0, 0, 0, 0.7); /* Sfondo scuro semi-trasparente */
@@ -760,7 +760,7 @@ datalist > option:before {
 #start-recording-btn, #stop-recording-btn,#download-final-recording {
     display: none;
     position: fixed;
-    bottom: 15em;
+    bottom: 17em;
     right: 4em;
     width: 9em;
     height: 4em;
@@ -781,7 +781,9 @@ datalist > option:before {
         -ms-transition: transform 0.2s ease, box-shadow 0.2s ease; 
     z-index: 99999;
 }
-
+#download-final-recording{
+    right: 15em;
+}
 #start-recording-btn:hover, #stop-recording-btn:hover {
     background-color: #010101;
     transform: scale(1.1);
@@ -800,7 +802,7 @@ datalist > option:before {
 #back-to-start-btn {
     display: none;
     position: fixed;
-    bottom: 2em;
+    bottom: 1em;
     right: 4em;
     width: 8em;
     height: 4em;

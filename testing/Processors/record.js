@@ -166,10 +166,12 @@ recButton.onclick = (event) => {
 let finalWsurf, finalWave;
 let recorder = new Tone.Recorder();
 const stopRecording = document.querySelector("#stop-recording-btn");
-
-document.querySelector("#start-recording-btn").addEventListener('click',()=>{
+const startRecording = document.querySelector("#start-recording-btn");
+startRecording.addEventListener('click',()=>{
   recorder.start();
   stopRecording.style.display="";
+  stopRecording.style.backgroundColor="red";
+
 });
 
 let finalRecordedAudioBuffer=null;
@@ -197,7 +199,7 @@ async function stopFinalRecording() {
     backend: 'MediaElement'                      // Larghezza di ciascuna "barra" dell'onda
   }); 
 
-  recordedSong.on('seek', (progress) => {
+  recordedSong.on('click', (progress) => {
     recordedSong.play(recordedSong.getDuration() * progress);
   });
     
@@ -215,6 +217,7 @@ async function stopFinalRecording() {
       link.download = 'audio.wav'; 
       link.click();
   };
+  stopRecording.style.display="none";
 }
 
 async function convertToMP3(blob) {
