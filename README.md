@@ -241,13 +241,13 @@ The handleSegmentExtraction function extracts a specific audio segment from an a
 ## Visual Preview
 
 ### Welcome Page
-![Welcome Page](https://github.com/Gio-lly/ACTAM-Final-Project/blob/main/testing/Screenshots/welcomePage.png)
+![Welcome Page](https://github.com/Gio-lly/ACTAM-Final-Project/blob/main/Project/Screenshots/welcomePage.png)
 
 ### Record Page
-![Record Page](https://github.com/Gio-lly/ACTAM-Final-Project/blob/main/testing/Screenshots/recordPage.png)
+![Record Page](https://github.com/Gio-lly/ACTAM-Final-Project/blob/main/Project/Screenshots/recordPage.png)
 
 ### Workstation
-![Workstation](https://github.com/Gio-lly/ACTAM-Final-Project/blob/main/testing/Screenshots/workstation.png)
+![Workstation](https://github.com/Gio-lly/ACTAM-Final-Project/blob/main/Project/Screenshots/workstation.png)
 
 ## License & Usage Terms
 OR-BEAT © 2025 All Rights Reserved. 
