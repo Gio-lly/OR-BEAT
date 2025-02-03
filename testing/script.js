@@ -168,17 +168,39 @@ window.addEventListener('recording-completed', (event) => {
 // ---------------------------------------------------------------------------------
 // Gestione della sensitivity
 // Aggiorna il valore del range in tempo reale
-const sensitivityRange = document.getElementById('sensitivity');
-const sensitivityValue = document.getElementById('sensitivity-value');
+// Gestione della Densità Onsets
+// Aggiorna il valore del range in tempo reale
+const densityRange = document.getElementById('density-onsets');
+const densityValue = document.getElementById('density-value');
 
-sensitivityRange.addEventListener('input', function(event) {
+// Mappatura della densità onsets in sensitivity
+function mapDensityToSensitivity(density) {
+    const minDensity = 50;
+    const maxDensity = 200;
+    const minSensitivity = 50;
+    const maxSensitivity = 200;
+    
+    return minSensitivity + ((maxDensity - density) * (maxSensitivity - minSensitivity)) / (maxDensity - minDensity);
+}
+
+let sensitivity = 100;
+
+densityRange.addEventListener('input', function(event) {
     event.stopPropagation();
-    sensitivityValue.textContent = sensitivityRange.value;
+    const density = densityRange.value;
+    densityValue.textContent = density;
+    
+    // Calcola la sensibilità basata sulla densità onsets
+    sensitivity = mapDensityToSensitivity(density);
+
+    //console.log("Sensitivity:"+sensitivity)
 });
-// Evento 'mousedown' per gestire l'inizio del trascinamento
-sensitivityRange.addEventListener('click', (event) => {
+
+// Evento 'click' per evitare propagazione
+densityRange.addEventListener('click', (event) => {
     event.stopPropagation();
 });
+
 // _________________________________________________________________________________
 // ---------------------------------------------------------------------------------
 // Funzione per creare un nodo in cui facciamo il rilevamento OnSets
@@ -292,8 +314,7 @@ document.getElementById('continue-btn').addEventListener('click', async function
             // ## FrameSize (valore ideale per transients di batteria): 512, 
             // ## Hopsize: framesize/2 oppure framesize/4, 
             // ## Sensitivity: 150 (abbassare se vuoi aumentare la densità)
-            // console.log(sensitivityRange.value);
-            const onsetTimestamps = detectOnsets(channelData, sampleRate, 512, 256, sensitivityRange.value);
+            const onsetTimestamps = detectOnsets(channelData, sampleRate, 512, 256, sensitivity);
 
             modello.setonsets(onsetTimestamps);
             updateProgressBar(100); // AGGIORNO PROGRESS BAR...

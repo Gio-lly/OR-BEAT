@@ -297,7 +297,8 @@ button#continue-btn:disabled:hover {
     border: 5px dashed #0056b3
 }
 /*-----------------------------------------------*/
-#sensitivity {
+/* Stile per lo slider della Densità Onsets */
+#density-onsets {
     display: block;
     appearance: none;
     position: relative;
@@ -321,7 +322,7 @@ button#continue-btn:disabled:hover {
         -ms-transition: width 0.3s ease; 
 }
 
-#sensitivity-value {
+#density-value {
     text-align: center;
     position: relative;
     left: 23em;
@@ -343,7 +344,7 @@ button#continue-btn:disabled:hover {
         -ms-transition: width 0.3s ease; 
 }
 
-#sensitivity::-webkit-slider-thumb {
+#density-onsets::-webkit-slider-thumb {
     appearance: none;
     width: 20px;
     height: 20px;
@@ -356,30 +357,31 @@ button#continue-btn:disabled:hover {
     top: -4px;
 }
 
-#sensitivity::-moz-range-thumb {
+#density-onsets::-moz-range-thumb {
     appearance: none;
     width: 20px;
     height: 20px; 
     background-color: #ccc; 
     border-radius: 50%;
-    border: 2px solid #28282d;;
+    border: 2px solid #28282d;
     cursor: pointer;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
     position: relative;
     top: -4px;
 }
 
-#sensitivity::-webkit-slider-runnable-track {
+#density-onsets::-webkit-slider-runnable-track {
     height: 10px;
     border-radius: 5px; 
     background: #fff;
 }
 
-#sensitivity::-moz-range-track {
+#density-onsets::-moz-range-track {
     height: 10px;
     border-radius: 5px; 
     background: #fff;
 }
+
 /*-----------------------------------------------*/
 button#preset-btn {
     font-family: "Inter", "DM Sans", Arial, sans-serif;
