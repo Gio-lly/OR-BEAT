@@ -758,7 +758,7 @@ datalist > option:before {
 #custom-rectangle {
     position: fixed;
     right: 4%;
-    top: calc(50vh + ((100vh - 17em) - 50vh) / 2);
+    top: calc(50vh + ((100vh - 12em) - 50vh) / 2);
     width: 350px;
     /* Se preferisci un'altezza fissa, impostala (es. 5em) oppure usa "auto" se il contenuto ne determina l'altezza */
     height: auto;
@@ -776,7 +776,7 @@ datalist > option:before {
 #start-recording-btn, #stop-recording-btn,#download-final-recording {
     display: none;
     position: fixed;
-    bottom: 12em;
+    bottom: 8em;
     right: 4em;
     width: 9em;
     height: 4em;
