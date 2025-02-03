@@ -227,6 +227,7 @@ document.getElementById("close-btn").addEventListener("click", function() {
     });
 });
 
+
 /*#####################################################################################################*/
 /*#################################### ANIMAZIONE MENU ################################################*/
 // Apri la modal "menu-page" con animazione
