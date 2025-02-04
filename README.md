@@ -71,7 +71,7 @@ The user can drag and drop these samples into a table connected to a circular dr
 
    1. Clone this repository:
       ```bash
-      git clone https://github.com/your-username/or-beat.git
+      git clone https://github.com/Gio-lly/ACTAM-Final-Project
       ```
 
    2. Install dependencies:
